@@ -33,3 +33,22 @@ Very good in general. Dont like the design that much but some components are rea
 https://www.edwardh.io/
 
 This one is crazy good... Its almost unreal or unrealistic to try to do something this good.
+
+
+
+
+MOUSE EFFECTS
+
+https://codepen.io/roesinn/pen/ZEbbMbN
+
+https://speckyboy.com/css-javascript-cursor-effects/
+
+EFEITOS DE TEXTO
+
+Blast.js
+http://velocityjs.org/blast/
+https://codepen.io/gmawji/pen/yorxKR
+
+PATTERNS
+
+https://projects.verou.me/css3patterns/
