@@ -20,6 +20,11 @@
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-particles": "^2.9.3",
+    "tsparticles": "^2.9.3",
+    "tsparticles-preset-links": "^2.9.3",
+    "tsparticles-preset-triangles": "^2.9.3",
+    "typeit-react": "^2.6.4"
   }
 }
