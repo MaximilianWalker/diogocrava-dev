@@ -52,6 +52,7 @@ EFEITOS DE TEXTO
 Blast.js
 http://velocityjs.org/blast/
 https://codepen.io/gmawji/pen/yorxKR
+https://codemyui.com/pure-css-text-glitch-and-twerk/
 
 PATTERNS
 

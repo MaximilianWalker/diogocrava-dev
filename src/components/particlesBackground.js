@@ -1,20 +1,11 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 // import { loadLinksPreset } from "tsparticles-preset-links";
 import { loadTrianglesPreset } from "tsparticles-preset-triangles";
-import { Box } from "@mui/material";
 import styles from './particlesBackground.module.css';
-
-const options = {
-    preset: "triangles",
-    particles: {
-        number: {
-            value: 200
-        }
-    }
-};
 
 // const options = {
 //     fullScreen: {
@@ -152,7 +143,8 @@ const options = {
 //     }
 // }
 
-const ParticlesBackground = ({ children, ...props }) => {
+const ParticlesBackground = ({ ...props }) => {
+    const [options, setOptions] = useState({ preset: "triangles" });
 
     const particlesInit = async (engine) => {
         // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
@@ -161,14 +153,29 @@ const ParticlesBackground = ({ children, ...props }) => {
         await loadTrianglesPreset(engine);
     };
 
+    const getNumberOfParticles = () => ({
+        preset: "triangles",
+        particles: {
+            number: {
+                value: 0.00002617252 * window.innerWidth * window.innerHeight
+            }
+        }
+    });
+
+    const onResize = () => setOptions(getNumberOfParticles());
+
+    useEffect(() => {
+        onResize();
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
+
     return (
-        <Box className={styles.particlesBox} {...props}>
-            <Particles
-                init={particlesInit}
-                options={options}
-            />
-            {children}
-        </Box>
+        <Particles
+            className={styles.particles}
+            init={particlesInit}
+            options={options}
+        />
     );
 
 };

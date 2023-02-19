@@ -1,0 +1,13 @@
+.navbar {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonsDiv {
+    display: inline-block;
+    height: max-content;
+    margin-top: auto;
+    margin-bottom: auto;
+}
