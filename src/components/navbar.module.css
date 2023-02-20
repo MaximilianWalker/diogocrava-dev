@@ -6,9 +6,10 @@
 }
 
 .buttonsDiv {
-    display: inline-block;
+    display: flex;
     height: max-content;
     width: max-content;
     margin-top: auto;
     margin-bottom: auto;
+    gap: 10px;
 }
