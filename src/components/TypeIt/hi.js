@@ -2,6 +2,11 @@
 
 import { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
+
+import Prism from "prismjs";
+import "prismjs/components/prism-jsx";
+import "./darkPlusPrismTheme.css";
+
 import styles from './hi.module.css';
 
 export default () => {
@@ -9,21 +14,24 @@ export default () => {
     const [instance, setInstance] = useState(null);
 
     return (
-        <h3>
+        <h1 className={styles.hi}>
             <TypeIt
-                className={styles.hi}
                 options={{
-                    loop: true,
-                    lifeLike: true,
-                    deleteSpeed: 100,
-                    // html: false
+                    speed: 50,
+                    deleteSpeed: 50,
+                    cursorChar: "_"
                 }}
-                getAfterInit={(instance) => {
-                    instance.type("<b styles=\"color: white\">&lt;Diogo Cava /&gt;</b>").pause(2000).delete().type("&lt;Fullstack /&gt;").pause(2000);
+                getBeforeInit={(instance) => {
+                    instance
+                    .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(1000).break()
+                    .type("> My name is <b style=\"color:gray;\">Diogo Crava</b>!").pause(500).break()
+                    .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`).pause(10000).break()
+                    .type("> Scroll to continue...").pause(20000).break()
+                    .type("> Knock knock... is anyone there?");
                     setInstance(instance);
                     return instance;
                 }}
             />
-        </h3>
+        </h1>
     );
 };

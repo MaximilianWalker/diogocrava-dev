@@ -1,5 +1,6 @@
 .hi {
     height: max-content;
-    margin-top: auto;
+    margin-top: 35vh;
     margin-bottom: auto;
+    user-select: none;
 }

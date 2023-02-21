@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
+import styles from './logo.module.css';
 
 const LOOP_PAUSE = 5000;
 
@@ -25,7 +26,7 @@ export default () => {
     // };
 
     return (
-        <h1>
+        <h1 className={styles.logo}>
             <TypeIt
                 options={{
                     loop: true,
@@ -38,6 +39,7 @@ export default () => {
                     instance
                     .type(htmlEncode("<DiogoCrava />")).pause(LOOP_PAUSE).delete()
                     .type(htmlEncode("<FullStack />")).pause(LOOP_PAUSE).delete()
+                    .type(htmlEncode("<Dev />")).pause(LOOP_PAUSE).delete()
                     .type(htmlEncode("<Code />")).pause(LOOP_PAUSE);
                     setInstance(instance);
                     return instance;
