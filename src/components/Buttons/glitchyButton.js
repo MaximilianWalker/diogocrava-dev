@@ -4,7 +4,7 @@ const GlitchyButton = ({ children, ...props }) => {
 
     return (
         <button className={styles["btn-glitch"]} {...props}>
-            <span className={styles["text"]}>// {children}</span><span className={styles["text-decoration"]}>_</span><span className={styles["decoration"]}>&rArr;</span>
+            <span className={styles["text"]}>// {children}</span><span className={styles["text-decoration"]}>_</span><span className={styles["decoration"]}></span>
         </button>
     );
 

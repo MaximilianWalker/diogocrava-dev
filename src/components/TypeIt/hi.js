@@ -23,9 +23,9 @@ export default () => {
                 }}
                 getBeforeInit={(instance) => {
                     instance
-                    .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(1000).break()
+                    .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(600).break()
                     .type("> My name is <b style=\"color:gray;\">Diogo Crava</b>!").pause(500).break()
-                    .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`).pause(10000).break()
+                    .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`).pause(20000).break()
                     .type("> Scroll to continue...").pause(20000).break()
                     .type("> Knock knock... is anyone there?");
                     setInstance(instance);

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 // import { loadLinksPreset } from "tsparticles-preset-links";
-import { loadTrianglesPreset } from "tsparticles-preset-triangles";
+// import { loadTrianglesPreset } from "tsparticles-preset-triangles";
 import styles from './particlesBackground.module.css';
 
 // const options = {
@@ -150,12 +150,32 @@ const ParticlesBackground = ({ ...props }) => {
         // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
         // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
         // starting from v2 you can add only the features you need reducing the bundle size
-        await loadTrianglesPreset(engine);
+        await loadFull(engine);
     };
 
     const getNumberOfParticles = () => ({
-        preset: "triangles",
+        background: {
+            color: "#000000",
+        },
         particles: {
+            links: {
+                distance: 125,
+                enable: true,
+                triangles: {
+                    enable: true,
+                    opacity: 0.1,
+                },
+            },
+            move: {
+                enable: true,
+                speed: 3,
+            },
+            size: {
+                value: 1,
+            },
+            shape: {
+                type: "circle",
+            },
             number: {
                 value: 0.00002617252 * window.innerWidth * window.innerHeight
             }

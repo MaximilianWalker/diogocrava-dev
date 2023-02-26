@@ -6,3 +6,8 @@ Criar funções para meter cores em código
 parser para react e html
 parser para javascript
 parser para python
+
+
+https://codepen.io/fmattuschka/pen/bjZKNQ
+
+binary animation
