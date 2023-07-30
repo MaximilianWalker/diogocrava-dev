@@ -1,35 +1,10 @@
 .section {
     display: flex;
-    height: calc(100vh - 80px);
-    margin-top: 80px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-    .section {
-        width: 90vw;
-    }
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-    .section {
-        width: 80vw;
-    }
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-    .section {
-        width: 70vw;
-    }
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-    .section {
-        width: 60vw;
-    }
+    min-width: 100vw;
+    width: 100vw;
+    min-height: 100vh;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding-top: 80px;
 }

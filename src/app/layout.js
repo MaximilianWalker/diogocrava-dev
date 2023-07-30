@@ -2,6 +2,7 @@ import './globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ParticlesBackground from '@/components/particlesBackground';
+import { SectionProvider } from '@/contexts/SectionContext';
 
 export default function RootLayout({ children }) {
   return (
@@ -12,11 +13,12 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        <ParticlesBackground />
-        <Navbar />
-        {children}
-        <Footer />
-        {/* </ParticlesBackground> */}
+        <SectionProvider>
+          <ParticlesBackground />
+          <Navbar />
+          {children}
+          <Footer />
+        </SectionProvider>
       </body>
     </html>
   )
