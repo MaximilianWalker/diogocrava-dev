@@ -43,7 +43,7 @@ h1 {
 }
 
 pre {
-  /* line-height: 10px; */
+  line-height: 20px;
 }
 
 ::-webkit-scrollbar {
