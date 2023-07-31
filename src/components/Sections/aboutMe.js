@@ -8,13 +8,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-import Terminal from '../TypeIt/terminal';
-
 const AboutMe = ({ children, ...props }) => {
     return (
         <>
             <div className={styles.container}>
-                <Terminal />
             </div>
 
         </>

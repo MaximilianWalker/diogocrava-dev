@@ -85,11 +85,61 @@ for(let i = 0; i < messages.length; i++) {
 }
 
 export default function Terminal({ background = false }) {
+    const containerRef = useRef();
     const tabRef = useRef();
+    const mouseDelta = useRef();
+
     const [instance, setInstance] = useState();
+    const [containerPosition, setContainerPosition] = useState();
+    const [isDragging, setDragging] = useState();
+
+    const onMouseDown = (e) => {
+        mouseDelta.current = { 
+            x: e.clientX - containerRef.current.offsetLeft, 
+            y: e.clientY  - containerRef.current.offsetTop
+        };
+        setDragging(true);
+    };
+
+    const onMouseUp = () => {
+        mouseDelta.current = null;
+        setDragging(false);
+    };
+
+    const onMouseMove = (e) => {
+        if (!mouseDelta.current) return;
+        setDragging(true);
+        setContainerPosition({
+            x: e.clientX - mouseDelta.current.x,
+            y: e.clientY - mouseDelta.current.y
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+        return () => {
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+        };
+    }, []);
+
     return (
-        <div className={styles.container}>
-            <div ref={tabRef} className={styles.tab}>
+        <div 
+            ref={containerRef}
+            className={styles.container}
+            style={{ 
+                top: containerPosition?.y ?? undefined, 
+                left: containerPosition?.x ?? undefined
+            }}
+        >
+            <div 
+                ref={tabRef} 
+                className={styles.tab}
+                onMouseDown={onMouseDown}
+                style={{cursor: isDragging ? 'grabbing' : 'grab'}}
+            >
+                <span>{'>Terminal_'}</span>
                 <button>x</button>
             </div>
             <div className={styles.terminalContainer}>
