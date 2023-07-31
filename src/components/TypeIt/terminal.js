@@ -139,7 +139,7 @@ export default function Terminal({ background = false }) {
                 onMouseDown={onMouseDown}
                 style={{cursor: isDragging ? 'grabbing' : 'grab'}}
             >
-                <span>{'>Terminal_'}</span>
+                <span><b>{'>_ Terminal'}</b></span>
                 <button>x</button>
             </div>
             <div className={styles.terminalContainer}>

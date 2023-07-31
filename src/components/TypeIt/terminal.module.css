@@ -6,7 +6,7 @@
     --terminal-background-color: rgba(30, 30, 30, 0.95);
     --terminal-border-color: white;
 
-    --tab-width: 200px;
+    --tab-width: 150px;
     --tab-height: 35px;
     --tab-triangle-width: 30px;
 
@@ -81,7 +81,7 @@
 .tab span {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: auto;
     height: max-content;
 }
