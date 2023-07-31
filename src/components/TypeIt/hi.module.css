@@ -1,0 +1,8 @@
+.hi {
+    height: max-content;
+    margin-top: 45vh;
+    margin-bottom: auto;
+    user-select: none;
+    flex-shrink: 0;
+    min-width: 616px;
+}

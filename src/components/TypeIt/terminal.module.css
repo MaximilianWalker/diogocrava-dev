@@ -1,0 +1,132 @@
+.container {
+    /* --terminal-width: 1200px; */
+    --terminal-width: 1050px;
+    --terminal-height: 600px;
+    --terminal-border-size: 0px;
+    --terminal-background-color: rgba(30, 30, 30, 0.95);
+    --terminal-border-color: white;
+
+    --tab-width: 150px;
+    --tab-height: 35px;
+    --tab-triangle-width: 30px;
+
+    top: calc(50vh - (var(--terminal-height) / 2));
+    left: calc(50vw - (var(--terminal-width) / 2));
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+    z-index: 100;
+}
+
+.terminalContainer, .tab {
+    background-color: var(--terminal-background-color);
+    border-style: solid;
+    border-width: var(--terminal-border-size);
+    border-color: var(--terminal-border-color);
+}
+
+.tab {
+    display: flex;
+    flex-direction: row;
+    width: var(--tab-width);
+    height: var(--tab-height);
+
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+
+    transform: rotateX(1deg);
+    vertical-align: middle;
+    margin-left: var(--tab-triangle-width);
+    margin-right: var(--tab-triangle-width);
+    box-sizing: content-box;
+    user-select: none;
+}
+
+.tab::before, .tab::after {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--terminal-border-size));
+    width: var(--tab-triangle-width);
+    height: calc(var(--tab-height) + var(--terminal-border-size));
+    background-repeat: no-repeat;
+}
+
+.tab::before {
+    left: calc(-1 * var(--tab-triangle-width));
+    background-image: linear-gradient(
+        to bottom right,
+        transparent calc(50%),
+        var(--terminal-border-color) 50%,
+        var(--terminal-border-color) calc(50% + var(--terminal-border-size)),
+        var(--terminal-background-color) calc(50% + var(--terminal-border-size))
+    );
+    background-position: left;
+}
+
+.tab::after {
+    right: calc(-1 * var(--tab-triangle-width));
+    background-image: linear-gradient(
+        to bottom left,
+        transparent calc(50%),
+        var(--terminal-border-color) 50%,
+        var(--terminal-border-color) calc(50% + var(--terminal-border-size)),
+        var(--terminal-background-color) calc(50% + var(--terminal-border-size))
+    );
+    background-position: right;
+}
+
+.tab span {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+    margin-right: auto;
+    height: max-content;
+}
+
+.tab button {
+    border: none;
+    background: none;
+}
+
+.terminalContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    width: var(--terminal-width);
+    height: var(--terminal-height);
+    padding-right: 2px;
+    border-top: 0px;
+    /* clip-path: polygon(
+        0 var(--terminal-border-size),
+        calc(var(--tab-width) + (2 * var(--tab-triangle-width))) var(--terminal-border-size),
+        calc(var(--tab-width) + (2 * var(--tab-triangle-width))) 0,
+        100% 0,
+        100% 100%,
+        0 100%
+    ); */
+}
+
+/* .terminalContainer::before {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--terminal-border-size));
+    left: var(--terminal-border-size);
+    width: calc(var(--tab-width) + (2 * var(--tab-triangle-width)));
+    height: var(--terminal-border-size);
+    background-color: var(--terminal-background-color);
+} */
+
+.terminal {
+    width: 100%;
+    height: 100%;
+    font-size: large;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}

@@ -1,0 +1,19 @@
+.navbar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonsDiv {
+    display: flex;
+    height: max-content;
+    width: max-content;
+    margin-top: auto;
+    margin-bottom: auto;
+    gap: 10px;
+}
