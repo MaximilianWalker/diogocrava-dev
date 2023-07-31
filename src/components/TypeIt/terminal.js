@@ -84,6 +84,8 @@ for(let i = 0; i < messages.length; i++) {
     }
 }
 
+console.log(messages);
+
 export default function Terminal({ background = false }) {
     const containerRef = useRef();
     const tabRef = useRef();
