@@ -1,6 +1,6 @@
 import styles from './terminalButton.module.css';
 
-const TerminalButton = ({ hoverColor, ...props }) => {
+const TerminalButton = ({ icon, ...props }) => {
     return (
         <button
             className={styles["btn-glitch"]}

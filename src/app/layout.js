@@ -1,7 +1,7 @@
 import './globals.css';
-import Navbar from '@/components/layout/navbar';
-import Footer from '@/components/layout/footer';
-import ParticlesBackground from '@/components/layout/particlesBackground';
+import Navbar from '@/components/Layout/navbar';
+import Footer from '@/components/Layout/footer';
+import ParticlesBackground from '@/components/Layout/particlesBackground';
 import { SectionProvider } from '@/contexts/SectionContext';
 import Terminal from '@/components/TypeIt/terminal';
 
