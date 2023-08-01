@@ -1,7 +1,7 @@
 'use client';
 
-import TypeItLogo from "./TypeIt/logo";
-import GlitchyButton from "./Buttons/glitchyButton";
+import TypeItLogo from "../TypeIt/logo";
+import GlitchyButton from "../Buttons/glitchyButton";
 import styles from './navbar.module.css';
 import { useSection } from "@/contexts/SectionContext";
 
