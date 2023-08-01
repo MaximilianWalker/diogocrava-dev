@@ -6,7 +6,7 @@ const GlitchyButton = ({ children, selected, ...props }) => {
         <button className={styles.cyberpunkButton} {...props}>
             {
                 Children.map(children, (child, index) => (
-                    
+                    typeof child === 'string' ? <span key={index}>{child}</span> : child
                 ))
             }
             <span></span>
