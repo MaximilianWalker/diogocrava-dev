@@ -15,6 +15,18 @@ import "./darkPlusPrismTheme.css";
 import TypeIt from "typeit-react";
 import styles from './terminal.module.css';
 
+function parseText(text) {
+    const lines = text.split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.length > 100) {
+            lines[i] = line.substring(0, 100);
+            lines.splice(i + 1, 0, line.substring(100));
+        }
+    }
+    return lines;
+}
+
 export default function Terminal({ background = false }) {
     const containerRef = useRef();
     const tabRef = useRef();
@@ -24,24 +36,21 @@ export default function Terminal({ background = false }) {
     const [containerPosition, setContainerPosition] = useState();
     const [isDragging, setDragging] = useState();
 
+    const [isInitalized, setInitialized] = useState(false);
+    const [linuxStartup, setLinuxStartup] = useState();
+    const [osMessage, setOsMessage] = useState();
     const [messages, setMessages] = useState([]);
 
-    const getInitialMessage = async () => {
-        const response = await fetch('/texts/diogocrava_os.txt');
-        const initialMessage = await response.text();
-        console.log(response.body);
-        console.log(initialMessage);
+    const getLinuxStartup = async () => {
+        const response = await fetch('/texts/linux_startup.txt');
+        const text = await response.text();
+        setLinuxStartup(parseText(text));
+    }
 
-        const messageLines = initialMessage.split('\n');
-        for (let i = 0; i < messages.length; i++) {
-            const message = messages[i];
-            if (message.length > 100) {
-                messages[i] = message.substring(0, 100);
-                messages.splice(i + 1, 0, message.substring(100));
-            }
-        }
-
-        setMessages([...messages, messageLines]);
+    const getOsMessage = async () => {
+        const response = await fetch('/texts/os.txt');
+        const text = await response.text();
+        setOsMessage(parseText(text));
     }
 
     const onMouseDown = (e) => {
@@ -67,7 +76,9 @@ export default function Terminal({ background = false }) {
     };
 
     useEffect(() => {
-        getInitialMessage();
+        getLinuxStartup();
+        getOsMessage();
+
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onMouseUp);
         return () => {
@@ -77,11 +88,30 @@ export default function Terminal({ background = false }) {
     }, []);
 
     useEffect(() => {
+        if (!isInitalized && instance && linuxStartup && osMessage) {
+            console.log(linuxStartup);
+            console.log(osMessage);
+            instance.reset();
+            linuxStartup.forEach((line) => {
+                if (line.trim().length > 0)
+                    instance.type(line, { instant: true }).pause(Math.random() * 600).break();
+                else
+                    instance.type(line, { instant: true }).break();
+            });
+            osMessage.forEach((line) => {
+                instance.type(line, { instant: true }).break();
+            });
+            instance.go();
+            setInitialized(true);
+        }
+    }, [instance, linuxStartup, osMessage]);
+
+    useEffect(() => {
         if (instance) {
             instance.reset();
             messages.forEach((message) => {
                 message.forEach((line) => {
-                    instance.type(line).break();
+                    instance.type(line, { instant: true }).break().pause(300);
                 });
             });
             instance.go();
@@ -114,21 +144,7 @@ export default function Terminal({ background = false }) {
                         cursorChar: "_",
                         speed: 1,
                         nextStringDelay: 0,
-                        // loop: true,
-                        // lifeLike: true,
-                        // deleteSpeed: 100,
-                        // html: true
                     }}
-                    // getBeforeInit={(instance) => {
-                    //     // messages.forEach((message) => {
-                    //     //     message.forEach((line) => {
-                    //     //         instance.type(line);
-                    //     //         instance.break();
-                    //     //     })
-                    //     // })
-                    //     setInstance(instance);
-                    //     return instance;
-                    // }}
                     getAfterInit={(instance) => {
                         setInstance(instance);
                         return instance;

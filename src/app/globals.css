@@ -28,7 +28,7 @@ body {
 *, *:before, *:after {
   box-sizing: inherit;
   color: white;
-  font-family: "VT323", monospace;
+  font-family: VT323, monospace;
 }
 
 a {
