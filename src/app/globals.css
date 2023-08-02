@@ -42,10 +42,6 @@ h1 {
   margin-bottom: auto;
 }
 
-pre {
-  line-height: 20px;
-}
-
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
