@@ -97,8 +97,11 @@
     flex-direction: column-reverse;
     width: var(--terminal-width);
     height: var(--terminal-height);
-    padding-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
     border-top: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
     /* clip-path: polygon(
         0 var(--terminal-border-size),
         calc(var(--tab-width) + (2 * var(--tab-triangle-width))) var(--terminal-border-size),
@@ -120,13 +123,8 @@
 } */
 
 .terminal {
-    width: 100%;
-    height: 100%;
     font-size: large;
-    overflow-y: auto;
-    overflow-x: hidden;
     margin-top: 0px;
-    margin-bottom: 0px;
-    padding-left: 5px;
-    padding-right: 5px;
+    margin-bottom: auto;
+    white-space: pre-wrap;
 }
