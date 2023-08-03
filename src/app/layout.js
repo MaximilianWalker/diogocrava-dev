@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import './globals.css';
 import Navbar from '@/components/Layout/navbar';
 import Footer from '@/components/Layout/footer';
@@ -6,6 +9,10 @@ import { SectionProvider } from '@/contexts/SectionContext';
 import Terminal from '@/components/TypeIt/terminal';
 
 export default function RootLayout({ children }) {
+  const [terminalOpen, setTerminalOpen] = useState(false);
+
+  const toggleTerminal = () => setTerminalOpen(!terminalOpen);
+
   return (
     <html lang="en">
       {/*
@@ -16,10 +23,10 @@ export default function RootLayout({ children }) {
       <body>
         <SectionProvider>
           <ParticlesBackground />
-          <Terminal />
+          <Terminal open={terminalOpen} toggleTerminal={toggleTerminal} />
           <Navbar />
           {children}
-          <Footer />
+          <Footer toggleTerminal={toggleTerminal} />
         </SectionProvider>
       </body>
     </html>

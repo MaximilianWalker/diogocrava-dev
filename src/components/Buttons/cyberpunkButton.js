@@ -1,18 +1,17 @@
 import { Children } from 'react';
-import styles from './glitchyButton.module.css';
+import styles from './cyberpunkButton.module.css';
 
-const GlitchyButton = ({ children, selected, ...props }) => {
+// https://codepen.io/jh3y/pen/PoGbxLp
+const CyberpunkButton = ({ icon, text, tag, selected, ...props }) => {
     return (
         <button className={styles.cyberpunkButton} {...props}>
-            {
-                Children.map(children, (child, index) => (
-                    typeof child === 'string' ? <span key={index}>{child}</span> : child
-                ))
-            }
-            <span></span>
+            {icon}
+            {text}
+            <span aria-hidden className={styles.cyberpunkButtonGlitch}>{text}</span>
+            <span aria-hidden className={styles.cyberpunkButtonTag}>{tag ?? 'R25'}</span>
         </button>
     );
 
 };
 
-export default GlitchyButton;
+export default CyberpunkButton;

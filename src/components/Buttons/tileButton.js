@@ -1,14 +1,15 @@
 import styles from './tileButton.module.css';
 
-const TileButton = ({ hoverColor, ...props }) => {
+// https://codepen.io/Stockin/pen/mzydLz
+const TileButton = ({ icon, text, hoverColor, ...props }) => {
     return (
         <button
-            className={styles["btn-glitch"]}
+            className={styles.tileButton}
             style={{ backgroundColor: hoverColor }}
             {...props}
         >
-            <i class="fa fa-instagram" aria-hidden="true"></i>
-            <span> - Instagram</span>
+            {icon}
+            {text ? <span>{text}</span> : null}
         </button>
     );
 

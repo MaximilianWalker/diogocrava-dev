@@ -33,4 +33,3 @@ Linux Boot:
 [   10.08185] systemd[1]: Starting Update UTMP about System Runlevel Changes...
 [   10.09978] systemd[1]: Started Update UTMP about System Runlevel Changes.
 [   10.11685] systemd[1]: Startup finished in 3.842s (kernel) + 6.229s (userspace) = 10.071s.
-
