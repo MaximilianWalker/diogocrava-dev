@@ -13,6 +13,7 @@ import "prismjs/components/prism-python";
 import "./darkPlusPrismTheme.css";
 
 import TypeIt from "typeit-react";
+import { Maximize, X } from 'react-feather';
 import styles from './terminal.module.css';
 
 function splitText(text) {
@@ -27,7 +28,7 @@ function splitText(text) {
     return lines;
 }
 
-export default function Terminal({ background = false }) {
+export default function Terminal({ open }) {
     const containerRef = useRef();
     const tabRef = useRef();
     const mouseDelta = useRef();
@@ -88,9 +89,7 @@ export default function Terminal({ background = false }) {
     }, []);
 
     useEffect(() => {
-        if (!isInitalized && instance && linuxStartup && osMessage) {
-            console.log(linuxStartup);
-            console.log(osMessage);
+        if (open && !isInitalized && instance && linuxStartup && osMessage) {
             instance.reset();
             linuxStartup.forEach((line) => {
                 if (line.trim().length > 0)
@@ -104,7 +103,7 @@ export default function Terminal({ background = false }) {
             instance.go();
             setInitialized(true);
         }
-    }, [instance, linuxStartup, osMessage]);
+    }, [open, instance, linuxStartup, osMessage]);
 
     useEffect(() => {
         if (instance) {
@@ -118,13 +117,16 @@ export default function Terminal({ background = false }) {
         }
     }, [instance, messages]);
 
+    console.log(open)
+
     return (
         <div
             ref={containerRef}
             className={styles.container}
             style={{
                 top: containerPosition?.y ?? undefined,
-                left: containerPosition?.x ?? undefined
+                left: containerPosition?.x ?? undefined,
+                visibility: open ? 'visible' : 'hidden'
             }}
         >
             <div
@@ -134,7 +136,8 @@ export default function Terminal({ background = false }) {
                 style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             >
                 <span><b>{'>_ Terminal'}</b></span>
-                <button>x</button>
+                <button><Maximize /></button>
+                <button><X /></button>
             </div>
             <div className={styles.terminalContainer}>
                 <TypeIt

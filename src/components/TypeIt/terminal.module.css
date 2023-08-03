@@ -6,7 +6,7 @@
     --terminal-background-color: rgba(30, 30, 30, 0.95);
     --terminal-border-color: white;
 
-    --tab-width: 150px;
+    --tab-width: 180px;
     --tab-height: 35px;
     --tab-triangle-width: 30px;
 
@@ -89,6 +89,21 @@
 .tab button {
     border: none;
     background: none;
+    height: 12px;
+    border-radius: 12px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 4px;
+    padding: 5px;
+}
+
+.tab button:hover {
+    background-color: #a0a0a0;
+}
+
+.tab button svg {
+    width: 14px;
+    height: 14px;
 }
 
 .terminalContainer {

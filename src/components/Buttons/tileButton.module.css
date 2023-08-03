@@ -2,7 +2,7 @@
   text-decoration: none;
   display: absolute;
   display: block;
-  width: 210px;
+  width: 90px;
   height: 80px;
   background: #fff;
   text-align: left;
@@ -10,9 +10,10 @@
   transform: rotate(-30deg) skew(25deg) translate(0, 0);
   transition: .5s;
   box-shadow: -20px 20px 10px rgba(0, 0, 0, .5);
+  margin: 40px 20px;
 }
 
-.tileButton .fa {
+.tileButton svg {
   font-size: 40px;
   color: #262626;
   line-height: 80px;

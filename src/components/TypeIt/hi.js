@@ -9,13 +9,18 @@ import "./darkPlusPrismTheme.css";
 
 import styles from './hi.module.css';
 
-export default ({ freeze }) => {
+export default ({ freeze: freezeProp }) => {
     const [instance, setInstance] = useState();
+    const [freeze, setFreeze] = useState(freezeProp);
     const [isComplete, setComplete] = useState(false);
 
     useEffect(() => {
-        if (instance && isComplete && freeze) instance.freeze();
+        if (instance && isComplete && freeze) instance.destroy(false);
     }, [instance, isComplete, freeze]);
+
+    useEffect(() => {
+        if (freezeProp) setFreeze(true);
+    }, [freezeProp]);
 
     return (
         <h1 className={styles.hi}>
