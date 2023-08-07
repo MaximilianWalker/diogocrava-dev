@@ -53,10 +53,10 @@
   --shadow-primary: rgb(67, 67, 67);
   --color: black;
   --tag-color: white;
-  --font-size: 26px;
+  --font-size: 20px;
   --label-size: 9px;
   --shadow-secondary: hsl(var(--shadow-secondary-hue), 90%, 60%);
-  --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%);
+  --clip: polygon(0 0, 100% 0, 100% 100%, 96% 100%, 96% 85%, 85% 85%, 85% 100%, 8% 100%, 0 70%);
   --border: 4px;
   --shimmy-distance: 5;
   --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
@@ -79,7 +79,7 @@
   font-weight: 700;
   padding: 0px 30px;
   border: 0;
-  height: 60px;
+  height: 50px;
   transition: background 0.2s;
 }
 
@@ -127,8 +127,8 @@
   padding: 1px 4px;
   letter-spacing: 1px;
   line-height: 1;
-  bottom: -5%;
-  right: 5%;
+  bottom: -7%;
+  right: 3%;
   font-weight: normal;
   color: var(--tag-color);
   font-size: var(--label-size);
