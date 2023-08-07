@@ -33,6 +33,7 @@ export default function Terminal({ }) {
     const containerRef = useRef();
     const tabRef = useRef();
     const mouseDelta = useRef();
+    const inputRef = useRef();
 
     const {
         open,
@@ -55,17 +56,19 @@ export default function Terminal({ }) {
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
 
-    const getLinuxStartup = async () => {
-        const response = await fetch('/inputs/linux_startup.txt');
-        const text = await response.text();
-        setLinuxStartup(splitText(text));
-    }
-
-    const getOsMessage = async () => {
-        const response = await fetch('/inputs/os.txt');
-        const text = await response.text();
-        setOsMessage(splitText(text));
-    }
+    const init = async () => {
+        instance.reset();
+        inputs.linuxStartup.forEach((line) => {
+            if (line.trim().length > 0)
+                instance.type(line, { instant: true }).pause(Math.random() * 600).break();
+            else
+                instance.type(line, { instant: true }).break();
+        });
+        inputs.osMessage.forEach((line) => {
+            instance.type(line, { instant: true }).break();
+        });
+        instance.go();
+    };
 
     const getInputs = async () => {
         let newInputs = {};
@@ -107,10 +110,29 @@ export default function Terminal({ }) {
         });
     };
 
+    const onKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevent default Enter behavior
+            setMessages([...messages, input]);
+            setInput(''); // Clear the input after sending
+        }
+
+        if (e.key === 'Backspace' && input.length === 0) {
+            // Handle special behavior if needed when the input is empty and Backspace is pressed
+        }
+    };
+
+    const onKeyPress = (e) => {
+
+    };
+
     useEffect(() => {
         getInputs();
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onMouseUp);
+        // on input
+        window.addEventListener('keydown', onInput);
+
         return () => {
             window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('mouseup', onMouseUp);
@@ -119,20 +141,12 @@ export default function Terminal({ }) {
 
     useEffect(() => {
         if (open && !isInitalized && instance && inputs) {
-            instance.reset();
-            inputs.linuxStartup.forEach((line) => {
-                if (line.trim().length > 0)
-                    instance.type(line, { instant: true }).pause(Math.random() * 600).break();
-                else
-                    instance.type(line, { instant: true }).break();
-            });
-            inputs.osMessage.forEach((line) => {
-                instance.type(line, { instant: true }).break();
-            });
-            instance.go();
+            init();
             setInitialized(true);
-        } else if(isInitalized){
-            instance.go();
+        } else if (open && isInitalized) {
+            inputRef.current.focus();
+        } else if (!open || !isInitalized) {
+            inputRef.current.blur();
         }
     }, [open, instance, inputs]);
 
@@ -181,6 +195,12 @@ export default function Terminal({ }) {
                         setInstance(instance);
                         return instance;
                     }}
+                />
+                <input
+                    ref={inputRef}
+                    type="text"
+                    onIn
+                    style={{ display: 'none' }}
                 />
             </div>
         </div>
