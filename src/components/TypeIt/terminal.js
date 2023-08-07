@@ -45,13 +45,13 @@ export default function Terminal({ }) {
     const [isDragging, setDragging] = useState();
 
     // Startup
-    const [startupInstance, setStartupInstance] = useState();
+    const [instance, setInstance] = useState();
     const [isInitalized, setInitialized] = useState(false);
-    const [linuxStartup, setLinuxStartup] = useState();
-    const [osMessage, setOsMessage] = useState();
+    // const [linuxStartup, setLinuxStartup] = useState();
+    // const [osMessage, setOsMessage] = useState();
+    const [inputs, setInputs] = useState();
 
     // Messages
-    const [messagesInstance, setMessagesInstance] = useState();
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
 
@@ -65,6 +65,24 @@ export default function Terminal({ }) {
         const response = await fetch('/inputs/os.txt');
         const text = await response.text();
         setOsMessage(splitText(text));
+    }
+
+    const getInputs = async () => {
+        let newInputs = {};
+
+        let response = await fetch('/inputs/linux_startup.txt');
+        newInputs.linuxStartup = splitText(await response.text());
+
+        response = await fetch('/inputs/os.txt');
+        newInputs.osMessage = splitText(await response.text());
+
+        response = await fetch('/inputs/primary_user.txt');
+        newInputs.primaryUser = splitText(await response.text());
+
+        response = await fetch('/inputs/ai_user.txt');
+        newInputs.aiUser = splitText(await response.text());
+
+        setInputs(newInputs);
     }
 
     const onMouseDown = (e) => {
@@ -90,9 +108,7 @@ export default function Terminal({ }) {
     };
 
     useEffect(() => {
-        getLinuxStartup();
-        getOsMessage();
-
+        getInputs();
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onMouseUp);
         return () => {
@@ -102,33 +118,35 @@ export default function Terminal({ }) {
     }, []);
 
     useEffect(() => {
-        if (open && !isInitalized && startupInstance && linuxStartup && osMessage) {
-            startupInstance.reset();
-            linuxStartup.forEach((line) => {
+        if (open && !isInitalized && instance && inputs) {
+            instance.reset();
+            inputs.linuxStartup.forEach((line) => {
                 if (line.trim().length > 0)
-                    startupInstance.type(line, { instant: true }).pause(Math.random() * 600).break();
+                    instance.type(line, { instant: true }).pause(Math.random() * 600).break();
                 else
-                    startupInstance.type(line, { instant: true }).break();
+                    instance.type(line, { instant: true }).break();
             });
-            osMessage.forEach((line) => {
-                startupInstance.type(line, { instant: true }).break();
+            inputs.osMessage.forEach((line) => {
+                instance.type(line, { instant: true }).break();
             });
-            startupInstance.go();
+            instance.go();
             setInitialized(true);
+        } else if(isInitalized){
+            instance.go();
         }
-    }, [open, startupInstance, linuxStartup, osMessage]);
+    }, [open, instance, inputs]);
 
     useEffect(() => {
-        if (startupInstance) {
-            startupInstance.reset();
+        if (instance) {
+            instance.reset();
             messages.forEach((message) => {
                 message.forEach((line) => {
-                    startupInstance.type(line, { instant: true }).break().pause(300);
+                    instance.type(line, { instant: true }).break().pause(300);
                 });
             });
-            startupInstance.go();
+            instance.go();
         }
-    }, [startupInstance, messages]);
+    }, [instance, messages]);
 
     return (
         <div
@@ -155,26 +173,12 @@ export default function Terminal({ }) {
                     className={styles.terminal}
                     as="pre"
                     options={{
-                        cursor: false,
                         cursorChar: "_",
                         speed: 1,
                         nextStringDelay: 0
                     }}
                     getAfterInit={(instance) => {
-                        setStartupInstance(instance);
-                        return instance;
-                    }}
-                />
-                <TypeIt
-                    className={styles.terminal}
-                    options={{
-                        cursorChar: "_",
-                        speed: 1,
-                        nextStringDelay: 0,
-                        html: true
-                    }}
-                    getAfterInit={(instance) => {
-                        setMessagesInstance(instance);
+                        setInstance(instance);
                         return instance;
                     }}
                 />
