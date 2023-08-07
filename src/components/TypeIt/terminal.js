@@ -15,6 +15,7 @@ import "./darkPlusPrismTheme.css";
 import TypeIt from "typeit-react";
 import { Maximize, X } from 'react-feather';
 import styles from './terminal.module.css';
+import { useTerminal } from "@/contexts/TerminalContext";
 
 function splitText(text) {
     const lines = text.split(/\r?\n/);
@@ -28,28 +29,40 @@ function splitText(text) {
     return lines;
 }
 
-export default function Terminal({ open }) {
+export default function Terminal({ }) {
     const containerRef = useRef();
     const tabRef = useRef();
     const mouseDelta = useRef();
 
-    const [instance, setInstance] = useState();
+    const {
+        open,
+        toggleTerminal,
+        toggleMaximized
+    } = useTerminal();
+
+    // Terminal
     const [containerPosition, setContainerPosition] = useState();
     const [isDragging, setDragging] = useState();
 
+    // Startup
+    const [startupInstance, setStartupInstance] = useState();
     const [isInitalized, setInitialized] = useState(false);
     const [linuxStartup, setLinuxStartup] = useState();
     const [osMessage, setOsMessage] = useState();
+
+    // Messages
+    const [messagesInstance, setMessagesInstance] = useState();
+    const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
 
     const getLinuxStartup = async () => {
-        const response = await fetch('/texts/linux_startup.txt');
+        const response = await fetch('/inputs/linux_startup.txt');
         const text = await response.text();
         setLinuxStartup(splitText(text));
     }
 
     const getOsMessage = async () => {
-        const response = await fetch('/texts/os.txt');
+        const response = await fetch('/inputs/os.txt');
         const text = await response.text();
         setOsMessage(splitText(text));
     }
@@ -89,35 +102,33 @@ export default function Terminal({ open }) {
     }, []);
 
     useEffect(() => {
-        if (open && !isInitalized && instance && linuxStartup && osMessage) {
-            instance.reset();
+        if (open && !isInitalized && startupInstance && linuxStartup && osMessage) {
+            startupInstance.reset();
             linuxStartup.forEach((line) => {
                 if (line.trim().length > 0)
-                    instance.type(line, { instant: true }).pause(Math.random() * 600).break();
+                    startupInstance.type(line, { instant: true }).pause(Math.random() * 600).break();
                 else
-                    instance.type(line, { instant: true }).break();
+                    startupInstance.type(line, { instant: true }).break();
             });
             osMessage.forEach((line) => {
-                instance.type(line, { instant: true }).break();
+                startupInstance.type(line, { instant: true }).break();
             });
-            instance.go();
+            startupInstance.go();
             setInitialized(true);
         }
-    }, [open, instance, linuxStartup, osMessage]);
+    }, [open, startupInstance, linuxStartup, osMessage]);
 
     useEffect(() => {
-        if (instance) {
-            instance.reset();
+        if (startupInstance) {
+            startupInstance.reset();
             messages.forEach((message) => {
                 message.forEach((line) => {
-                    instance.type(line, { instant: true }).break().pause(300);
+                    startupInstance.type(line, { instant: true }).break().pause(300);
                 });
             });
-            instance.go();
+            startupInstance.go();
         }
-    }, [instance, messages]);
-
-    console.log(open)
+    }, [startupInstance, messages]);
 
     return (
         <div
@@ -136,23 +147,36 @@ export default function Terminal({ open }) {
                 style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             >
                 <span><b>{'>_ Terminal'}</b></span>
-                <button><Maximize /></button>
-                <button><X /></button>
+                <button onClick={toggleMaximized}><Maximize /></button>
+                <button onClick={toggleTerminal}><X /></button>
             </div>
             <div className={styles.terminalContainer}>
                 <TypeIt
                     className={styles.terminal}
                     as="pre"
                     options={{
+                        cursor: false,
+                        cursorChar: "_",
+                        speed: 1,
+                        nextStringDelay: 0
+                    }}
+                    getAfterInit={(instance) => {
+                        setStartupInstance(instance);
+                        return instance;
+                    }}
+                />
+                <TypeIt
+                    className={styles.terminal}
+                    options={{
                         cursorChar: "_",
                         speed: 1,
                         nextStringDelay: 0,
+                        html: true
                     }}
                     getAfterInit={(instance) => {
-                        setInstance(instance);
+                        setMessagesInstance(instance);
                         return instance;
                     }}
-
                 />
             </div>
         </div>

@@ -2,9 +2,10 @@ import styles from './footer.module.css';
 import TileButton from "../Buttons/tileButton";
 import CyberpunkButton from "../Buttons/cyberpunkButton";
 import { Terminal, GitHub } from 'react-feather';
+import { useTerminal } from '@/contexts/TerminalContext';
 
-export default ({ toggleTerminal }) => {
-
+export default ({ }) => {
+    const { toggleTerminal } = useTerminal();
     return (
         <footer className={styles.footer}>
             <div className={styles.buttonsDiv}>

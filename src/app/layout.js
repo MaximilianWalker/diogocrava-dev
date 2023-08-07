@@ -7,11 +7,10 @@ import Footer from '@/components/Layout/footer';
 import ParticlesBackground from '@/components/Layout/particlesBackground';
 import { SectionProvider } from '@/contexts/SectionContext';
 import Terminal from '@/components/TypeIt/terminal';
+import { TerminalProvider } from '@/contexts/TerminalContext';
 
 export default function RootLayout({ children }) {
   const [terminalOpen, setTerminalOpen] = useState(false);
-
-  const toggleTerminal = () => setTerminalOpen(!terminalOpen);
 
   return (
     <html lang="en">
@@ -21,13 +20,15 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        <SectionProvider>
-          <ParticlesBackground />
-          <Terminal open={terminalOpen} toggleTerminal={toggleTerminal} />
-          <Navbar />
-          {children}
-          <Footer toggleTerminal={toggleTerminal} />
-        </SectionProvider>
+        <TerminalProvider>
+          <SectionProvider>
+            <ParticlesBackground />
+            <Terminal />
+            <Navbar />
+            {children}
+            <Footer />
+          </SectionProvider>
+        </TerminalProvider>
       </body>
     </html>
   )
