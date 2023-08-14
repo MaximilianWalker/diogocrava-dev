@@ -45,7 +45,7 @@ export async function POST(req) {
     if (!messages || messages.length === 0) messages = [{ role: "system", content: input }];
 
     const response = await openai.createChatCompletion({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
       stream: true,
       messages,
       // max_tokens: 50,

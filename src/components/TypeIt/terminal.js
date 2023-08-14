@@ -269,24 +269,20 @@ export default function Terminal({ }) {
     useEffect(() => {
         console.log(messages)
         const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-        if (instance && lastMessage && lastMessage.role === 'assistant') {
-            const response = lastMessage.text;
+        if (instance && !isLoadingMessages && lastMessage && lastMessage.role === 'assistant') {
+            instance
+                .break()
+                .type(inputs.aiUser, { instant: true });
+            const response = lastMessage.content;
             splitText(response).forEach((line) => {
                 instance.type(line, { instant: true }).break();
             });
+            instance.type(inputs.primaryUser, { instant: true });
             instance.flush();
         }
-    }, [instance, messages]);
+    }, [instance, isLoadingMessages, messages]);
 
-    console.log(input)
-    console.log(handleSubmit)
-
-    // useEffect(() => {
-    //     window.addEventListener('keydown', onKeyDown);
-    //     return () => {
-    //         window.removeEventListener('keydown', onKeyDown);
-    //     };
-    // }, [onKeyDown]);
+    console.log(isLoadingMessages);
 
     return (
         <div
