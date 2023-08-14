@@ -1,6 +1,7 @@
+// https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 import Prism from "prismjs";
 
@@ -14,26 +15,69 @@ import "./darkPlusPrismTheme.css";
 
 import TypeIt from "typeit-react";
 import { Maximize, X } from 'react-feather';
+import { useChat } from 'ai/react';
 import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
+import useDrag from "@/hooks/useDrag";
+// import useGPT from "@/hooks/useGPT";
+import { splitText } from "@/utils/stringExtensions";
 
-function splitText(text) {
-    const lines = text.split(/\r?\n/);
-    // for (let i = 0; i < lines.length; i++) {
-    //     const line = lines[i];
-    //     if (line.length > 100) {
-    //         lines[i] = line.substring(0, 100);
-    //         lines.splice(i + 1, 0, line.substring(100));
-    //     }
-    // }
-    return lines;
-}
+
+const controlKeys = [
+    "Shift",
+    "Enter",
+    "Control",
+    "Alt",
+    "Meta",
+    "Tab",
+    "Escape",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowUp",
+    "ArrowDown",
+    "Dead"
+];
+
+const deadKeys = {
+    // Common
+    'DeadGrave': '`',          // ` (Grave accent)
+    'DeadAcute': '´',          // ´ (Acute accent)
+    'DeadCircumflex': 'ˆ',     // ˆ (Circumflex accent)
+    'DeadTilde': '~',          // ~ (Tilde)
+    'DeadMacron': '¯',         // ¯ (Macron)
+    'DeadBreve': '˘',          // ˘ (Breve)
+    'DeadAboveDot': '˙',       // ˙ (Dot above, or overdot)
+    'DeadUmlaut': '¨',         // ¨ (Umlaut or diaeresis)
+    'DeadAboveRing': '˚',      // ˚ (Ring above)
+    'DeadDoubleacute': '˝',    // ˝ (Double acute accent)
+    'DeadCaron': 'ˇ',          // ˇ (Caron, or háček)
+
+    // Portuguese
+    'DeadCedilla': '¸',        // ¸ (Cedilla)
+
+    // German (some overlap with common accents)
+    'DeadBelowDot': '̣',       // ̣ (Dot below, used in transliteration)
+
+    // Nordic languages
+    'DeadStroke': '̸',         // ̸ (Stroke, bar)
+    'DeadOgonek': '˛',         // ˛ (Ogonek, used in Polish but also for transliteration in some Nordic contexts)
+    'DeadHook': '̉',           // ̉ (Hook above, used in some Saami languages)
+    'DeadHorn': '̛',           // ̛ (Horn, used in some Saami languages)
+
+    // Other
+    'DeadBelowComma': '̦',     // ̦ (Comma below, used for transliteration or Romanian)
+    'DeadBelowRing': '̥',      // ̥ (Ring below, used in Uralic phonetic alphabet and transliteration)
+    'DeadBelowMacron': '̱',    // ̱ (Macron below, used in Uralic phonetic alphabet and transliteration)
+    'DeadBelowCircumflex': '̭' // ̭ (Circumflex below, used for transliteration)
+};
 
 export default function Terminal({ }) {
     const containerRef = useRef();
     const tabRef = useRef();
-    const mouseDelta = useRef();
-    const inputRef = useRef();
+    const textareaRef = useRef();
+    // const valueRef = useRef('');
+    const cursorRef = useRef(0);
+    const deadKeyRef = useRef();
 
     const {
         open,
@@ -41,126 +85,208 @@ export default function Terminal({ }) {
         toggleMaximized
     } = useTerminal();
 
-    // Terminal
-    const [containerPosition, setContainerPosition] = useState();
-    const [isDragging, setDragging] = useState();
+    const {
+        isDragging,
+        position: containerPosition,
+        onMouseDown
+    } = useDrag(containerRef);
+
+    const {
+        messages,
+        input,
+        handleInputChange,
+        handleSubmit,
+        isLoading: isLoadingMessages,
+    } = useChat();
 
     // Startup
     const [instance, setInstance] = useState();
     const [isInitalized, setInitialized] = useState(false);
-    // const [linuxStartup, setLinuxStartup] = useState();
-    // const [osMessage, setOsMessage] = useState();
     const [inputs, setInputs] = useState();
+    const [loading, setLoading] = useState(true);
 
     // Messages
-    const [loading, setLoading] = useState(false);
-    const [messages, setMessages] = useState([]);
-
-    const init = async () => {
-        instance.reset();
-        inputs.linuxStartup.forEach((line) => {
-            if (line.trim().length > 0)
-                instance.type(line, { instant: true }).pause(Math.random() * 600).break();
-            else
-                instance.type(line, { instant: true }).break();
-        });
-        inputs.osMessage.forEach((line) => {
-            instance.type(line, { instant: true }).break();
-        });
-        instance.go();
-    };
+    // const [messages, setMessages] = useState([]);
+    // const [input, handleInputChange] = useState('');
 
     const getInputs = async () => {
         let newInputs = {};
 
         let response = await fetch('/inputs/linux_startup.txt');
-        newInputs.linuxStartup = splitText(await response.text());
+        newInputs.linuxStartup = await response.text();
 
         response = await fetch('/inputs/os.txt');
-        newInputs.osMessage = splitText(await response.text());
+        newInputs.osMessage = await response.text();
 
         response = await fetch('/inputs/primary_user.txt');
-        newInputs.primaryUser = splitText(await response.text());
+        newInputs.primaryUser = await response.text();
 
         response = await fetch('/inputs/ai_user.txt');
-        newInputs.aiUser = splitText(await response.text());
+        newInputs.aiUser = await response.text();
 
         setInputs(newInputs);
     }
 
-    const onMouseDown = (e) => {
-        mouseDelta.current = {
-            x: e.clientX - containerRef.current.offsetLeft,
-            y: e.clientY - containerRef.current.offsetTop
-        };
-        setDragging(true);
-    };
+    const writeInputs = async () => {
+        instance.reset();
 
-    const onMouseUp = () => {
-        mouseDelta.current = null;
-        setDragging(false);
-    };
-
-    const onMouseMove = (e) => {
-        if (!mouseDelta.current) return;
-        setDragging(true);
-        setContainerPosition({
-            x: e.clientX - mouseDelta.current.x,
-            y: e.clientY - mouseDelta.current.y
+        splitText(inputs.linuxStartup).forEach((line) => {
+            if (line.trim().length > 0)
+                instance.type(line, { instant: true }).pause(Math.random() * 600).break();
+            else
+                instance.type(line, { instant: true }).break();
         });
+        splitText(inputs.osMessage).forEach((line) => {
+            instance.type(line, { instant: true }).break();
+        });
+
+        console.log(inputs)
+
+        instance.break();
+
+        instance.type(inputs.primaryUser, { instant: true });
+
+        instance.options({
+            afterComplete: () => setLoading(false)
+        }).go();
     };
 
-    const onKeyDown = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault(); // Prevent default Enter behavior
-            setMessages([...messages, input]);
-            setInput(''); // Clear the input after sending
+    const setInput = (value) => handleInputChange({ target: { value } });
+
+    // const onKeyDown = useCallback((e) => {
+
+    //     if (open && isInitalized && !loading) {
+    //         e.preventDefault();
+    //         console.log(e.key);
+    //         console.log(e.code);
+    //         if (e.key === 'Enter' && !e.shiftKey) {
+    //             if (e.shiftKey) {
+    //                 handleInputChange(input + '\n');
+    //                 instance.break().flush();
+    //             } else {
+    //                 sendMessage(input);
+    //                 handleInputChange('');
+    //             }
+    //         } else if (e.key === 'Backspace') {
+    //             if (input.length > 0) {
+    //                 handleInputChange(input.substring(0, input.length - 1));
+    //                 instance.delete(1).flush();
+    //             }
+    //         } else if (e.key === 'ArrowLeft') {
+    //             if (cursorRef.current < input.length) {
+    //                 cursorRef.current -= 1;
+    //                 instance.move(-1).flush();
+    //             }
+    //         } else if (e.key === 'ArrowRight') {
+    //             if (cursorRef.current > 0) {
+    //                 cursorRef.current += 1;
+    //                 instance.move(1).flush();
+    //             }
+    //         } else if (e.key === 'Dead') {
+    //             console.log(e)
+    //             if (deadKeyRef.current) {
+    //                 handleInputChange(input + deadKeys[deadKeyRef.current] + deadKeys[e.code]);
+    //                 instance.type(deadKeys[deadKeyRef.current] + deadKeys[e.code], { instant: true }).flush();
+    //                 deadKeyRef.current = null;
+    //             } else {
+    //                 deadKeyRef.current = e.code;
+    //             }
+    //         } else if (!controlKeys.includes(e.key)) {
+    //             handleInputChange(input + e.key);
+    //             instance.type(e.key, { instant: true }).flush();
+    //         }
+    //     }
+    // }, [open, instance, isInitalized, loading, input]);
+
+    const onKeyDown = useCallback((e) => {
+        if (open && isInitalized && !loading) {
+            textareaRef.current.focus();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                // e.preventDefault();
+                handleSubmit(e);
+                // handleInputChange('');
+            } else if (e.key === 'ArrowLeft') {
+                if (cursorRef.current < input.length) {
+                    cursorRef.current += 1;
+                    instance.move(-1).flush();
+                }
+            } else if (e.key === 'ArrowRight') {
+                if (cursorRef.current > 0) {
+                    cursorRef.current -= 1;
+                    instance.move(1).flush();
+                }
+            }
         }
+    }, [open, isInitalized, loading, instance, input]);
 
-        if (e.key === 'Backspace' && input.length === 0) {
-            // Handle special behavior if needed when the input is empty and Backspace is pressed
+    const onInput = useCallback((e) => {
+        if (open && isInitalized && !loading) {
+            const value = e.target.value;
+            const delta = value.length - input.length;
+            const typed = value.substring(
+                input.length - cursorRef.current,
+                input.length - cursorRef.current + delta
+            );
+
+            if (cursorRef.current > 0) instance.move(1).move(-1);
+
+            if (delta === 0) return;
+            else if (delta > 0) instance.type(typed, { instant: true });
+            else instance.delete(Math.abs(delta), { instant: true });
+
+            instance.flush();
+            setInput(value);
         }
-    };
+    }, [open, isInitalized, loading, instance, input]);
 
-    const onKeyPress = (e) => {
-
-    };
+    // const onCompositionStart = (e) => {
+    //     console.log(e);
+    // }
 
     useEffect(() => {
         getInputs();
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
-        // on input
-        window.addEventListener('keydown', onInput);
-
-        return () => {
-            window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mouseup', onMouseUp);
-        };
     }, []);
 
     useEffect(() => {
-        if (open && !isInitalized && instance && inputs) {
-            init();
+        window.addEventListener('keydown', onKeyDown);
+        return () => {
+            window.removeEventListener('keydown', onKeyDown);
+        }
+    }, [onKeyDown]);
+
+    useEffect(() => {
+        if (open) textareaRef.current.focus();
+        else textareaRef.current.blur();
+    }, [open]);
+
+    useEffect(() => {
+        if (open && instance && inputs && !isInitalized) {
+            writeInputs();
             setInitialized(true);
-        } else if (open && isInitalized) {
-            inputRef.current.focus();
-        } else if (!open || !isInitalized) {
-            inputRef.current.blur();
         }
     }, [open, instance, inputs]);
 
     useEffect(() => {
-        if (instance) {
-            instance.reset();
-            messages.forEach((message) => {
-                message.forEach((line) => {
-                    instance.type(line, { instant: true }).break().pause(300);
-                });
+        console.log(messages)
+        const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
+        if (instance && lastMessage && lastMessage.role === 'assistant') {
+            const response = lastMessage.text;
+            splitText(response).forEach((line) => {
+                instance.type(line, { instant: true }).break();
             });
-            instance.go();
+            instance.flush();
         }
     }, [instance, messages]);
+
+    console.log(input)
+    console.log(handleSubmit)
+
+    // useEffect(() => {
+    //     window.addEventListener('keydown', onKeyDown);
+    //     return () => {
+    //         window.removeEventListener('keydown', onKeyDown);
+    //     };
+    // }, [onKeyDown]);
 
     return (
         <div
@@ -196,11 +322,11 @@ export default function Terminal({ }) {
                         return instance;
                     }}
                 />
-                <input
-                    ref={inputRef}
-                    type="text"
-                    onIn
-                    style={{ display: 'none' }}
+                <textarea
+                    ref={textareaRef}
+                    className={styles.textarea}
+                    value={input}
+                    onInput={onInput}
                 />
             </div>
         </div>
