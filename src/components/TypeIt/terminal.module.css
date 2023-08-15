@@ -146,6 +146,11 @@
     color: black;
 }
 
+.terminal br::selection {
+    background: white;
+    color: black;
+}
+
 .textarea {
     position: absolute;
     width: 100%;
