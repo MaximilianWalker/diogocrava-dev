@@ -15,7 +15,7 @@ const Intro = ({ active, ...props }) => {
                     priority={false}
                     style={{
                         objectFit: 'contain',
-                        objectPosition: 'right center'
+                        objectPosition: 'right bottom'
                     }}
                 />
             </div>
