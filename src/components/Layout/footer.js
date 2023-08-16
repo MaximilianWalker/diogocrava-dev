@@ -3,14 +3,16 @@ import TileButton from "../Buttons/tileButton";
 import CyberpunkButton from "../Buttons/cyberpunkButton";
 import { Terminal, GitHub } from 'react-feather';
 import { useTerminal } from '@/contexts/TerminalContext';
+import Networks from './networks';
 
 export default ({ }) => {
     const { toggleTerminal } = useTerminal();
     return (
         <footer className={styles.footer}>
-            <div className={styles.buttonsDiv}>
+            {/* <div className={styles.buttonsDiv}>
                 <TileButton icon={<GitHub />} text="GitHub" />
-            </div>
+            </div> */}
+            <Networks />
             <CyberpunkButton
                 // icon={<Terminal />}
                 text=">_ Terminal"

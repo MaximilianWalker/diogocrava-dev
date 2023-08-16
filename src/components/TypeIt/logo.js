@@ -28,6 +28,7 @@ export default () => {
     return (
         <h1 className={styles.logo}>
             <TypeIt
+                className={styles.text}
                 options={{
                     loop: true,
                     lifeLike: true,

@@ -1,3 +1,7 @@
 .logo {
+    min-width: 200px;
     user-select: none;
+}
+
+.text {
 }

@@ -2,8 +2,8 @@
     display: inline-flex;
     width: 100%;
     justify-content: space-between;
-    padding-left: 5vw;
-    padding-right: 5vw;
+    padding-left: 15vw;
+    padding-right: 15vw;
 }
 
 .portraitContainer {
@@ -13,18 +13,87 @@
     margin-top: auto;
 }
 
+.portrait {
+    object-fit: contain;
+    object-position: right bottom;
+}
+
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 1200px) {
+/* @media only screen and (min-width: 1200px) {
     .container {
         padding-left: 10vw;
         padding-right: 10vw;
     }
-}
+} */
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 2000px) {
+/* @media only screen and (min-width: 2000px) {
     .container {
         padding-left: 15vw;
         padding-right: 15vw;
+    }
+} */
+
+/* Extra small devices (phones, up to 600px) */
+@media (max-width: 600px) {
+    .container {
+        padding-left: 5vw;
+        padding-right: 5vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .portrait {
+        object-position: center bottom;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    .container {
+        padding-left: 5vw;
+        padding-right: 5vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .portrait {
+        object-position: center bottom;
+    }
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .container {
+        padding-left: 10vw;
+        padding-right: 10vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .portrait {
+        object-position: center bottom;
+    }
+}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    .container {
+        padding-left: 10vw;
+        padding-right: 10vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .portrait {
+        object-position: center bottom;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) and (max-width: 2000px) {
+    .container {
+        padding-left: 10vw;
+        padding-right: 10vw;
     }
 }

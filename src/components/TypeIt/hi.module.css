@@ -1,8 +1,93 @@
 .hi {
     height: max-content;
-    margin-top: 45vh;
+    margin-top: auto;
     margin-bottom: auto;
     user-select: none;
     flex-shrink: 0;
     min-width: 616px;
+    min-height: 200px;
+}
+
+.text {
+    font-size: 2rem;
+}
+
+@media (max-width: 600px) {
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 616px;
+    }
+
+    .text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 616px;
+    }
+
+    .text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 616px;
+    }
+
+    .text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 616px;
+    }
+
+    .text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) {
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 616px;
+    }
 }
