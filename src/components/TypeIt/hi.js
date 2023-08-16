@@ -25,6 +25,7 @@ export default ({ freeze: freezeProp }) => {
     return (
         <h1 className={styles.hi}>
             <TypeIt
+                className={styles.text}
                 options={{
                     speed: 50,
                     deleteSpeed: 50,

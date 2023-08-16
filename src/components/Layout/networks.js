@@ -1,17 +1,34 @@
 import styles from './networks.module.css';
-import { FileText, GitHub } from 'react-feather';
+import { FileText, GitHub, Linkedin } from 'react-feather';
 
 
 // https://codepen.io/Limbian/pen/WGeNBO
 const Networks = ({ }) => {
     return (
         <div className={styles.networks}>
+            <div className={styles.labelContainer}>
+                <span className={styles.label}>Find me on my Networks!</span>
+                <div className={styles.line} />
+            </div>
             <div className={styles.netbox}>
-                <FileText 
-                className={styles.icon} 
+                <div className={styles.iconContainer}>
+                    <FileText
+                    // className={styles.icon}
                 // tip
                 />
-                <GitHub className={styles.icon} />
+                </div>
+
+                <div className={styles.iconContainer}>
+                    <GitHub />
+                </div>
+
+                <div className={styles.iconContainer}>
+                    <Linkedin />
+                </div>
+
+                <div className={styles.iconContainer}>
+                    <Linkedin />
+                </div>
             </div>
         </div>
     );
