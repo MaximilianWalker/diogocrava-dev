@@ -42,10 +42,14 @@ export async function POST(req) {
 
     let { messages } = await req.json()
 
-    if (!messages || messages.length === 0) messages = [{ role: "system", content: input }];
+    messages = messages ?? [];
+
+    if (messages.length === 0 || messages[0].role !== 'system') {
+      messages.unshift({ role: 'system', content: input });
+    }
 
     const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4',
       stream: true,
       messages,
       // max_tokens: 50,
