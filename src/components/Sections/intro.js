@@ -9,14 +9,11 @@ const Intro = ({ active, ...props }) => {
             <Hi freeze={!active} />
             <div className={styles.portraitContainer}>
                 <Image
+                    className={styles.portrait}
                     src="/portraits/portrait_with_border.png"
                     alt="Diogo Crava"
                     fill
                     priority={false}
-                    style={{
-                        objectFit: 'contain',
-                        objectPosition: 'right bottom'
-                    }}
                 />
             </div>
         </div>

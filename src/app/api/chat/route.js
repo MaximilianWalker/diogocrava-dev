@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 
@@ -61,6 +62,7 @@ export async function POST(req) {
     const stream = OpenAIStream(response);
     return new StreamingTextResponse(stream);
   } catch (err) {
-    console.log(err)
+    console.log(err);
+    NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

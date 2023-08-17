@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import styles from './aboutMe.module.css';
+import styles from './projects.module.css';
 import { Navigation, Pagination, A11y, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 

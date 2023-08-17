@@ -1,25 +1,14 @@
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+.container {
     width: 100%;
-    padding: 20px;
+    height: 100%;
+    user-select: none;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
 }
 
-.buttonsDiv {
-    display: flex;
-    height: max-content;
-    width: max-content;
-    margin-top: auto;
-    margin-bottom: auto;
-    gap: 10px;
+.text {
+    margin: auto;
 }
 
-/* Extra small devices (phones, up to 600px) */
 @media (max-width: 600px) {
     
 }
@@ -41,5 +30,5 @@
 
 /* Extra large devices (large laptops and desktops, 1201px and up) */
 @media (min-width: 1201px) {
-
+    
 }

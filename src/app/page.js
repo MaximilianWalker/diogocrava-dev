@@ -7,9 +7,11 @@ import Section from "@/components/Sections/section";
 import Intro from '@/components/Sections/intro';
 import AboutMe from "@/components/Sections/aboutMe";
 import Technologies from '@/components/Sections/technologies';
+import Projects from '@/components/Sections/projects';
+import ContactForm from '@/components/Sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({ section }) {
   const {
@@ -22,7 +24,16 @@ export default function Home({ section }) {
   const introRef = useRef(null);
   const aboutMeRef = useRef(null);
   const technologiesRef = useRef(null);
-  const refs = [introRef, aboutMeRef, technologiesRef];
+  const projectsRef = useRef(null);
+  const contactFormRef = useRef(null);
+
+  const refs = [
+    introRef,
+    aboutMeRef,
+    technologiesRef,
+    projectsRef,
+    contactFormRef
+  ];
 
   // const [currentSection, setCurrentSection] = useState(0);
   // const currentSectionDeferred = useDeferredValue(currentSection);
@@ -37,10 +48,14 @@ export default function Home({ section }) {
   useEffect(() => {
     if (section === 'intro')
       setSection(0);
-    else if (section === 'aboutme')
+    else if (section === 'about-me')
       setSection(1);
     else if (section === 'technologies')
       setSection(2);
+    else if (section === 'projects')
+      setSection(3);
+    else if (section === 'contact-form')
+      setSection(4);
   }, []);
 
   useEffect(() => {
@@ -59,7 +74,13 @@ export default function Home({ section }) {
         <AboutMe active={refs[currentSection] === aboutMeRef} />
       </Section>
       <Section ref={technologiesRef} >
-        <Technologies active={refs[currentSection] === introRef} />
+        <Technologies active={refs[currentSection] === technologiesRef} />
+      </Section>
+      <Section ref={projectsRef} >
+        <Projects active={refs[currentSection] === projectsRef} />
+      </Section>
+      <Section ref={contactFormRef} >
+        <ContactForm active={refs[currentSection] === contactFormRef} />
       </Section>
     </main>
   )
