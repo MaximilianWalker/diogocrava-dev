@@ -15,7 +15,7 @@ export default ({ }) => {
             <Networks />
             <CyberpunkButton
                 // icon={<Terminal />}
-                text=">_ Terminal"
+                text=">_ TERMINAL"
                 tag="1.0"
                 onClick={toggleTerminal}
             />

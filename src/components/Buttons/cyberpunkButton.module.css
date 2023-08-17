@@ -66,12 +66,12 @@
   --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
   --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
   --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
+  
   display: flex;
   align-items: center;
   color: var(--color);
   cursor: pointer;
   background: transparent;
-  text-transform: uppercase;
   font-size: var(--font-size);
   outline: transparent;
   letter-spacing: 2px;
