@@ -1,5 +1,4 @@
 .container {
-    /* --terminal-width: 1200px; */
     --terminal-width: 1050px;
     --terminal-height: 600px;
     --terminal-border-size: 0px;
@@ -117,25 +116,7 @@
     border-top: 0px;
     overflow-y: auto;
     overflow-x: hidden;
-    /* clip-path: polygon(
-        0 var(--terminal-border-size),
-        calc(var(--tab-width) + (2 * var(--tab-triangle-width))) var(--terminal-border-size),
-        calc(var(--tab-width) + (2 * var(--tab-triangle-width))) 0,
-        100% 0,
-        100% 100%,
-        0 100%
-    ); */
 }
-
-/* .terminalContainer::before {
-    content: "";
-    position: absolute;
-    top: calc(-1 * var(--terminal-border-size));
-    left: var(--terminal-border-size);
-    width: calc(var(--tab-width) + (2 * var(--tab-triangle-width)));
-    height: var(--terminal-border-size);
-    background-color: var(--terminal-background-color);
-} */
 
 .terminal {
     font-size: large;
