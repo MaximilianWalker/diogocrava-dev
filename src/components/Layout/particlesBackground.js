@@ -168,7 +168,7 @@ const ParticlesBackground = ({ ...props }) => {
             },
             move: {
                 enable: true,
-                speed: 3,
+                speed: 1,
             },
             size: {
                 value: 1,

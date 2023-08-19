@@ -1,7 +1,39 @@
 import Image from 'next/image';
 import styles from './networks.module.css';
-import { FileText, GitHub, Linkedin, Disc } from 'react-feather';
+// import { FileText, GitHub, Linkedin, Disc } from 'react-feather';
+import CV from '../../../public/icons/networks/cv.svg';
+import GitHub from '../../../public/icons/networks/github.svg';
+import Linkedin from '../../../public/icons/networks/linkedin.svg';
+import Hackthebox from '../../../public/icons/networks/hackthebox.svg';
+import Codewars from '../../../public/icons/networks/codewars.svg';
 
+const NETWORKS = [
+    {
+        icon: CV,
+        description: 'Curriculum Vitae',
+        link: '/documents/cv.pdf'
+    },
+    {
+        icon: Linkedin,
+        description: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/diogo-crava/'
+    },
+    {
+        icon: GitHub,
+        description: 'GitHub',
+        link: 'https://github.com/diogocrava'
+    },
+    {
+        icon: Hackthebox,
+        description: 'HackTheBox',
+        link: 'https://www.hackthebox.com/profile/diogocrava'
+    },
+    {
+        icon: Codewars,
+        description: 'Codewars',
+        link: 'https://www.codewars.com/users/diogocrava'
+    }
+];
 
 // https://codepen.io/Limbian/pen/WGeNBO
 const Networks = ({ }) => {
@@ -15,26 +47,16 @@ const Networks = ({ }) => {
                 <div className={styles.line} />
             </div>
             <div className={styles.netbox}>
-                <div className={styles.iconContainer}>
-                    <Image
-                        src="/icons/networks/cv.svg"
-                        alt="Diogo Crava" 
-                        fill
-                        priority={false}
-                    />
-                </div>
-
-                <div className={styles.iconContainer}>
-                    <GitHub />
-                </div>
-
-                <div className={styles.iconContainer}>
-                    <Linkedin />
-                </div>
-
-                <div className={styles.iconContainer}>
-                    <Linkedin />
-                </div>
+                {NETWORKS.map(({ icon: Icon, description, link }) => (
+                    <a
+                        className={styles.iconContainer}
+                        href={link}
+                        target="_blank"
+                        description={description}
+                    >
+                        <Icon />
+                    </a>
+                ))}
             </div>
         </div>
     );

@@ -27,5 +27,8 @@
     "tsparticles-preset-links": "^2.9.3",
     "tsparticles-preset-triangles": "^2.9.3",
     "typeit-react": "^2.6.4"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0"
   }
 }
