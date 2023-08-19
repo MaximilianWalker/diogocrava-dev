@@ -21,17 +21,17 @@ const NETWORKS = [
     {
         icon: GitHub,
         description: 'GitHub',
-        link: 'https://github.com/diogocrava'
+        link: 'https://github.com/MaximilianWalker'
     },
     {
         icon: Hackthebox,
         description: 'HackTheBox',
-        link: 'https://www.hackthebox.com/profile/diogocrava'
+        link: 'https://app.hackthebox.com/users/1404176'
     },
     {
         icon: Codewars,
         description: 'Codewars',
-        link: 'https://www.codewars.com/users/diogocrava'
+        link: 'https://www.codewars.com/users/MaximilianWalker'
     }
 ];
 
