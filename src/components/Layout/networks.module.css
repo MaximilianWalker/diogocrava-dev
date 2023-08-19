@@ -8,7 +8,7 @@
     --network-icon-size: 30px;
 
     width: max-content;
-    height: 100%;
+    height: max-content;
 
     display: flex;
     flex-direction: column;
@@ -22,14 +22,17 @@
 }
 
 .labelContainer {
-    display: inline-flex;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     width: 100%;
+    height: 100%;
     gap: 5px;
 }
 
 .label {
     min-width: max-content;
+    min-height: max-content;
     font-size: 18px;
     color: white;
 }
@@ -92,9 +95,74 @@
     transition: all 300ms ease 200ms;
 }
 
-
-
 .netbox .icon:hover::after {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Extra small devices (phones, up to 600px) */
+@media (max-width: 600px) {
+    .networks {
+        flex-direction: row-reverse;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    .networks {
+        flex-direction: row-reverse;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+
+    .label {
+        writing-mode: vertical-lr;
+    }
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .networks {
+        flex-direction: row-reverse;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    .networks {
+        flex-direction: row;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        /* text-orientation: upright; */
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) {}

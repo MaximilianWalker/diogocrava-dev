@@ -75,9 +75,7 @@ export default function Terminal({ }) {
     const containerRef = useRef();
     const tabRef = useRef();
     const textareaRef = useRef();
-    // const valueRef = useRef('');
     const cursorRef = useRef(0);
-    const deadKeyRef = useRef();
 
     const {
         open,
@@ -100,9 +98,8 @@ export default function Terminal({ }) {
     } = useChat();
 
     const [instance, setInstance] = useState();
-    const [isInitalized, setInitialized] = useState(false);
     const [inputs, setInputs] = useState();
-    const [loading, setLoading] = useState(true);
+    const [isInitalized, setInitialized] = useState(false);
 
     const getInputs = async () => {
         let newInputs = {};
@@ -135,21 +132,19 @@ export default function Terminal({ }) {
             instance.type(line, { instant: true }).break();
         });
 
-        console.log(inputs)
-
         instance.break();
 
         instance.type(inputs.primaryUser, { instant: true });
 
         instance.options({
-            afterComplete: () => setLoading(false)
+            afterComplete: () => setInitialized(true)
         }).go();
     };
 
     const setInput = (value) => handleInputChange({ target: { value } });
 
     const onKeyDown = useCallback((e) => {
-        if (open && isInitalized && !loading) {
+        if (open && isInitalized) {
             textareaRef.current.focus();
             if (e.key === 'Enter' && !e.shiftKey) {
                 // e.preventDefault();
@@ -167,10 +162,10 @@ export default function Terminal({ }) {
                 }
             }
         }
-    }, [open, isInitalized, loading, instance, input]);
+    }, [open, isInitalized, instance, input]);
 
     const onInput = useCallback((e) => {
-        if (open && isInitalized && !loading) {
+        if (open && isInitalized) {
             const value = e.target.value;
             const delta = value.length - input.length;
             const typed = value.substring(
@@ -187,11 +182,7 @@ export default function Terminal({ }) {
             instance.flush();
             setInput(value);
         }
-    }, [open, isInitalized, loading, instance, input]);
-
-    // const onCompositionStart = (e) => {
-    //     console.log(e);
-    // }
+    }, [open, isInitalized, instance, input]);
 
     useEffect(() => {
         getInputs();
@@ -210,14 +201,10 @@ export default function Terminal({ }) {
     }, [open]);
 
     useEffect(() => {
-        if (open && instance && inputs && !isInitalized) {
-            writeInputs();
-            setInitialized(true);
-        }
+        if (open && instance && inputs && !isInitalized) writeInputs();
     }, [open, instance, inputs]);
 
     useEffect(() => {
-        console.log(messages)
         const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
         if (instance && !isLoadingResponse && lastMessage && lastMessage.role === 'assistant') {
             instance
@@ -231,8 +218,6 @@ export default function Terminal({ }) {
             instance.flush();
         }
     }, [instance, isLoadingResponse, messages]);
-
-    console.log(isLoadingResponse);
 
     return (
         <div
