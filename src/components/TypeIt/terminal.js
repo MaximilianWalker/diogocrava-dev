@@ -96,18 +96,13 @@ export default function Terminal({ }) {
         input,
         handleInputChange,
         handleSubmit,
-        isLoading: isLoadingMessages,
+        isLoading: isLoadingResponse,
     } = useChat();
 
-    // Startup
     const [instance, setInstance] = useState();
     const [isInitalized, setInitialized] = useState(false);
     const [inputs, setInputs] = useState();
     const [loading, setLoading] = useState(true);
-
-    // Messages
-    // const [messages, setMessages] = useState([]);
-    // const [input, handleInputChange] = useState('');
 
     const getInputs = async () => {
         let newInputs = {};
@@ -152,51 +147,6 @@ export default function Terminal({ }) {
     };
 
     const setInput = (value) => handleInputChange({ target: { value } });
-
-    // const onKeyDown = useCallback((e) => {
-
-    //     if (open && isInitalized && !loading) {
-    //         e.preventDefault();
-    //         console.log(e.key);
-    //         console.log(e.code);
-    //         if (e.key === 'Enter' && !e.shiftKey) {
-    //             if (e.shiftKey) {
-    //                 handleInputChange(input + '\n');
-    //                 instance.break().flush();
-    //             } else {
-    //                 sendMessage(input);
-    //                 handleInputChange('');
-    //             }
-    //         } else if (e.key === 'Backspace') {
-    //             if (input.length > 0) {
-    //                 handleInputChange(input.substring(0, input.length - 1));
-    //                 instance.delete(1).flush();
-    //             }
-    //         } else if (e.key === 'ArrowLeft') {
-    //             if (cursorRef.current < input.length) {
-    //                 cursorRef.current -= 1;
-    //                 instance.move(-1).flush();
-    //             }
-    //         } else if (e.key === 'ArrowRight') {
-    //             if (cursorRef.current > 0) {
-    //                 cursorRef.current += 1;
-    //                 instance.move(1).flush();
-    //             }
-    //         } else if (e.key === 'Dead') {
-    //             console.log(e)
-    //             if (deadKeyRef.current) {
-    //                 handleInputChange(input + deadKeys[deadKeyRef.current] + deadKeys[e.code]);
-    //                 instance.type(deadKeys[deadKeyRef.current] + deadKeys[e.code], { instant: true }).flush();
-    //                 deadKeyRef.current = null;
-    //             } else {
-    //                 deadKeyRef.current = e.code;
-    //             }
-    //         } else if (!controlKeys.includes(e.key)) {
-    //             handleInputChange(input + e.key);
-    //             instance.type(e.key, { instant: true }).flush();
-    //         }
-    //     }
-    // }, [open, instance, isInitalized, loading, input]);
 
     const onKeyDown = useCallback((e) => {
         if (open && isInitalized && !loading) {
@@ -269,7 +219,7 @@ export default function Terminal({ }) {
     useEffect(() => {
         console.log(messages)
         const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-        if (instance && !isLoadingMessages && lastMessage && lastMessage.role === 'assistant') {
+        if (instance && !isLoadingResponse && lastMessage && lastMessage.role === 'assistant') {
             instance
                 .break()
                 .type(inputs.aiUser, { instant: true });
@@ -280,9 +230,9 @@ export default function Terminal({ }) {
             instance.type(inputs.primaryUser, { instant: true });
             instance.flush();
         }
-    }, [instance, isLoadingMessages, messages]);
+    }, [instance, isLoadingResponse, messages]);
 
-    console.log(isLoadingMessages);
+    console.log(isLoadingResponse);
 
     return (
         <div
