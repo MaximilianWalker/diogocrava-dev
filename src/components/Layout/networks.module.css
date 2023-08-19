@@ -103,37 +103,81 @@
 /* Extra small devices (phones, up to 600px) */
 @media (max-width: 600px) {
     .networks {
-        flex-direction: row-reverse;
+        flex-direction: row;
     }
 
     .netbox {
         flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        /* text-orientation: upright; */
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
     }
 }
 
 /* Small devices (portrait tablets and large phones, 601px to 768px) */
 @media (min-width: 601px) and (max-width: 768px) {
     .networks {
-        flex-direction: row-reverse;
+        flex-direction: row;
     }
 
     .netbox {
         flex-direction: column;
     }
 
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
     .label {
-        writing-mode: vertical-lr;
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        /* text-orientation: upright; */
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
     }
 }
 
 /* Medium devices (landscape tablets, 769px to 992px) */
 @media (min-width: 769px) and (max-width: 992px) {
     .networks {
-        flex-direction: row-reverse;
+        flex-direction: row;
     }
 
     .netbox {
         flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        /* text-orientation: upright; */
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
     }
 }
 
