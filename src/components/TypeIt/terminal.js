@@ -22,60 +22,17 @@ import useDrag from "@/hooks/useDrag";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 
-
-const controlKeys = [
-    "Shift",
-    "Enter",
-    "Control",
-    "Alt",
-    "Meta",
-    "Tab",
-    "Escape",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowUp",
-    "ArrowDown",
-    "Dead"
-];
-
-const deadKeys = {
-    // Common
-    'DeadGrave': '`',          // ` (Grave accent)
-    'DeadAcute': '´',          // ´ (Acute accent)
-    'DeadCircumflex': 'ˆ',     // ˆ (Circumflex accent)
-    'DeadTilde': '~',          // ~ (Tilde)
-    'DeadMacron': '¯',         // ¯ (Macron)
-    'DeadBreve': '˘',          // ˘ (Breve)
-    'DeadAboveDot': '˙',       // ˙ (Dot above, or overdot)
-    'DeadUmlaut': '¨',         // ¨ (Umlaut or diaeresis)
-    'DeadAboveRing': '˚',      // ˚ (Ring above)
-    'DeadDoubleacute': '˝',    // ˝ (Double acute accent)
-    'DeadCaron': 'ˇ',          // ˇ (Caron, or háček)
-
-    // Portuguese
-    'DeadCedilla': '¸',        // ¸ (Cedilla)
-
-    // German (some overlap with common accents)
-    'DeadBelowDot': '̣',       // ̣ (Dot below, used in transliteration)
-
-    // Nordic languages
-    'DeadStroke': '̸',         // ̸ (Stroke, bar)
-    'DeadOgonek': '˛',         // ˛ (Ogonek, used in Polish but also for transliteration in some Nordic contexts)
-    'DeadHook': '̉',           // ̉ (Hook above, used in some Saami languages)
-    'DeadHorn': '̛',           // ̛ (Horn, used in some Saami languages)
-
-    // Other
-    'DeadBelowComma': '̦',     // ̦ (Comma below, used for transliteration or Romanian)
-    'DeadBelowRing': '̥',      // ̥ (Ring below, used in Uralic phonetic alphabet and transliteration)
-    'DeadBelowMacron': '̱',    // ̱ (Macron below, used in Uralic phonetic alphabet and transliteration)
-    'DeadBelowCircumflex': '̭' // ̭ (Circumflex below, used for transliteration)
-};
+const AI_LOADING_INTERVAL = 400;
 
 export default function Terminal({ }) {
     const containerRef = useRef();
     const tabRef = useRef();
     const textareaRef = useRef();
     const cursorRef = useRef(0);
+
+    const intervalRef = useRef();
+    const dotCounterRef = useRef(0);
+    const isIncrementingRef = useRef(true);
 
     const {
         open,
@@ -144,7 +101,7 @@ export default function Terminal({ }) {
     const setInput = (value) => handleInputChange({ target: { value } });
 
     const onKeyDown = useCallback((e) => {
-        if (open && isInitalized) {
+        if (open && isInitalized && !isLoadingResponse) {
             textareaRef.current.focus();
             if (e.key === 'Enter' && !e.shiftKey) {
                 // e.preventDefault();
@@ -162,10 +119,10 @@ export default function Terminal({ }) {
                 }
             }
         }
-    }, [open, isInitalized, instance, input]);
+    }, [open, isInitalized, instance, input, isLoadingResponse]);
 
     const onInput = useCallback((e) => {
-        if (open && isInitalized) {
+        if (open && isInitalized && !isLoadingResponse) {
             const value = e.target.value;
             const delta = value.length - input.length;
             const typed = value.substring(
@@ -182,7 +139,7 @@ export default function Terminal({ }) {
             instance.flush();
             setInput(value);
         }
-    }, [open, isInitalized, instance, input]);
+    }, [open, isInitalized, instance, input, isLoadingResponse]);
 
     useEffect(() => {
         getInputs();
@@ -205,17 +162,46 @@ export default function Terminal({ }) {
     }, [open, instance, inputs]);
 
     useEffect(() => {
-        const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-        if (instance && !isLoadingResponse && lastMessage && lastMessage.role === 'assistant') {
+        if (!instance) return;
+
+        if (!isLoadingResponse) {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                instance.delete('Loading'.length + dotCounterRef.current, { instant: true });
+                intervalRef.current = null;
+                dotCounterRef.current = 0;
+                isIncrementingRef.current = true;
+            }
+
+            const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
+            if (instance && lastMessage && lastMessage.role === 'assistant') {
+                const response = lastMessage.content;
+                splitText(response).forEach((line) => {
+                    instance.type(line, { instant: true }).break();
+                });
+                instance.type(inputs.primaryUser, { instant: true });
+                instance.flush();
+            }
+        } else if (!intervalRef.current) {
             instance
                 .break()
-                .type(inputs.aiUser, { instant: true });
-            const response = lastMessage.content;
-            splitText(response).forEach((line) => {
-                instance.type(line, { instant: true }).break();
-            });
-            instance.type(inputs.primaryUser, { instant: true });
-            instance.flush();
+                .type(inputs.aiUser, { instant: true })
+                .type('Loading', { instant: true })
+                .flush();
+            intervalRef.current = setInterval(() => {
+                if (isIncrementingRef.current) {
+                    instance.type('.').flush();
+                    dotCounterRef.current += 1;
+                } else {
+                    instance.delete(1).flush();
+                    dotCounterRef.current -= 1;
+                }
+
+                if (dotCounterRef.current === 3)
+                    isIncrementingRef.current = false;
+                else if (dotCounterRef.current === 0)
+                    isIncrementingRef.current = true;
+            }, AI_LOADING_INTERVAL);
         }
     }, [instance, isLoadingResponse, messages]);
 
