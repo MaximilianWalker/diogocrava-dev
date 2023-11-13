@@ -13,7 +13,7 @@ const Intro = ({ active, ...props }) => {
                     src="/portraits/portrait_with_border.png"
                     alt="Diogo Crava"
                     fill
-                    priority={false}
+                    // priority={false}
                 />
             </div>
         </div>

@@ -1,0 +1,145 @@
+.window {
+    /* --window-width: 1050px;
+    --window-height: 600px; */
+    --window-border-size: 0px;
+    --window-background-color: rgba(30, 30, 30, 0.95);
+    --window-border-color: white;
+
+    /* --tab-width: 200px; */
+    --tab-height: 35px;
+    --tab-text-margin: 10px;
+    --tab-triangle-width: 30px;
+
+    /* top: calc(50vh - (var(--window-height) / 2));
+    left: calc(50vw - (var(--window-width) / 2)); */
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+    z-index: 100;
+}
+
+.content, .tab {
+    background-color: var(--window-background-color);
+    border-style: solid;
+    border-width: var(--window-border-size);
+    border-color: var(--window-border-color);
+}
+
+.tab {
+    display: flex;
+    flex-direction: row;
+
+    width: max-content;
+    height: var(--tab-height);
+
+    border-left-width: var(--window-border-size);
+    border-right-width: var(--window-border-size);
+    border-bottom-width: var(--window-border-size);
+
+    transform: rotateX(1deg);
+    vertical-align: middle;
+    margin-left: var(--tab-triangle-width);
+    margin-right: var(--tab-triangle-width);
+    box-sizing: content-box;
+    user-select: none;
+}
+
+.tab::before, .tab::after {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--window-border-size));
+    width: var(--tab-triangle-width);
+    height: calc(var(--tab-height) + var(--window-border-size));
+    background-repeat: no-repeat;
+}
+
+.tab::before {
+    left: calc(-1 * var(--tab-triangle-width));
+    background-image: linear-gradient(to bottom right,
+            transparent calc(50%),
+            var(--window-border-color) 50%,
+            var(--window-border-color) calc(50% + var(--window-border-size)),
+            var(--window-background-color) calc(50% + var(--window-border-size)));
+    background-position: left;
+}
+
+.tab::after {
+    right: calc(-1 * var(--tab-triangle-width));
+    background-image: linear-gradient(to bottom left,
+            transparent calc(50%),
+            var(--window-border-color) 50%,
+            var(--window-border-color) calc(50% + var(--window-border-size)),
+            var(--window-background-color) calc(50% + var(--window-border-size)));
+    background-position: right;
+}
+
+.tab span {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: var(--tab-text-margin);
+    margin-right: var(--tab-text-margin);
+    height: max-content;
+}
+
+.tab button {
+    border: none;
+    background: none;
+    height: 12px;
+    border-radius: 12px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 6px;
+}
+
+.tab button:hover {
+    background-color: #a0a0a0;
+}
+
+.tab button svg {
+    width: 14px;
+    height: 14px;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    /* width: var(--window-width);
+    height: var(--window-height); */
+    max-width: 100vw;
+    max-height: calc(100vh - var(--tab-height));
+    /* padding-left: 5px;
+    padding-right: 5px; */
+    border-top: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Extra small devices (phones, up to 600px) */
+@media (max-width: 600px) {
+    
+}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    
+}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    
+}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) {
+    
+}

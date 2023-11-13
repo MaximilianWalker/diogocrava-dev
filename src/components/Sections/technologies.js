@@ -16,44 +16,44 @@ const technologies = [
 ];
 
 const Technologies = ({ children, ...props }) => {
-    return (
-        <Swiper
-            modules={[Navigation, Mousewheel, Pagination, A11y]}
-            mousewheel
-            spaceBetween={50}
-            navigation
-            grabCursor
-            centeredSlides
-            slidesPerView="auto"
-            coverflowEffect={{
-                rotate: -20,
-                stretch: 0,
-                depth: 100,
-                modifier: 1,
-                scale: 0.8,
-                slideShadows: true,
-            }}
-            pagination={{ clickable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
-        >
-            {
-                technologies.map(technology => (
-                    <SwiperSlide>
-                        <Image
-                            src={technology.src}
-                            alt={technology.alt}
-                            fill
-                            style={{
-                                objectFit: 'contain',
-                                objectPosition: 'right center'
-                            }}
-                        />
-                    </SwiperSlide>
-                ))
-            }
+    return (<></>
+        // <Swiper
+        //     modules={[Navigation, Mousewheel, Pagination, A11y]}
+        //     mousewheel
+        //     spaceBetween={50}
+        //     navigation
+        //     grabCursor
+        //     centeredSlides
+        //     slidesPerView="auto"
+        //     coverflowEffect={{
+        //         rotate: -20,
+        //         stretch: 0,
+        //         depth: 100,
+        //         modifier: 1,
+        //         scale: 0.8,
+        //         slideShadows: true,
+        //     }}
+        //     pagination={{ clickable: true }}
+        //     onSwiper={(swiper) => console.log(swiper)}
+        //     onSlideChange={() => console.log('slide change')}
+        // >
+        //     {
+        //         technologies.map(technology => (
+        //             <SwiperSlide>
+        //                 <Image
+        //                     src={technology.src}
+        //                     alt={technology.alt}
+        //                     fill
+        //                     style={{
+        //                         objectFit: 'contain',
+        //                         objectPosition: 'right center'
+        //                     }}
+        //                 />
+        //             </SwiperSlide>
+        //         ))
+        //     }
 
-        </Swiper>
+        // </Swiper>
     );
 };
 

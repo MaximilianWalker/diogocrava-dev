@@ -19,14 +19,13 @@ import { useChat } from 'ai/react';
 import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
 import useDrag from "@/hooks/useDrag";
+import Window from "@/components/Other/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 
 const AI_LOADING_INTERVAL = 400;
 
 export default function Terminal({ }) {
-    const containerRef = useRef();
-    const tabRef = useRef();
     const textareaRef = useRef();
     const cursorRef = useRef(0);
 
@@ -39,12 +38,6 @@ export default function Terminal({ }) {
         toggleTerminal,
         toggleMaximized
     } = useTerminal();
-
-    const {
-        isDragging,
-        position: containerPosition,
-        onMouseDown
-    } = useDrag(containerRef);
 
     const {
         messages,
@@ -206,46 +199,34 @@ export default function Terminal({ }) {
     }, [instance, isLoadingResponse, messages]);
 
     return (
-        <div
-            ref={containerRef}
+        <Window
             className={styles.container}
-            style={{
-                top: containerPosition?.y ?? undefined,
-                left: containerPosition?.x ?? undefined,
-                visibility: open ? 'visible' : 'hidden'
+            name=">_ Terminal"
+            initialized={{
+                x: 'calc(50vh - (var(--terminal-height) / 2))',
+                y: 'calc(50vw - (var(--terminal-width) / 2))'
             }}
+            open={open}
         >
-            <div
-                ref={tabRef}
-                className={styles.tab}
-                onMouseDown={onMouseDown}
-                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-            >
-                <span><b>{'>_ Terminal'}</b></span>
-                <button onClick={toggleMaximized}><Maximize /></button>
-                <button onClick={toggleTerminal}><X /></button>
-            </div>
-            <div className={styles.terminalContainer}>
-                <TypeIt
-                    className={styles.terminal}
-                    as="pre"
-                    options={{
-                        cursorChar: "_",
-                        speed: 1,
-                        nextStringDelay: 0
-                    }}
-                    getAfterInit={(instance) => {
-                        setInstance(instance);
-                        return instance;
-                    }}
-                />
-                <textarea
-                    ref={textareaRef}
-                    className={styles.textarea}
-                    value={input}
-                    onInput={onInput}
-                />
-            </div>
-        </div>
+            <TypeIt
+                className={styles.terminal}
+                as="pre"
+                options={{
+                    cursorChar: "_",
+                    speed: 1,
+                    nextStringDelay: 0
+                }}
+                getAfterInit={(instance) => {
+                    setInstance(instance);
+                    return instance;
+                }}
+            />
+            <textarea
+                ref={textareaRef}
+                className={styles.textarea}
+                value={input}
+                onInput={onInput}
+            />
+        </Window>
     );
 }

@@ -42,7 +42,6 @@ export default ({ freeze: freezeProp }) => {
                     setInstance(instance);
                     return instance;
                 }}
-                after
             />
         </h1>
     );

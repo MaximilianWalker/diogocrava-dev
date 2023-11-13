@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 
-function useDrag(elementRef) {
+function useDrag(elementRef, initialPosition) {
     const ref = elementRef.current ? elementRef : { current: elementRef };
     const mouseDelta = useRef();
 
     const [isDragging, setDragging] = useState(false);
     // improve by centering the component or use initial position
-    const [position, setPosition] = useState();
+    const [position, setPosition] = useState({
+        x: initialPosition?.x ?? 0,
+        y: initialPosition?.y ?? 0
+    });
 
     const onMouseDown = (e) => {
         mouseDelta.current = {

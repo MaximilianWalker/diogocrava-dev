@@ -49,6 +49,7 @@ const Networks = ({ }) => {
             <div className={styles.netbox}>
                 {NETWORKS.map(({ icon: Icon, description, link }) => (
                     <a
+                        key={description}
                         className={styles.iconContainer}
                         href={link}
                         target="_blank"
