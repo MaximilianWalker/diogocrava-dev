@@ -11,9 +11,14 @@ import ComingSoon from '../TypeIt/comingSoon';
 
 const AboutMe = ({ children, ...props }) => {
     return (
-        <>
-            <ComingSoon />
-        </>
+        <div className={styles.container}>
+            <div className={styles.sidebar}>
+
+            </div>
+            <div className={styles.content}>
+
+            </div>
+        </div>
     );
 };
 

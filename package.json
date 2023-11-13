@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.13.7",
+    "@types/three": "^0.155.1",
     "@vercel/analytics": "^1.0.2",
     "ai": "^2.1.33",
     "eslint": "8.33.0",
@@ -23,6 +25,7 @@
     "react-particles": "^2.9.3",
     "react-spring": "^9.6.1",
     "swiper": "^10.0.4",
+    "three": "^0.156.0",
     "tsparticles": "^2.9.3",
     "tsparticles-preset-links": "^2.9.3",
     "tsparticles-preset-triangles": "^2.9.3",

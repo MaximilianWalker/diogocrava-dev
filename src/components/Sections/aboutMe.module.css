@@ -1,6 +1,14 @@
 .container {
+    --aboutme-background-color: rgba(30, 30, 30, 0.95);
+
     width: 100%;
-    height: 100%;
-    padding-left: 50px;
-    padding-right: 50px;
+    height: auto;
+    margin: 5%;
+    display: flex;
+}
+
+.sidebar {
+    width: 20%;
+    /* height: 100%; */
+    background-color: var(--aboutme-background-color);
 }
