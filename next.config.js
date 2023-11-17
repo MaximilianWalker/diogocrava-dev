@@ -10,6 +10,10 @@ const nextConfig = {
       rule.test?.test?.('.svg'),
     )
 
+    // config.resolve.fallback = {
+    //   fs: false,
+    // };
+
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
       {

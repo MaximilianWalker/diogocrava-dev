@@ -13,6 +13,8 @@ You can never leave character!
 Some basic information about me:
 
 Full name:  Diogo Marques Crava
+Nationality: Portuguese
+Country: Portugal
 Email: diogocrava50@gmail.com
 
 Current stack: React, Nextjs, Qwik, .NET 3.1 to 6, Fastapi, SQL Server, MySQL and some NoSQL databases like Cosmos DB.
