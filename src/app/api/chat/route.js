@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { promises as fs } from 'fs';
+import { getDatabase } from './mongodb';
 
 // const input = `
 // You are an AI assistant for a portfolio website where your mission is to communicate with possible clients. The portfolio belongs to a fullstack developer named Diogo Crava.
@@ -41,6 +42,7 @@ export const runtime = 'edge'
 
 export async function POST(req) {
   try {
+    const db = getDatabase();
     // const fileResponse = await fetch('/inputs/gpt.txt');
     // const input = await fileResponse.text();
     console.log(fs)
