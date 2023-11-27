@@ -2,18 +2,14 @@ import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 const database = 'main';
-const options = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-};
+const options = {};
 
-if (!uri) throw new Error('Please add your Mongo URI to .env.local');
-
-const client = new MongoClient(uri, options);
+if (!uri) throw new Error('Failed to load Mongo URI!');
 
 export async function getConnection() {
+    const client = new MongoClient(uri, options);
     if (process.env.NODE_ENV === 'development') {
-        if (!global._mongoClientPromise)
+        if (!global._mongoClient)
             global._mongoClient = await client.connect();
         return global._mongoClient;
     } else {
@@ -22,6 +18,6 @@ export async function getConnection() {
 }
 
 export async function getDatabase() {
-    const connection = getConnection();
+    const connection = await getConnection();
     return connection.db(database);
 }

@@ -16,20 +16,21 @@
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "feather-icons": "^4.29.0",
+    "mongodb": "^6.3.0",
     "next": "^13.4.13",
     "openai-edge": "^1.2.2",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
-    "react-particles": "^2.9.3",
+    "react-particles": "^2.12.2",
     "react-spring": "^9.6.1",
     "swiper": "^10.0.4",
     "three": "^0.156.0",
-    "tsparticles": "^2.9.3",
-    "tsparticles-preset-links": "^2.9.3",
-    "tsparticles-preset-triangles": "^2.9.3",
-    "typeit-react": "^2.6.4"
+    "tsparticles": "^2.12.0",
+    "tsparticles-preset-links": "^2.12.0",
+    "tsparticles-preset-triangles": "^2.12.0",
+    "typeit-react": "^2.7.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0"

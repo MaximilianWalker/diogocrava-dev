@@ -54,17 +54,21 @@ export default function Terminal({ }) {
     const getInputs = async () => {
         let newInputs = {};
 
-        let response = await fetch('/inputs/linux_startup.txt');
-        newInputs.linuxStartup = await response.text();
+        let response = await fetch('/api/input/linux_startup');
+        let result = await response.json();
+        newInputs.linuxStartup = result.value;
 
-        response = await fetch('/inputs/os.txt');
-        newInputs.osMessage = await response.text();
+        response = await fetch('/api/input/os_logo');
+        result = await response.json();
+        newInputs.osLogo = result.value;
 
-        response = await fetch('/inputs/primary_user.txt');
-        newInputs.primaryUser = await response.text();
+        response = await fetch('/api/input/primary_user');
+        result = await response.json();
+        newInputs.primaryUser = result.value;
 
-        response = await fetch('/inputs/ai_user.txt');
-        newInputs.aiUser = await response.text();
+        response = await fetch('/api/input/ai_user');
+        result = await response.json();
+        newInputs.aiUser = result.value;
 
         setInputs(newInputs);
     }
@@ -78,7 +82,7 @@ export default function Terminal({ }) {
             else
                 instance.type(line, { instant: true }).break();
         });
-        splitText(inputs.osMessage).forEach((line) => {
+        splitText(inputs.osLogo).forEach((line) => {
             instance.type(line, { instant: true }).break();
         });
 
