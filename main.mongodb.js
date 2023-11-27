@@ -5,59 +5,99 @@
 // Create a new database.
 use('main');
 
-db.createCollection('inputs', {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            title: "Student Object Validation",
-            required: ["name", "value", "created"],
-            properties: {
-                name: {
-                    bsonType: ["string"],
-                    description: "'name' must be a string and is required"
-                },
-                value: {
-                    bsonType: ["string"],
-                    description: "'value' must be a string and is required"
-                },
-                created: {
-                    bsonType: ["date"],
-                    description: "'created' must be a date and is required"
-                }
-            }
-        }
-    }
-});
+let exists = db.getCollectionNames().includes('inputs');
 
-db.createCollection('chat_logs', {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            title: "Student Object Validation",
-            required: ["ip", "country", "messages"],
-            properties: {
-                // year: {
-                //     bsonType: "int",
-                //     minimum: 2017,
-                //     maximum: 3017,
-                //     description: "'year' must be an integer in [ 2017, 3017 ] and is required"
-                // },
-                ip: {
-                    bsonType: ["string"],
-                    description: "'gpa' must be a double if the field exists"
-                },
-                country: {
-                    bsonType: ["string"],
-                    description: "'gpa' must be a double if the field exists"
-                },
-                messages: {
-                    bsonType: ["array"],
-                    description: "'gpa' must be a double if the field exists"
+if (!exists) {
+    db.createCollection('inputs', {
+        validator: {
+            $jsonSchema: {
+                bsonType: "object",
+                required: ["name", "value", "timestamp"],
+                properties: {
+                    name: {
+                        bsonType: "string",
+                        description: "'name' must be a string and is required"
+                    },
+                    value: {
+                        bsonType: "string",
+                        description: "'value' must be a string and is required"
+                    },
+                    timestamp: {
+                        bsonType: "timestamp",
+                        description: "'timestamp' must be a date and is required"
+                    }
                 }
             }
         }
-    }
-});
+    });
+
+    db.inputs.createIndex({ "name": 1 });
+}
+
+exists = db.getCollectionNames().includes("chat_logs");
+
+if (!exists) {
+    const locationProperties = {
+        country: {
+            bsonType: "string",
+            description: "'name' must be a string and is required"
+        },
+        city: {
+            bsonType: "string",
+            description: "'value' must be a string and is required"
+        }
+    };
+
+    db.createCollection('chat_logs', {
+        validator: {
+            $jsonSchema: {
+                bsonType: "object",
+                required: ["ip", "location", "messages"],
+                properties: {
+                    ip: {
+                        bsonType: "string",
+                        description: "'ip' must be a double and is required"
+                    },
+                    location: {
+                        bsonType: "object",
+                        description: "'location' must be a double and is required",
+                        required: ["ip", "timezone"],
+                        properties: {
+                            ip: {
+                                bsonType: "object",
+                                description: "'location.ip' must be a string and is required",
+                                properties: locationProperties
+                            },
+                            timezone: {
+                                bsonType: "object",
+                                description: "'location.timezone' must be a string and is required",
+                                properties: locationProperties
+                            }
+                        }
+                    },
+                    messages: {
+                        bsonType: "array",
+                        description: "'messages' must be a array and is required",
+                        items: {
+                            bsonType: "object",
+                            required: ["value", "timestamp"],
+                            properties: {
+                                value: {
+                                    bsonType: "string",
+                                    description: "'value' must be a string and is required"
+                                },
+                                timestamp: {
+                                    bsonType: "timestamp",
+                                    description: "'timestamp' must be an integer and is required"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 
 // The prototype form to create a collection:
 /* db.createCollection( <name>,
