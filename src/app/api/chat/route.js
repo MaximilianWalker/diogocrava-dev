@@ -1,28 +1,19 @@
-import { Configuration, OpenAIApi } from 'openai-edge';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import OpenAI from 'openai';
+import { OpenAIStream, streamToResponse } from 'ai';
 import { getDatabase } from '../mongodb';
 
-const config = new Configuration({
+const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(config);
 
-// IMPORTANT! Set the runtime to edge
-export const runtime = 'edge';
-
-export async function POST(req) {
+export async function POST(request, response) {
 	try {
-		console.log("1")
 		const db = await getDatabase();
-		console.log("2")
 		const cursor = await db.collection("inputs").find({ name: "gpt" }).sort({ timestamp: -1 }).limit(1);
-		console.log("3")
 		const result = await cursor.next();
-		console.log("4")
 		const input = result.value;
-		console.log(input)
 
-		let { messages } = await req.json();
+		let { messages } = await request.json();
 
 		messages = messages ?? [];
 
@@ -30,7 +21,7 @@ export async function POST(req) {
 			messages.unshift({ role: 'system', content: input });
 		}
 
-		const response = await openai.createChatCompletion({
+		const gptResponse = await openai.chat.completions.create({
 			model: 'gpt-4',
 			stream: true,
 			messages,
@@ -40,8 +31,8 @@ export async function POST(req) {
 			// temperature: 1
 		})
 
-		const stream = OpenAIStream(response);
-		return new StreamingTextResponse(stream);
+		const stream = OpenAIStream(gptResponse);
+		return streamToResponse(stream, response);
 	} catch (err) {
 		console.log(err);
 		return new Response(err.message, { status: 500 });
