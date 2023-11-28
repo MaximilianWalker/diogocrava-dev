@@ -7,12 +7,14 @@ const options = {};
 if (!uri) throw new Error('Failed to load Mongo URI!');
 
 export async function getConnection() {
-    const client = new MongoClient(uri, options);
     if (process.env.NODE_ENV === 'development') {
-        if (!global._mongoClient)
+        if (!global._mongoClient) {
+            const client = new MongoClient(uri, options);
             global._mongoClient = await client.connect();
+        }
         return global._mongoClient;
     } else {
+        const client = new MongoClient(uri, options);
         return await client.connect();
     }
 }
