@@ -12,6 +12,7 @@
     "@react-three/fiber": "^8.13.7",
     "@types/three": "^0.155.1",
     "@vercel/analytics": "^1.0.2",
+    "@vercel/blob": "^0.15.1",
     "ai": "^2.2.26",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",

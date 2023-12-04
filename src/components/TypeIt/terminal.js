@@ -140,6 +140,20 @@ export default function Terminal({ }) {
 
     useEffect(() => {
         getInputs();
+        return () => {
+            console.log("kek")
+            console.log(instance);
+            if (instance) {
+                console.log("wtf");
+                instance.empty();
+                instance.reset();
+            }
+            // intervalRef.current = null;
+            // cursorRef.current = 0;
+            // setInstance(null);
+            // setInputs(null);
+            // setInitialized(null);
+        };
     }, []);
 
     useEffect(() => {
@@ -155,7 +169,8 @@ export default function Terminal({ }) {
     }, [open]);
 
     useEffect(() => {
-        if (open && instance && inputs && !isInitalized) writeInputs();
+        if (open && instance && inputs && !isInitalized)
+            writeInputs();
     }, [open, instance, inputs]);
 
     useEffect(() => {
