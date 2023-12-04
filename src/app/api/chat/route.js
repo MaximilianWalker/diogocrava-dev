@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { getDatabase } from '../mongodb';
+import { OpenAIStream, StreamingTextResponse, streamToResponse } from 'ai';
+// import { getDatabase } from '../mongodb';
+import { connection } from '../atlasAPI';
 
 export const runtime = 'edge';
 
@@ -13,7 +14,11 @@ export async function POST(req) {
 		// const db = await getDatabase();
 		// const cursor = await db.collection("inputs").find({ name: "gpt" }).sort({ timestamp: -1 }).limit(1);
 		// const result = await cursor.next();
-		const input = result.value;
+		// const input = result.value;
+
+		const result = await connection.collection("inputs").find({ name: "gpt" }).sort({ timestamp: -1 }).limit(1).run();
+
+		const input = result[0].value;
 
 		let { messages } = await req.json();
 
@@ -23,7 +28,7 @@ export async function POST(req) {
 			messages.unshift({ role: 'system', content: input });
 		}
 
-		const response = await openai.chat.createChatCompletion({
+		const response = await openai.chat.completions.create({
 			model: 'gpt-4',
 			stream: true,
 			messages,
@@ -35,6 +40,7 @@ export async function POST(req) {
 
 		const stream = OpenAIStream(response);
 		return new StreamingTextResponse(stream);
+		// return streamToResponse(stream);
 	} catch (err) {
 		console.log(err);
 		return new Response(err.message, { status: 500 });
