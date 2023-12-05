@@ -95,6 +95,51 @@ export default function Terminal({ }) {
         }).go();
     };
 
+    const writeReply = async () => {
+        const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
+        if (instance && lastMessage && lastMessage.role === 'assistant') {
+            const response = lastMessage.content;
+            splitText(response).forEach((line) => {
+                instance.type(line, { instant: true }).break();
+            });
+            instance.type(inputs.primaryUser, { instant: true });
+            instance.flush();
+        }
+    };
+
+    const startLoading = () => {
+        instance
+            .break()
+            .type(inputs.aiUser, { instant: true })
+            .type('Loading', { instant: true })
+            .flush();
+
+        intervalRef.current = setInterval(() => {
+            if (isIncrementingRef.current) {
+                instance.type('.').flush();
+                dotCounterRef.current += 1;
+            } else {
+                instance.delete(1).flush();
+                dotCounterRef.current -= 1;
+            }
+
+            if (dotCounterRef.current === 3)
+                isIncrementingRef.current = false;
+            else if (dotCounterRef.current === 0)
+                isIncrementingRef.current = true;
+        }, AI_LOADING_INTERVAL);
+    };
+
+    const stopLoading = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            instance.delete('Loading'.length + dotCounterRef.current, { instant: true });
+            intervalRef.current = null;
+            dotCounterRef.current = 0;
+            isIncrementingRef.current = true;
+        }
+    };
+
     const setInput = (value) => handleInputChange({ target: { value } });
 
     const onKeyDown = useCallback((e) => {
@@ -141,13 +186,12 @@ export default function Terminal({ }) {
     useEffect(() => {
         getInputs();
         return () => {
-            console.log("kek")
-            console.log(instance);
-            if (instance) {
-                console.log("wtf");
-                instance.empty();
-                instance.reset();
-            }
+            console.log("dafuk")
+            // if (instance) {
+            //     console.log("trying to stop");
+            //     instance.empty();
+            //     instance.reset();
+            // }
             // intervalRef.current = null;
             // cursorRef.current = 0;
             // setInstance(null);
@@ -169,51 +213,32 @@ export default function Terminal({ }) {
     }, [open]);
 
     useEffect(() => {
-        if (open && instance && inputs && !isInitalized)
-            writeInputs();
+        console.log("writing inputs");
+        console.log("open", open);
+        console.log("instance", !!instance);
+        console.log("inputs", !!inputs);
+        console.log("isInitalized", isInitalized);
+        console.log("final", open && instance && inputs && !isInitalized);
+        if (open && instance && inputs && !isInitalized) writeInputs();
+
+        return () => {
+            console.log("WTFFFFF");
+            if (instance) {
+                console.log("trying to stop");
+                instance.empty();
+                instance.reset();
+            }
+        }
     }, [open, instance, inputs]);
 
     useEffect(() => {
         if (!instance) return;
 
         if (!isLoadingResponse) {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                instance.delete('Loading'.length + dotCounterRef.current, { instant: true });
-                intervalRef.current = null;
-                dotCounterRef.current = 0;
-                isIncrementingRef.current = true;
-            }
-
-            const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-            if (instance && lastMessage && lastMessage.role === 'assistant') {
-                const response = lastMessage.content;
-                splitText(response).forEach((line) => {
-                    instance.type(line, { instant: true }).break();
-                });
-                instance.type(inputs.primaryUser, { instant: true });
-                instance.flush();
-            }
+            stopLoading();
+            writeReply();
         } else if (!intervalRef.current) {
-            instance
-                .break()
-                .type(inputs.aiUser, { instant: true })
-                .type('Loading', { instant: true })
-                .flush();
-            intervalRef.current = setInterval(() => {
-                if (isIncrementingRef.current) {
-                    instance.type('.').flush();
-                    dotCounterRef.current += 1;
-                } else {
-                    instance.delete(1).flush();
-                    dotCounterRef.current -= 1;
-                }
-
-                if (dotCounterRef.current === 3)
-                    isIncrementingRef.current = false;
-                else if (dotCounterRef.current === 0)
-                    isIncrementingRef.current = true;
-            }, AI_LOADING_INTERVAL);
+            startLoading();
         }
     }, [instance, isLoadingResponse, messages]);
 
