@@ -1,7 +1,7 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useLayoutEffect } from "react";
 
 import Prism from "prismjs";
 
@@ -24,6 +24,12 @@ import Window from "@/components/Other/window";
 import { splitText } from "@/utils/stringExtensions";
 
 const AI_LOADING_INTERVAL = 400;
+
+const BOOT_STATES = {
+    OFF: 'off',
+    BOOTING: 'booting',
+    READY: 'ready'
+};
 
 export default function Terminal({ }) {
     const textareaRef = useRef();
@@ -49,7 +55,7 @@ export default function Terminal({ }) {
 
     const [instance, setInstance] = useState();
     const [inputs, setInputs] = useState();
-    const [isInitalized, setInitialized] = useState(false);
+    const [bootState, setBootState] = useState(BOOT_STATES.OFF);
 
     const getInputs = async () => {
         let newInputs = {};
@@ -73,9 +79,8 @@ export default function Terminal({ }) {
         setInputs(newInputs);
     }
 
-    const writeInputs = async () => {
-        instance.reset();
-
+    const writeInputs = () => {
+        setBootState(BOOT_STATES.BOOTING);
         splitText(inputs.linuxStartup).forEach((line) => {
             if (line.trim().length > 0)
                 instance.type(line, { instant: true }).pause(Math.random() * 600).break();
@@ -87,15 +92,12 @@ export default function Terminal({ }) {
         });
 
         instance.break();
-
         instance.type(inputs.primaryUser, { instant: true });
-
-        instance.options({
-            afterComplete: () => setInitialized(true)
-        }).go();
+        instance.exec(() => setBootState(BOOT_STATES.READY));
+        instance.flush();
     };
 
-    const writeReply = async () => {
+    const writeReply = () => {
         const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
         if (instance && lastMessage && lastMessage.role === 'assistant') {
             const response = lastMessage.content;
@@ -143,7 +145,7 @@ export default function Terminal({ }) {
     const setInput = (value) => handleInputChange({ target: { value } });
 
     const onKeyDown = useCallback((e) => {
-        if (open && isInitalized && !isLoadingResponse) {
+        if (open && bootState == BOOT_STATES.READY && !isLoadingResponse) {
             textareaRef.current.focus();
             if (e.key === 'Enter' && !e.shiftKey) {
                 // e.preventDefault();
@@ -161,10 +163,10 @@ export default function Terminal({ }) {
                 }
             }
         }
-    }, [open, isInitalized, instance, input, isLoadingResponse]);
+    }, [open, bootState, instance, input, isLoadingResponse]);
 
     const onInput = useCallback((e) => {
-        if (open && isInitalized && !isLoadingResponse) {
+        if (open && bootState == BOOT_STATES.READY && !isLoadingResponse) {
             const value = e.target.value;
             const delta = value.length - input.length;
             const typed = value.substring(
@@ -181,31 +183,14 @@ export default function Terminal({ }) {
             instance.flush();
             setInput(value);
         }
-    }, [open, isInitalized, instance, input, isLoadingResponse]);
+    }, [open, bootState, instance, input, isLoadingResponse]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         getInputs();
         return () => {
-            console.log("dafuk")
-            // if (instance) {
-            //     console.log("trying to stop");
-            //     instance.empty();
-            //     instance.reset();
-            // }
-            // intervalRef.current = null;
-            // cursorRef.current = 0;
-            // setInstance(null);
-            // setInputs(null);
-            // setInitialized(null);
+            if (instance) instance.flush();
         };
     }, []);
-
-    useEffect(() => {
-        window.addEventListener('keydown', onKeyDown);
-        return () => {
-            window.removeEventListener('keydown', onKeyDown);
-        }
-    }, [onKeyDown]);
 
     useEffect(() => {
         if (open) textareaRef.current.focus();
@@ -213,23 +198,16 @@ export default function Terminal({ }) {
     }, [open]);
 
     useEffect(() => {
-        console.log("writing inputs");
-        console.log("open", open);
-        console.log("instance", !!instance);
-        console.log("inputs", !!inputs);
-        console.log("isInitalized", isInitalized);
-        console.log("final", open && instance && inputs && !isInitalized);
-        if (open && instance && inputs && !isInitalized) writeInputs();
+        if (instance && open && inputs && bootState == BOOT_STATES.OFF)
+            writeInputs();
+    }, [instance, inputs, open]);
 
+    useEffect(() => {
+        window.addEventListener('keydown', onKeyDown);
         return () => {
-            console.log("WTFFFFF");
-            if (instance) {
-                console.log("trying to stop");
-                instance.empty();
-                instance.reset();
-            }
+            window.removeEventListener('keydown', onKeyDown);
         }
-    }, [open, instance, inputs]);
+    }, [onKeyDown]);
 
     useEffect(() => {
         if (!instance) return;
@@ -260,7 +238,7 @@ export default function Terminal({ }) {
                     speed: 1,
                     nextStringDelay: 0
                 }}
-                getAfterInit={(instance) => {
+                getBeforeInit={(instance) => {
                     setInstance(instance);
                     return instance;
                 }}
