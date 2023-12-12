@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "blobs": "node ./scripts/blobs.mjs",
     "list-blobs": "node ./scripts/listBlobs.mjs",
     "upload-blob": "node ./scripts/uploadBlob.mjs"
   },
