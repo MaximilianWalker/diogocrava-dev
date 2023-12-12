@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "list-blobs": "node ./scripts/listBlobs.js",
-    "upload-blob": "node ./scripts/uploadBlob.js"
+    "list-blobs": "node ./scripts/listBlobs.mjs",
+    "upload-blob": "node ./scripts/uploadBlob.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^8.13.7",

@@ -1,6 +1,8 @@
-const fs = require('fs');
-const { put } = require('@vercel/blob');
-const config = require('dotenv').config({ path: '.env.local' });
+import { readFileSync } from 'fs';
+import { put } from '@vercel/blob';
+import { config } from 'dotenv';
+
+const env = config({ path: '.env.local' });
 
 const filePath = process.argv[2];
 
@@ -11,7 +13,7 @@ if (!filePath) {
 
 const file = {
     name: filePath.split('/').pop(),
-    content: fs.readFileSync(filePath)
+    content: readFileSync(filePath)
 };
 
 async function uploadFile() {
@@ -19,7 +21,7 @@ async function uploadFile() {
         const response = await put(file.name, file.content, {
             access: 'public',
             addRandomSuffix: false,
-            token: config.BLOB_READ_WRITE_TOKEN
+            token: env.BLOB_READ_WRITE_TOKEN
         });
         console.log(response);
     } catch (error) {
