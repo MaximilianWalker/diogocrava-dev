@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "blobs": "node ./scripts/blobs.mjs",
-    "list-blobs": "node ./scripts/listBlobs.mjs",
-    "upload-blob": "node ./scripts/uploadBlob.mjs"
+    "rename-files": "node ./scripts/file-convention-renamer.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^8.13.7",

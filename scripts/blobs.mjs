@@ -78,7 +78,7 @@ async function deleteBlob() {
 async function main() {
     try {
         let option;
-        while(option != 5){
+        while (option != 5) {
             console.log('Select one of the following options:');
             console.log('   1. List Blobs');
             console.log('   2. Download Blob');
@@ -88,13 +88,11 @@ async function main() {
 
             option = await cmd.question('Option: ');
 
-            if(option == 1) await listBlobs();
-            else if(option == 2) await downloadBlob();
-            else if(option == 3) await uploadBlob();
-            else if(option == 4) await deleteBlob();
-            else {
-                console.log('Invalid option!')
-            }
+            if (option == 1) await listBlobs();
+            else if (option == 2) await downloadBlob();
+            else if (option == 3) await uploadBlob();
+            else if (option == 4) await deleteBlob();
+            else console.log('Invalid option!');
         }
     } catch (ex) {
         console.log(ex);
