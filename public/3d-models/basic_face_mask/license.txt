@@ -1,0 +1,8 @@
+Model Information:
+* title:	Basic Face Mask
+* source:	https://sketchfab.com/3d-models/basic-face-mask-5909f6b6693e45fe88220797b5f01bb6
+* author:	monochroma380 (https://sketchfab.com/monochroma380)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

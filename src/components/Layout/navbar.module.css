@@ -3,6 +3,7 @@
     left: 0px;
     top: 0px;
     width: 100%;
+    height: var(--navbar-height);
     padding: 20px;
     display: flex;
     flex-direction: row;

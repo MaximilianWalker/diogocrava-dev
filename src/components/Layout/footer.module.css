@@ -3,6 +3,7 @@
     left: 0;
     bottom: 0;
     width: 100%;
+    height: var(--footbar-height);
     padding: 20px;
     display: flex;
     flex-direction: row;

@@ -5,7 +5,6 @@ function useDrag(elementRef, initialPosition) {
     const mouseDelta = useRef();
 
     const [isDragging, setDragging] = useState(false);
-    // improve by centering the component or use initial position
     const [position, setPosition] = useState({
         x: initialPosition?.x ?? 0,
         y: initialPosition?.y ?? 0
@@ -26,6 +25,7 @@ function useDrag(elementRef, initialPosition) {
 
     const onMouseMove = (e) => {
         if (!mouseDelta.current) return;
+
         setDragging(true);
         setPosition({
             x: e.clientX - mouseDelta.current.x,

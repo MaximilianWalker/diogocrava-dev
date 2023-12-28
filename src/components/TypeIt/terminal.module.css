@@ -1,4 +1,4 @@
-.container {
+.container>:global(.window__content) {
     display: flex;
     flex-direction: column-reverse;
     width: 1050px;
@@ -40,26 +40,16 @@
 }
 
 /* Extra small devices (phones, up to 600px) */
-@media (max-width: 600px) {
-    
-}
+@media (max-width: 600px) {}
 
 /* Small devices (portrait tablets and large phones, 601px to 768px) */
-@media (min-width: 601px) and (max-width: 768px) {
-    
-}
+@media (min-width: 601px) and (max-width: 768px) {}
 
 /* Medium devices (landscape tablets, 769px to 992px) */
-@media (min-width: 769px) and (max-width: 992px) {
-    
-}
+@media (min-width: 769px) and (max-width: 992px) {}
 
 /* Large devices (laptops/desktops, 993px to 1200px) */
-@media (min-width: 993px) and (max-width: 1200px) {
-    
-}
+@media (min-width: 993px) and (max-width: 1200px) {}
 
 /* Extra large devices (large laptops and desktops, 1201px and up) */
-@media (min-width: 1201px) {
-    
-}
+@media (min-width: 1201px) {}
