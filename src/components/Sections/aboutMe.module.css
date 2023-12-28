@@ -1,14 +1,38 @@
 .container {
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
+    --window-gap: 10px;
+
+    --mask-window-width: 20vw;
+    --mask-window-height: 20vh;
+
+    --about-me-window-width: 20vw;
+    --about-me-window-height: calc(100% - (4 * var(--window-gap)) - var(--location-window-height) - var(--mask-window-height));
+
+    --location-window-width: 20vw;
+    --location-window-height: 20vh;
 
     width: 100%;
     height: auto;
-    margin: 5%;
+    /* margin: 5%; */
     display: flex;
+    position: relative;
 }
 
-.sidebar {
-    width: 20%;
-    /* height: 100%; */
-    background-color: var(--aboutme-background-color);
+.mask-window, .about-me-window {
+    position: absolute;
+}
+
+.mask-window {
+    width: var(--mask-window-width);
+    height: var(--mask-window-height);
+}
+
+.about-me-window {
+    width: var(--about-me-window-width);
+    height: var(--about-me-window-height);
+}
+
+.location-window {
+    width: var(--location-window-width);
+    height: var(--location-window-height);
 }

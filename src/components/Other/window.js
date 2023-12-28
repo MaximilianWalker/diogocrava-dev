@@ -1,59 +1,75 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from "react";
-
-import { Maximize, X } from 'react-feather';
-import styles from './window.module.css';
+import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
+import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
+import './window.css';
 
-export default function Window({
+const Window = forwardRef(({
     className,
     name,
-    open,
+    open = true,
     initialPosition,
     maximized,
     draggable,
-    hasMaximize,
-    hasClose,
+    maximizable,
+    closable,
     onOpen,
     onClose,
     onMaximize,
     onRestore,
+    style,
     children
-}) {
-    const containerRef = useRef();
+}, ref) => {
+    const containerRef = useRef(ref);
     const tabRef = useRef();
 
     const {
         isDragging,
-        position: containerPosition,
+        position,
         onMouseDown
     } = useDrag(containerRef, initialPosition);
 
     return (
         <div
             ref={containerRef}
-            className={styles.window}
+            className={`window ${className ?? ''}`}
             style={{
-                top: containerPosition.y,
-                left: containerPosition.x,
+                top: position.y,
+                left: position.x,
                 visibility: open ? 'visible' : 'hidden'
             }}
         >
             <div
                 ref={tabRef}
-                className={styles.tab}
+                className="window__tab"
                 onMouseDown={draggable ? onMouseDown : undefined}
-                style={{ cursor: draggable ? 'pointer' : isDragging ? 'grabbing' : 'grab' }}
+                style={{ cursor: draggable ? isDragging ? 'grabbing' : 'grab' : 'default' }}
             >
                 <span><b>{name}</b></span>
-                {hasMaximize ? <button onClick={onMaximize}><Maximize /></button> : null}
-                {hasClose ? <button onClick={onClose}><X /></button> : null}
+                {
+                    maximizable ?
+                        <button onClick={onMaximize}>
+                            {maximized ? <Minimize /> : <Maximize />}
+                        </button>
+                        :
+                        null
+                }
+                {
+                    closable ?
+                        <button onClick={onClose}>
+                            <X />
+                        </button>
+                        :
+                        null
+                }
             </div>
-            <div className={`${styles.content} ${className ?? ''}`}>
+            <div className="window__content">
                 {children}
             </div>
         </div>
     );
-}
+});
+
+export default Window;

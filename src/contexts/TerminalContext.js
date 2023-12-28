@@ -8,13 +8,14 @@ export const TerminalProvider = ({ children }) => {
     const [open, setOpen] = useState(false);
     const [maximized, setMaximized] = useState(false);
 
-    const toggleTerminal = () => setOpen(!open);
+    const toggleTerminal = () => setOpen((prevState) => !prevState);
 
-    const toggleMaximized = () => setMaximized(!maximized);
+    const toggleMaximized = () => setMaximized((prevState) => !prevState);
 
     return (
         <TerminalContext.Provider value={{
             open,
+            setOpen,
             toggleTerminal,
             toggleMaximized
         }}>

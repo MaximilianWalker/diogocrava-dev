@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import './globals.css';
 import Navbar from '@/components/Layout/navbar';
 import Footer from '@/components/Layout/footer';
 import ParticlesBackground from '@/components/Layout/particlesBackground';
 import { SectionProvider } from '@/contexts/SectionContext';
 import Terminal from '@/components/TypeIt/terminal';
 import { TerminalProvider } from '@/contexts/TerminalContext';
+import './global.css';
 
 export default function RootLayout({ children }) {
   const [terminalOpen, setTerminalOpen] = useState(false);
