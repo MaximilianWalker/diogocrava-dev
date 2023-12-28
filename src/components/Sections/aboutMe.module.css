@@ -2,13 +2,13 @@
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
     --window-gap: 10px;
 
-    --mask-window-width: 20vw;
+    --mask-window-width: 20vh;
     --mask-window-height: 20vh;
 
-    --about-me-window-width: 20vw;
+    --about-me-window-width: 20vh;
     --about-me-window-height: calc(100% - (4 * var(--window-gap)) - var(--location-window-height) - var(--mask-window-height));
 
-    --location-window-width: 20vw;
+    --location-window-width: 20vh;
     --location-window-height: 20vh;
 
     width: 100%;

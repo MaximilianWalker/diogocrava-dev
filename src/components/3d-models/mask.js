@@ -26,10 +26,11 @@ function Model(props) {
     return (
         <group {...props} dispose={null}>
             <mesh
+                position={[0, -3, 0]}
                 geometry={nodes.face_mask__0.geometry}
                 material={materials['Scene_-_Root']}
                 rotation={[-Math.PI / 2, 0, 0]}
-                scale={10}
+                scale={3}
             />
         </group>
     );
@@ -37,7 +38,7 @@ function Model(props) {
 
 const Mask = ({ }) => (
     <Canvas>
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={1} />
         <pointLight position={[10, 10, 10]} />
         {/* <Box position={[0, 0, 0]}>
             <meshStandardMaterial color="yellow" />
