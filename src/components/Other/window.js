@@ -31,6 +31,20 @@ const Window = forwardRef(({
         onMouseDown
     } = useDrag(containerRef, initialPosition);
 
+    const preventWheel = (e) => {
+        // e.preventDefault();
+        e.stopPropagation();
+    };
+
+    useEffect(() => {
+        if (containerRef.current)
+            containerRef.current.addEventListener("wheel", preventWheel);
+
+        return () => {
+            containerRef.current.removeEventListener("wheel", preventWheel);
+        };
+    }, []);
+
     return (
         <div
             ref={containerRef}

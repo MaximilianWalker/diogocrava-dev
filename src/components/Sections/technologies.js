@@ -1,12 +1,6 @@
 import Image from 'next/image';
+import Window from '../Other/window';
 import styles from './technologies.module.css';
-import { Navigation, Pagination, A11y, Mousewheel } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 const technologies = [
     {
@@ -16,44 +10,49 @@ const technologies = [
 ];
 
 const Technologies = ({ children, ...props }) => {
-    return (<></>
-        // <Swiper
-        //     modules={[Navigation, Mousewheel, Pagination, A11y]}
-        //     mousewheel
-        //     spaceBetween={50}
-        //     navigation
-        //     grabCursor
-        //     centeredSlides
-        //     slidesPerView="auto"
-        //     coverflowEffect={{
-        //         rotate: -20,
-        //         stretch: 0,
-        //         depth: 100,
-        //         modifier: 1,
-        //         scale: 0.8,
-        //         slideShadows: true,
-        //     }}
-        //     pagination={{ clickable: true }}
-        //     onSwiper={(swiper) => console.log(swiper)}
-        //     onSlideChange={() => console.log('slide change')}
-        // >
-        //     {
-        //         technologies.map(technology => (
-        //             <SwiperSlide>
-        //                 <Image
-        //                     src={technology.src}
-        //                     alt={technology.alt}
-        //                     fill
-        //                     style={{
-        //                         objectFit: 'contain',
-        //                         objectPosition: 'right center'
-        //                     }}
-        //                 />
-        //             </SwiperSlide>
-        //         ))
-        //     }
-
-        // </Swiper>
+    return (
+        <div className={styles.container}>
+            <Window
+                className={styles['mask-window']}
+                name=">_ ? ? ?"
+                initialPosition={{
+                    x: 'var(--window-gap)',
+                    y: 'var(--window-gap)'
+                }}
+                draggable
+            >
+            </Window>
+            <Window
+                className={styles['about-me-window']}
+                name=">_ About Me"
+                initialPosition={{
+                    x: 'var(--window-gap)',
+                    y: 'calc((2 * var(--window-gap)) + var(--mask-window-height))'
+                }}
+                draggable
+            >
+            </Window>
+            <Window
+                className={styles['location-window']}
+                name=">_ Location"
+                initialPosition={{
+                    x: 'var(--windows-gap)',
+                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
+                }}
+                draggable
+            >
+            </Window>
+            <Window
+                className={styles['location-window']}
+                name=">_ Location"
+                initialPosition={{
+                    x: 'var(--windows-gap)',
+                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
+                }}
+                draggable
+            >
+            </Window>
+        </div>
     );
 };
 

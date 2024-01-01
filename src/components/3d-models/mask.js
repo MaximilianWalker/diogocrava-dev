@@ -39,12 +39,14 @@ function Model(props) {
 const Mask = ({ }) => (
     <Canvas>
         <ambientLight intensity={1} />
-        <pointLight position={[10, 10, 10]} />
+        <directionalLight position={[0,4,4]} intensity={3} />
+        {/* <spotLight position={[0,4,4]} intensity={3} /> */}
+        {/* <pointLight position={[10, 10, 10]} /> */}
         {/* <Box position={[0, 0, 0]}>
             <meshStandardMaterial color="yellow" />
         </Box> */}
         <Model />
-        <OrbitControls />
+        <OrbitControls enableZoom={false} />
     </Canvas>
 );
 
