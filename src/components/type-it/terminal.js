@@ -19,7 +19,7 @@ import { useChat } from 'ai/react';
 import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
 import useDrag from "@/hooks/useDrag";
-import Window from "@/components/Other/window";
+import Window from "@/components/other/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 

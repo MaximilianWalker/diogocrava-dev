@@ -1,15 +1,10 @@
-import Image from 'next/image';
-import Window from '../Other/window';
-import styles from './technologies.module.css';
+import ComingSoon from '../type-it/comingSoon';
+import Window from '../other/window';
+import styles from './aboutMe.module.css';
+import Mask from '../3d-models/mask';
+import GoogleMap from '../google-map';
 
-const technologies = [
-    {
-        alt: 'FastAPI',
-        src: '/technologies/fastapi.png'
-    },
-];
-
-const Technologies = ({ children, ...props }) => {
+const AboutMe = ({ active, ...props }) => {
     return (
         <div className={styles.container}>
             <Window
@@ -21,6 +16,7 @@ const Technologies = ({ children, ...props }) => {
                 }}
                 draggable
             >
+                <Mask />
             </Window>
             <Window
                 className={styles['about-me-window']}
@@ -41,19 +37,10 @@ const Technologies = ({ children, ...props }) => {
                 }}
                 draggable
             >
-            </Window>
-            <Window
-                className={styles['location-window']}
-                name=">_ Location"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
-                draggable
-            >
+                <GoogleMap />
             </Window>
         </div>
     );
 };
 
-export default Technologies;
+export default AboutMe;

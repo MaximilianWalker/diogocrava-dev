@@ -1,8 +1,8 @@
 'use client';
 
 import styles from './footer.module.css';
-import TileButton from "../Buttons/tileButton";
-import CyberpunkButton from "../Buttons/cyberpunkButton";
+import TileButton from "../buttons/tileButton";
+import CyberpunkButton from "../buttons/cyberpunkButton";
 import { Terminal, GitHub } from 'react-feather';
 import { useTerminal } from '@/contexts/TerminalContext';
 import Networks from './networks';

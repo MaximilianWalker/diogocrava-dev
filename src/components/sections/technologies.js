@@ -1,10 +1,15 @@
-import ComingSoon from '../TypeIt/comingSoon';
-import Window from '../Other/window';
-import styles from './aboutMe.module.css';
-import Mask from '../3d-models/mask';
-import GoogleMap from '../google-map';
+import Image from 'next/image';
+import Window from '../other/window';
+import styles from './technologies.module.css';
 
-const AboutMe = ({ active, ...props }) => {
+const technologies = [
+    {
+        alt: 'FastAPI',
+        src: '/technologies/fastapi.png'
+    },
+];
+
+const Technologies = ({ children, ...props }) => {
     return (
         <div className={styles.container}>
             <Window
@@ -16,7 +21,6 @@ const AboutMe = ({ active, ...props }) => {
                 }}
                 draggable
             >
-                <Mask />
             </Window>
             <Window
                 className={styles['about-me-window']}
@@ -37,10 +41,19 @@ const AboutMe = ({ active, ...props }) => {
                 }}
                 draggable
             >
-                <GoogleMap />
+            </Window>
+            <Window
+                className={styles['location-window']}
+                name=">_ Location"
+                initialPosition={{
+                    x: 'var(--windows-gap)',
+                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
+                }}
+                draggable
+            >
             </Window>
         </div>
     );
 };
 
-export default AboutMe;
+export default Technologies;
