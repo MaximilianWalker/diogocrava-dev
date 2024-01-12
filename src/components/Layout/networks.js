@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import styles from './networks.module.css';
-// import { FileText, GitHub, Linkedin, Disc } from 'react-feather';
-import CV from '../../../public/icons/networks/cv.svg';
-import GitHub from '../../../public/icons/networks/github.svg';
-import Linkedin from '../../../public/icons/networks/linkedin.svg';
-import Hackthebox from '../../../public/icons/networks/hackthebox.svg';
-import Codewars from '../../../public/icons/networks/codewars.svg';
+import CV from '../icons/cv';
+import LinkedIn from '../icons/linkedin';
+import GitHub from '../icons/github';
+import HackTheBox from '../icons/hackthebox';
+import Codewars from '../icons/codewars';
 
 const NETWORKS = [
     {
@@ -14,7 +13,7 @@ const NETWORKS = [
         link: '/documents/cv.pdf'
     },
     {
-        icon: Linkedin,
+        icon: LinkedIn,
         description: 'LinkedIn',
         link: 'https://www.linkedin.com/in/diogo-crava/'
     },
@@ -24,7 +23,7 @@ const NETWORKS = [
         link: 'https://github.com/MaximilianWalker'
     },
     {
-        icon: Hackthebox,
+        icon: HackTheBox,
         description: 'HackTheBox',
         link: 'https://app.hackthebox.com/users/1404176'
     },
