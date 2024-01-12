@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './intro.module.css';
 import Section from './section';
-import Hi from '../TypeIt/hi';
+import Hi from '../type-it/hi';
 
 const Intro = ({ active, ...props }) => {
     return (

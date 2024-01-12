@@ -1,10 +1,10 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Navbar from '@/components/Layout/navbar';
-import Footer from '@/components/Layout/footer';
-import ParticlesBackground from '@/components/Layout/particlesBackground';
+import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/footer';
+import ParticlesBackground from '@/components/layout/particlesBackground';
 import { SectionProvider } from '@/contexts/SectionContext';
-import Terminal from '@/components/TypeIt/terminal';
+import Terminal from '@/components/type-it/terminal';
 import { TerminalProvider } from '@/contexts/TerminalContext';
 import './global.css';
 

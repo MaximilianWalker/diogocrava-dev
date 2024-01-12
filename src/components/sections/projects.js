@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import ComingSoon from '../TypeIt/comingSoon';
+import ComingSoon from '../type-it/comingSoon';
 
 const AboutMe = ({ children, ...props }) => {
     return (
