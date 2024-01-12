@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Navbar from '@/components/Layout/navbar';
 import Footer from '@/components/Layout/footer';
 import ParticlesBackground from '@/components/Layout/particlesBackground';
@@ -29,6 +31,8 @@ export default function RootLayout({ children }) {
             <Footer />
           </SectionProvider>
         </TerminalProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
