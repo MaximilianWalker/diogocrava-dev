@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './footer.module.css';
 import TileButton from "../Buttons/tileButton";
 import CyberpunkButton from "../Buttons/cyberpunkButton";

@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Navbar from '@/components/Layout/navbar';
@@ -12,8 +9,6 @@ import { TerminalProvider } from '@/contexts/TerminalContext';
 import './global.css';
 
 export default function RootLayout({ children }) {
-  const [terminalOpen, setTerminalOpen] = useState(false);
-
   return (
     <html lang="en">
       {/*
