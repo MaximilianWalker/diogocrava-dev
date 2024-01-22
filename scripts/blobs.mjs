@@ -1,9 +1,11 @@
 import { readFileSync } from 'fs';
 import { createInterface } from 'readline/promises';
-import { list, put } from '@vercel/blob';
+import { list, put, copy } from '@vercel/blob';
 import { config } from 'dotenv';
 
-const env = config({ path: '.env.local' });
+config({ path: '.env.local' });
+
+const { BLOB_READ_WRITE_TOKEN } = process.env;
 
 const cmd = createInterface({
     input: process.stdin,
@@ -27,7 +29,7 @@ async function downloadBlob() {
         const response = await put(file.name, file.content, {
             access: 'public',
             addRandomSuffix: false,
-            token: env.BLOB_READ_WRITE_TOKEN
+            token: BLOB_READ_WRITE_TOKEN
         });
         console.log(response);
     } catch (error) {
@@ -47,7 +49,7 @@ async function uploadBlob() {
         const response = await put(file.name, file.content, {
             access: 'public',
             addRandomSuffix: false,
-            token: env.BLOB_READ_WRITE_TOKEN
+            token: BLOB_READ_WRITE_TOKEN
         });
         console.log(response);
     } catch (error) {
@@ -67,7 +69,7 @@ async function deleteBlob() {
         const response = await put(file.name, file.content, {
             access: 'public',
             addRandomSuffix: false,
-            token: env.BLOB_READ_WRITE_TOKEN
+            token: BLOB_READ_WRITE_TOKEN
         });
         console.log(response);
     } catch (error) {

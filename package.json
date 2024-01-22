@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "database": "node ./scripts/mongodb.mjs",
     "blobs": "node ./scripts/blobs.mjs",
     "rename-files": "node ./scripts/file-convention-renamer.mjs"
   },

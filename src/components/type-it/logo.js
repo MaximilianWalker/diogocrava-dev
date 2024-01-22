@@ -6,10 +6,6 @@ import styles from './logo.module.css';
 
 const LOOP_PAUSE = 5000;
 
-function htmlEncode(text) {
-    return text.replace(/[\u00A0-\u9999<>\&]/gim, (i) => `&#${i.charCodeAt(0)};`);
-}
-
 export default () => {
     const [buttonText, setButtonText] = useState("Freeze");
     const [instance, setInstance] = useState(null);
@@ -30,18 +26,20 @@ export default () => {
             <TypeIt
                 className={styles.text}
                 options={{
-                    loop: true,
+                    // loop: true,
                     lifeLike: true,
-                    deleteSpeed: 100,
-                    cursorChar: '_'
-                    // html: false
+                    deleteSpeed: 50,
+                    cursorChar: '_',
+                    html: false
                 }}
-                getAfterInit={(instance) => {
+                getBeforeInit={(instance) => {
                     instance
-                    .type(htmlEncode("<DiogoCrava />")).pause(LOOP_PAUSE).delete()
-                    .type(htmlEncode("<FullStack />")).pause(LOOP_PAUSE).delete()
-                    .type(htmlEncode("<Dev />")).pause(LOOP_PAUSE).delete()
-                    .type(htmlEncode("<Code />")).pause(LOOP_PAUSE);
+                        .type("<DiogoCrava />").pause(LOOP_PAUSE).delete()
+                        .type("<FullStack />").pause(LOOP_PAUSE).delete()
+                        .type("<Dev />").pause(LOOP_PAUSE).delete()
+                        .type("<Code />").pause(LOOP_PAUSE).delete()
+                        .go();
+
                     setInstance(instance);
                     return instance;
                 }}

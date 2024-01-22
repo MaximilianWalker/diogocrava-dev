@@ -1,0 +1,5 @@
+.error-window {
+    --window-background-color: rgba(188, 37, 37, 0.95);
+
+    z-index: 300;
+}

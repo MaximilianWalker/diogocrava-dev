@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef, useDeferredValue } from "react";
 import { Inter } from 'next/font/google';
 import styles from './page.module.css';
-import Section from "@/components/Sections/section";
-import Intro from '@/components/Sections/intro';
-import AboutMe from "@/components/Sections/aboutMe";
-import Technologies from '@/components/Sections/technologies';
-import Projects from '@/components/Sections/projects';
-import ContactForm from '@/components/Sections/contactForm';
+import Section from "@/components/sections/section";
+import Intro from '@/components/sections/intro';
+import AboutMe from "@/components/sections/aboutMe";
+import Technologies from '@/components/sections/technologies';
+import Projects from '@/components/sections/projects';
+import ContactForm from '@/components/sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
 
 // const inter = Inter({ subsets: ['latin'] })
