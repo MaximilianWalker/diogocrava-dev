@@ -1,0 +1,27 @@
+default options
+poder alterar as options por ação
+
+lista de ações
+ações temporarias
+ações instataneas
+possibilidade de alterar as ações
+
+metodo loop: opções para ser condicional
+
+permitir fazer uma animação através de um JSON
+ter uma tag chamada iteration nas animações temporarias para poder escolher em que iteração executam
+
+---------------------
+
+implementação
+
+lista de ações
+
+action counter / index
+
+-
+
+ação instatanea
+
+instant action counter / index
+

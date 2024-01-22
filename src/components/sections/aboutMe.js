@@ -1,8 +1,11 @@
 import ComingSoon from '../type-it/comingSoon';
-import Window from '../other/window';
+import Window from '../system/window';
 import styles from './aboutMe.module.css';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../google-map';
+import Explorer from '../system/explorer';
+
+
 
 const AboutMe = ({ active, ...props }) => {
     return (
@@ -24,6 +27,21 @@ const AboutMe = ({ active, ...props }) => {
                 initialPosition={{
                     x: 'var(--window-gap)',
                     y: 'calc((2 * var(--window-gap)) + var(--mask-window-height))'
+                }}
+                draggable
+            >
+            </Window>
+
+            <Explorer 
+                className={styles['explorer-window']}
+            />
+
+            <Window
+                className={styles['status-window']}
+                name=">_ Status"
+                initialPosition={{
+                    x: 'var(--windows-gap)',
+                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
                 }}
                 draggable
             >

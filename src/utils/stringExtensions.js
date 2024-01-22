@@ -9,3 +9,7 @@ export function splitText(text) {
     // }
     return lines;
 };
+
+export function htmlEncode(text) {
+    return text.replace(/[\u00A0-\u9999<>\&]/gim, (i) => `&#${i.charCodeAt(0)};`);
+};

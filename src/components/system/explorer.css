@@ -1,0 +1,8 @@
+.explorer__topbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.explorer__sidebar {}
+
+.explorer__content {}

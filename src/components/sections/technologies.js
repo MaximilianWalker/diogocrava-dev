@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Window from '../other/window';
+import Window from '../system/window';
 import styles from './technologies.module.css';
 
 const technologies = [

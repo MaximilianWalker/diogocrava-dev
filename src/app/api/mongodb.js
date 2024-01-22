@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const database = 'main';
+const database = process.env.MONGODB_DATABASE;
 const options = {};
 
 if (!uri) throw new Error('Failed to load Mongo URI!');
