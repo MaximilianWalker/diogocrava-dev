@@ -14,4 +14,11 @@ const CyberpunkButton = ({ icon, text, tag, selected, ...props }) => {
 
 };
 
+CyberpunkButton.propTypes = {
+    icon: PropTypes.element,
+    text: PropTypes.string,
+    tag: PropTypes.string
+};
+
+
 export default CyberpunkButton;

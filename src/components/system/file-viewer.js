@@ -10,7 +10,6 @@ const FileViewer = forwardRef(({ className, rootDirectory, props }, ref) => {
 
     return (
         <Window ref={ref} className={`file-viewer ${className}`} {...props}>
-
         </Window>
     );
 });
