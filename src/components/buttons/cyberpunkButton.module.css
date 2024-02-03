@@ -119,7 +119,7 @@
 
 .cyberpunkButton svg * {
   color: var(--color);
-  stroke-width: 3px;
+  /* stroke-width: 3px; */
 }
 
 .cyberpunkButtonTag {

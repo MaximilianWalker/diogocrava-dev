@@ -1,8 +1,5 @@
 export default () => (
-    <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <g>
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M11 12l-7.071 7.071-1.414-1.414L8.172 12 2.515 6.343 3.929 4.93 11 12zm0 7h10v2H11v-2z" />
-        </g>
+    <svg width="800px" height="800px" viewBox="0 0 20 16" xmlns="http://www.w3.org/2000/svg">
+        <path stroke="null" strokeWidth="0" id="svg_3" d="m9.17353,7.0425l-7.64479,7.0435l-1.52874,-1.4085l6.11605,-5.635l-6.11605,-5.635l1.52874,-1.4075l7.64479,7.0425zm0,6.97278l10.81147,0l0,1.99222l-10.81147,0l0,-1.99222z" />
     </svg>
 );
