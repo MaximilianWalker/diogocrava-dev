@@ -7,7 +7,7 @@ const CyberpunkButton = ({ icon: Icon, text, tag, selected, ...props }) => {
     return (
         <div className={styles.wrapper}>
             <button className={styles.button} {...props}>
-                <Icon />
+                {Icon ? <Icon /> : null}
                 <span className={styles.text}>{text}</span>
                 {/* <span aria-hidden className={styles.cyberpunkButtonGlitch}>{text}</span> */}
                 {/* <span aria-hidden className={styles.tag}>{tag ?? 'R25'}</span> */}
@@ -19,7 +19,7 @@ const CyberpunkButton = ({ icon: Icon, text, tag, selected, ...props }) => {
 };
 
 CyberpunkButton.propTypes = {
-    icon: PropTypes.element,
+    icon: PropTypes.elementType,
     text: PropTypes.string,
     tag: PropTypes.string
 };
