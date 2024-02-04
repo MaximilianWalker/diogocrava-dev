@@ -1,7 +1,7 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
+import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "react";
 import { Home, ChevronLeft, ChevronRight } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from './window';
@@ -33,12 +33,15 @@ const mimeTypeToIcon = {
 
 const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
     const [currentDirectory, setCurrentDirectory] = useState(rootDirectory);
-    const [openFiles, setOpenFiles] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
     const [history, setHistory] = useState([currentDirectory]);
     const [historyIndex, setHistoryIndex] = useState(0);
-    const [selectedChild, setSelectedChild] = useState();
 
-    const onItemClick = (item) => setSelectedChild(item);
+    const itemsRefs = useMemo(() => currentDirectory?.children.map(() => useRef()), [currentDirectory]);
+
+    const [openFiles, setOpenFiles] = useState([]);
+
+    const onItemClick = (item) => setSelectedChild([]);
 
     const onItemDoubleClick = (item) => item.type === 'folder' ? onFolderClick(item) : onFileClick(item);
 
@@ -65,6 +68,10 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
     const onForwardClick = () => {
 
     }
+
+    useEffect(() => {
+
+    }, [currentDirectory]);
 
     return (
         <>
@@ -97,11 +104,13 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
                     </div>
                     <div className="explorer__content">
                         {
-                            currentDirectory.children.map((child) => (
+                            currentDirectory?.children.map((child, index) => (
                                 <div
+                                    key={index}
+                                    ref={itemsRefs[index]}
                                     className="explorer__item"
-                                    onClick={() => onItemClick(child)}
-                                    onDoubleClick={() => onItemDoubleClick(child)}
+                                    onClick={() => onSelect(child)}
+                                    onDoubleClick={() => onOpen(child)}
                                 >
                                     {
                                         child.icon ?
@@ -112,7 +121,7 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
                                                 :
                                                 <file />
                                     }
-                                    {child.name}
+                                    <span>{child.name}</span>
                                 </div>
                             ))
                         }
@@ -121,7 +130,7 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
             </Window>
             {
                 openFiles.map((file) => (
-                    <FileViewer />
+                    <FileViewer name={file.name} />
                 ))
             }
         </>

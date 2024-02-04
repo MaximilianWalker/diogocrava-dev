@@ -6,3 +6,7 @@
 .explorer__sidebar {}
 
 .explorer__content {}
+
+.explorer__item {}
+
+.explorer__item>span {}

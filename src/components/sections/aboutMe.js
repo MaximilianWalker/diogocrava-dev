@@ -1,9 +1,8 @@
 import styles from './aboutMe.module.css';
-import ComingSoon from '../type-it/comingSoon';
 import Window from '../system/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../google-map';
-// import Explorer from '../system/explorer';
+import Explorer from '../system/explorer';
 
 const AboutMe = ({ active, ...props }) => {
     return (
@@ -16,6 +15,7 @@ const AboutMe = ({ active, ...props }) => {
                     y: 'var(--window-gap)'
                 }}
                 draggable
+                resizable
             >
                 <Mask />
             </Window>
@@ -27,12 +27,13 @@ const AboutMe = ({ active, ...props }) => {
                     y: 'calc((2 * var(--window-gap)) + var(--mask-window-height))'
                 }}
                 draggable
+                resizable
             >
             </Window>
 
-            {/* <Explorer 
+            <Explorer
                 className={styles['explorer-window']}
-            /> */}
+            />
 
             <Window
                 className={styles['status-window']}
@@ -52,6 +53,7 @@ const AboutMe = ({ active, ...props }) => {
                     y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
                 }}
                 draggable
+                resizable
             >
                 <GoogleMap />
             </Window>
