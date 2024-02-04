@@ -1,5 +1,5 @@
 export async function GET(request, { params }) {
-	if (!params.name || params.name === "")
+	if (!params?.name || params.name === "")
 		return new Response("Missing or invalid input name!", { status: 400 });
 
 	try {
