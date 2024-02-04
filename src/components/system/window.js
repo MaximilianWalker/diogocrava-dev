@@ -4,6 +4,9 @@
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
 import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
+import useResizable from "@/hooks/useResizable";
+import useMousePositionEdge from "@/hooks/useMousePositionEdge";
+import { getCursorForEdgePosition } from "@/utils/systemUtils";
 import './window.css';
 
 const Window = forwardRef(({
@@ -13,6 +16,7 @@ const Window = forwardRef(({
     initialPosition,
     maximized,
     draggable,
+    resizable,
     maximizable,
     closable,
     onOpen,
@@ -28,8 +32,18 @@ const Window = forwardRef(({
     const {
         isDragging,
         position,
-        onMouseDown
+        onMouseDown: onDragMouseDown
     } = useDrag(containerRef, initialPosition);
+
+    const {
+        edge: mouseEdge,
+        onMouseMove
+    } = useMousePositionEdge();
+
+    const {
+        size,
+        onMouseDown: onResizeMouseDown
+    } = useResizable(containerRef);
 
     const preventWheel = (e) => {
         // e.preventDefault();
@@ -52,13 +66,16 @@ const Window = forwardRef(({
             style={{
                 top: position.y,
                 left: position.x,
+                width: size.width,
+                height: size.height,
+                cursor: resizable ? getCursorForEdgePosition(mouseEdge) : 'default',
                 visibility: open ? 'visible' : 'hidden'
             }}
         >
             <div
                 ref={tabRef}
                 className="window__tab"
-                onMouseDown={draggable ? onMouseDown : undefined}
+                onMouseDown={draggable ? onDragMouseDown : undefined}
                 style={{ cursor: draggable ? isDragging ? 'grabbing' : 'grab' : 'default' }}
             >
                 <span><b>{name}</b></span>
@@ -79,7 +96,11 @@ const Window = forwardRef(({
                         null
                 }
             </div>
-            <div className="window__content">
+            <div
+                className="window__content"
+                onMouseMove={onMouseMove}
+                onMouseDown={resizable && mouseEdge ? onResizeMouseDown : undefined}
+            >
                 {children}
             </div>
         </div>

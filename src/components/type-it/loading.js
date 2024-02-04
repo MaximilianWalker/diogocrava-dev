@@ -2,44 +2,53 @@
 
 import { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
+import styles from './loading.module.css';
 
-import Prism from "prismjs";
-import "prismjs/components/prism-jsx";
-import "./darkPlusPrismTheme.css";
+const PAUSE_TIME = 600;
 
-import styles from './hi.module.css';
-
-let messages = [
-    "Initializing system protocols...",
-    "Establishing secure connections...",
-    "Synchronizing data streams...",
-    "Optimizing performance parameters...",
-    "Validating system integrity...",
-    `Loading ${section}...`,
-    `${section} Loaded Successfully.`
-];
-
-
-export default () => {
-    const [buttonText, setButtonText] = useState("Freeze");
-    const [instance, setInstance] = useState(null);
+export default ({ message = "LOADING" }) => {
+    const onAnimation = (instance) => {
+        instance
+            .type(".")
+            .pause(PAUSE_TIME)
+            .type(".")
+            .pause(PAUSE_TIME)
+            .type(".")
+            .pause(PAUSE_TIME);
+    };
 
     return (
-        <h1 className={styles.hi}>
+        <h1 className={styles.container}>
             <TypeIt
+                className={styles.text}
                 options={{
-                    speed: 50,
-                    deleteSpeed: 50,
-                    cursorChar: "_"
+                    lifeLike: true,
+                    loop: true,
+                    loopDelay: 0,
+                    cursorChar: "",
+                    // afterComplete: (instance) => {
+                    //     onAnimation(instance);
+                    //     instance.flush();
+                    // }
                 }}
                 getBeforeInit={(instance) => {
                     instance
-                    .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(600).break()
-                    .type("> My name is <b style=\"color:#4EC9B0;\">Diogo Crava</b>!").pause(500).break()
-                    .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`).pause(20000).break()
-                    .type("> Scroll to continue...").pause(20000).break()
-                    .type("> Knock knock... is anyone there?");
-                    setInstance(instance);
+                        .type(message, { instant: true })
+                        .type(".")
+                        .pause(PAUSE_TIME)
+                        .type(".")
+                        .pause(PAUSE_TIME)
+                        .type(".")
+                        .pause(PAUSE_TIME)
+                        .delete(1)
+                        .pause(PAUSE_TIME)
+                        .delete(1)
+                        .pause(PAUSE_TIME)
+                        .delete(1)
+                        .pause(PAUSE_TIME)
+                        .empty({ instant: true });
+
+                    // onAnimation(instance);
                     return instance;
                 }}
             />

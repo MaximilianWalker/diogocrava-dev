@@ -6,8 +6,8 @@ import CyberpunkButton from "../buttons/cyberpunkButtonV2";
 // import { Terminal, GitHub } from 'react-feather';
 import { useTerminal } from '@/contexts/TerminalContext';
 import Networks from './networks';
-import Terminal from '../icons/custom/terminal';
-import Apps from '../icons/custom/apps';
+import Terminal from '@/icons/custom/terminal';
+import Apps from '@/icons/custom/apps';
 
 export default ({ }) => {
     const { toggleTerminal } = useTerminal();

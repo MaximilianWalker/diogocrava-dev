@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { createInterface } from 'readline/promises';
-import { list, put, copy } from '@vercel/blob';
+import { list, put, copy, del } from '@vercel/blob';
 import { config } from 'dotenv';
 
 config({ path: '.env.local' });
@@ -13,28 +13,12 @@ const cmd = createInterface({
 });
 
 async function listBlobs() {
-    const blobs = await list();
-    console.log(blobs);
+    const result = await list();
+    console.log(result.blobs);
 }
 
 async function downloadBlob() {
-    const filePath = await cmd.question('Path: ');
-
-    const file = {
-        name: filePath.split('/').pop(),
-        content: readFileSync(filePath)
-    };
-
-    try {
-        const response = await put(file.name, file.content, {
-            access: 'public',
-            addRandomSuffix: false,
-            token: BLOB_READ_WRITE_TOKEN
-        });
-        console.log(response);
-    } catch (error) {
-        console.error('Error uploading file:', error);
-    }
+    
 }
 
 async function uploadBlob() {
@@ -58,23 +42,22 @@ async function uploadBlob() {
 }
 
 async function deleteBlob() {
-    const filePath = await cmd.question('Path: ');
+    const { blobs } = await list();
+    const blobList = blobs.map((blob, index) => `${index + 1}. ${blob.url}`).join('\n');
+    console.log(blobList);
 
-    const file = {
-        name: filePath.split('/').pop(),
-        content: readFileSync(filePath)
-    };
-
-    try {
-        const response = await put(file.name, file.content, {
-            access: 'public',
-            addRandomSuffix: false,
-            token: BLOB_READ_WRITE_TOKEN
-        });
-        console.log(response);
-    } catch (error) {
-        console.error('Error uploading file:', error);
+    let index = null;
+    while(typeof index !== 'number'){
+        try{
+            index = parseInt(await cmd.question('Index: '));
+            if(index < 0 || index > blobList.length)
+                throw new Error();
+        } catch(err){
+            console.log('Invalid index!');
+        }
     }
+
+    del(blobs[index - 1].url);
 }
 
 async function main() {

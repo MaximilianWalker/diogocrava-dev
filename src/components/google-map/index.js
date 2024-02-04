@@ -7,16 +7,16 @@ const GoogleMap = () => (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
             <Map
                 center={{
-                    lat: parseInt(process.env.NEXT_PUBLIC_GOOGLE_MAPS_POSITION_LAT),
-                    lng: parseInt(process.env.NEXT_PUBLIC_GOOGLE_MAPS_POSITION_LNG)
+                    lat: parseFloat(process.env.NEXT_PUBLIC_GOOGLE_MAPS_POSITION_LAT),
+                    lng: parseFloat(process.env.NEXT_PUBLIC_GOOGLE_MAPS_POSITION_LNG)
                 }}
                 zoom={5}
                 disableDefaultUI
                 styles={styles[0].styles}
             >
                 <Marker position={{
-                    lat: parseInt(process.env.NEXT_PUBLIC_GOOGLE_MAPS_MARKER_LAT),
-                    lng: parseInt(process.env.NEXT_PUBLIC_GOOGLE_MAPS_MARKER_LNG)
+                    lat: parseFloat(process.env.NEXT_PUBLIC_GOOGLE_MAPS_MARKER_LAT),
+                    lng: parseFloat(process.env.NEXT_PUBLIC_GOOGLE_MAPS_MARKER_LNG)
                 }} />
             </Map>
         </APIProvider>

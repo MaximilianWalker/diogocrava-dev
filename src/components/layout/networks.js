@@ -1,10 +1,12 @@
 import Image from 'next/image';
 import styles from './networks.module.css';
-import CV from '../icons/networks/cv';
-import LinkedIn from '../icons/networks/linkedin';
-import GitHub from '../icons/networks/github';
-import HackTheBox from '../icons/networks/hackthebox';
-import Codewars from '../icons/networks/codewars';
+import {
+    CV,
+    LinkedIn,
+    GitHub,
+    HackTheBox,
+    Codewars
+} from '@/icons/networks';
 
 const NETWORKS = [
     {
