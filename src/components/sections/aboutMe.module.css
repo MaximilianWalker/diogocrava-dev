@@ -2,9 +2,13 @@
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
     --window-gap: 10px;
 
+    --mask-window-top: var(--window-gap);
+    --mask-window-left: var(--window-gap);
     --mask-window-width: 20vh;
     --mask-window-height: 20vh;
 
+    --about-me-window-top: var(--window-gap);
+    --about-me-window-left: calc((2 * var(--window-gap)) + var(--mask-window-height));
     --about-me-window-width: 20vh;
     --about-me-window-height: calc(100% - (4 * var(--window-gap)) - var(--location-window-height) - var(--mask-window-height));
 
@@ -23,13 +27,21 @@
 }
 
 .mask-window {
+    top: var(--mask-window-top);
+    left: var(--mask-window-left);
     width: var(--mask-window-width);
     height: var(--mask-window-height);
 }
 
 .about-me-window {
+    top: var(--about-me-window-top);
+    left: var(--about-me-window-left);
     width: var(--about-me-window-width);
     height: var(--about-me-window-height);
+}
+
+.explorer-window {
+    
 }
 
 .location-window {
