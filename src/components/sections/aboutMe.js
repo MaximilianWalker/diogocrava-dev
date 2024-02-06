@@ -10,10 +10,10 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['mask-window']}
                 name=">_ ? ? ?"
-                initialPosition={{
-                    x: 'var(--window-gap)',
-                    y: 'var(--window-gap)'
-                }}
+                // initialPosition={{
+                //     x: 'var(--window-gap)',
+                //     y: 'var(--window-gap)'
+                // }}
                 draggable
                 resizable
             >
@@ -33,25 +33,28 @@ const AboutMe = ({ active, ...props }) => {
 
             <Explorer
                 className={styles['explorer-window']}
+                draggable
+                resizable
             />
 
             <Window
                 className={styles['status-window']}
                 name=">_ Status"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
+                // initialPosition={{
+                //     x: 'var(--windows-gap)',
+                //     y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
+                // }}
                 draggable
+                resizable
             >
             </Window>
             <Window
                 className={styles['location-window']}
                 name=">_ Location"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
+                // initialPosition={{
+                //     x: 'var(--windows-gap)',
+                //     y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
+                // }}
                 draggable
                 resizable
             >

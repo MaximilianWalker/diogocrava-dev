@@ -1,7 +1,27 @@
 .explorer__topbar {
     display: flex;
     flex-direction: row;
+    padding: 10px;
+    gap: 10px;
 }
+
+.explorer__topbar>button {
+    background-color: transparent;
+}
+
+.explorer__path,
+.explorer__search {
+    background-color: rgba(255, 255, 255, .20);
+    border-radius: 50px;
+    border: none;
+    outline: none;
+}
+
+.explorer__path {
+    width: 100%;
+}
+
+.explorer__search {}
 
 .explorer__sidebar {}
 
