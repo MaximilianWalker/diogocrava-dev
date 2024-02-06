@@ -79,6 +79,10 @@ const Explorer = forwardRef(({
 
     }, [currentDirectory]);
 
+    // meter seta para a direita no fim do path para poderem navegar para o novo endereço com o rato
+    // meter o icon do folder icon no inicio do path
+    // meter icon de pesquisa
+    // meter os paddings correctos
     return (
         <>
             <Window
