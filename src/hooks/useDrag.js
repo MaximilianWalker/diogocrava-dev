@@ -6,8 +6,8 @@ function useDrag(elementRef, initialPosition) {
 
     const [isDragging, setDragging] = useState(false);
     const [position, setPosition] = useState({
-        x: initialPosition?.x ?? 0,
-        y: initialPosition?.y ?? 0
+        x: initialPosition?.x,
+        y: initialPosition?.y
     });
 
     const onMouseDown = (e) => {
