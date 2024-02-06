@@ -1,5 +1,6 @@
 .wrapper{
   --primary: white;
+  --secondary: rgb(30, 30, 30);
   --shadow-primary: rgb(67, 67, 67);
   --color: black;
   --shadow-color: white;
@@ -67,13 +68,13 @@
   height: 50px;
   width: calc(var(--icon-size) + (2 * var(--padding)));
   overflow: hidden;
-  transition-property: width;
-  transition-duration: 0.8s;
+  transition-property: width, background;
+  transition-duration: 0.8s, 0.8s;
   transition-delay: 0s;
 }
 
 .button:hover {
-  background: var(--shadow-primary);
+  background: var(--secondary);
   color: var(--primary);
   width: 200px;
 }
