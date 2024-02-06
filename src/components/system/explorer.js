@@ -83,6 +83,7 @@ const Explorer = forwardRef(({
     // meter o icon do folder icon no inicio do path
     // meter icon de pesquisa
     // meter os paddings correctos
+    // substituir o topo das windows por icons em vez de ">_"
     return (
         <>
             <Window
