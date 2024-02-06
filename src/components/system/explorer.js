@@ -31,7 +31,13 @@ const mimeTypeToIcon = {
     // ... add more mappings as needed
 };
 
-const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
+const Explorer = forwardRef(({
+    className,
+    rootDirectory,
+    draggable,
+    resizable,
+    props
+}, ref) => {
     const [currentDirectory, setCurrentDirectory] = useState(rootDirectory);
     const [selectedItems, setSelectedItems] = useState([]);
     const [history, setHistory] = useState([currentDirectory]);
@@ -79,7 +85,8 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
                 ref={ref}
                 className={`explorer ${className}`}
                 name=">_ Explorer"
-                draggable
+                draggable={draggable}
+                resizable={resizable}
                 {...props}
             >
                 <div className="explorer__topbar">
@@ -95,8 +102,8 @@ const Explorer = forwardRef(({ className, rootDirectory, props }, ref) => {
                     >
                         <ChevronRight />
                     </button>
-                    <input className="path" type="text" />
-                    <input className="search" type="text" />
+                    <input className="explorer__path" type="text" />
+                    <input className="explorer__search" type="text" />
                 </div>
                 <div style={{ display: 'flex' }}>
                     <div className="explorer__sidebar">

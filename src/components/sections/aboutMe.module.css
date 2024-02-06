@@ -12,6 +12,18 @@
     --about-me-window-width: 20vh;
     --about-me-window-height: calc(100% - (4 * var(--window-gap)) - var(--location-window-height) - var(--mask-window-height));
 
+    --explorer-window-top: calc(50% - (var(--explorer-window-height) / 2));
+    --explorer-window-left: calc(50% - (var(--explorer-window-width) / 2));
+    --explorer-window-width: 60vw;
+    --explorer-window-height: 60vh;
+
+    --status-window-top: var(--window-gap);
+    --status-window-left: calc((2 * var(--window-gap)) + var(--mask-window-height));
+    --status-window-width: 20vh;
+    --status-window-height: 20vh;
+
+    --location-window-top: var(--window-gap);
+    --location-window-left: calc((2 * var(--window-gap)) + var(--mask-window-height));
     --location-window-width: 20vh;
     --location-window-height: 20vh;
 
@@ -22,7 +34,11 @@
     position: relative;
 }
 
-.mask-window, .about-me-window {
+.mask-window,
+.about-me-window,
+.explorer-window,
+.status-window,
+.location-window {
     position: absolute;
 }
 
@@ -41,10 +57,22 @@
 }
 
 .explorer-window {
-    
+    top: var(--explorer-window-top);
+    left: var(--explorer-window-left);
+    width: var(--explorer-window-width);
+    height: var(--explorer-window-height);
+}
+
+.status-window {
+    top: var(--status-window-top);
+    left: var(--status-window-left);
+    width: var(--status-window-width);
+    height: var(--status-window-height);
 }
 
 .location-window {
+    top: var(--location-window-top);
+    left: var(--location-window-left);
     width: var(--location-window-width);
     height: var(--location-window-height);
 }
