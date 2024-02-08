@@ -7,6 +7,7 @@ import usePrevious from '@/hooks/usePrevious';
 import Window from './window';
 import FileViewer from './file-viewer';
 import './explorer.css';
+import Input from "./input";
 
 const fileExample = {
     type: 'file',
@@ -95,22 +96,31 @@ const Explorer = forwardRef(({
                 {...props}
             >
                 <div className="explorer__topbar">
-                    <button onClick={onHomeClick}>
-                        <Home />
-                    </button>
-                    <button onClick={onBackClick}>
-                        <ChevronLeft />
-                    </button>
-                    <button
-                        disabled={historyIndex === 0}
-                        onClick={onForwardClick}
-                    >
-                        <ChevronRight />
-                    </button>
-                    <input className="explorer__path" type="text" />
-                    <input className="explorer__search" type="text" />
+                    <div className="explorer__button-group">
+                        <button
+                            className="window__icon-button"
+                            onClick={onHomeClick}
+                        >
+                            <Home />
+                        </button>
+                        <button
+                            className="window__icon-button"
+                            onClick={onBackClick}
+                        >
+                            <ChevronLeft />
+                        </button>
+                        <button
+                            className="window__icon-button"
+                            disabled={historyIndex === 0}
+                            onClick={onForwardClick}
+                        >
+                            <ChevronRight />
+                        </button>
+                    </div>
+                    <Input className="explorer__path" />
+                    <Input className="explorer__search" />
                 </div>
-                <div style={{ display: 'flex' }}>
+                <div className="explorer__container">
                     <div className="explorer__sidebar">
 
                     </div>

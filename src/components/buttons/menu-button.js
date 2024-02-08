@@ -1,16 +1,13 @@
 import PropTypes from "prop-types";
-import { Children } from 'react';
-import styles from './cyberpunkButtonV2.module.css';
+import styles from './menu-button.module.css';
 
 // https://codepen.io/jh3y/pen/PoGbxLp
-const CyberpunkButton = ({ icon: Icon, text, tag, selected, ...props }) => {
+const MenuButton = ({ icon: Icon, text, tag, selected, ...props }) => {
     return (
         <div className={styles.wrapper}>
             <button className={styles.button} {...props}>
                 {Icon ? <Icon /> : null}
                 <span className={styles.text}>{text}</span>
-                {/* <span aria-hidden className={styles.cyberpunkButtonGlitch}>{text}</span> */}
-                {/* <span aria-hidden className={styles.tag}>{tag ?? 'R25'}</span> */}
             </button>
             <div className={styles.shadow} />
         </div>
@@ -18,10 +15,10 @@ const CyberpunkButton = ({ icon: Icon, text, tag, selected, ...props }) => {
 
 };
 
-CyberpunkButton.propTypes = {
+MenuButton.propTypes = {
     icon: PropTypes.elementType,
     text: PropTypes.string,
     tag: PropTypes.string
 };
 
-export default CyberpunkButton;
+export default MenuButton;

@@ -2,7 +2,7 @@
 
 import styles from './footer.module.css';
 import TileButton from "../buttons/tileButton";
-import CyberpunkButton from "../buttons/cyberpunkButtonV2";
+import MenuButton from "../buttons/menu-button";
 // import { Terminal, GitHub } from 'react-feather';
 import { useTerminal } from '@/contexts/TerminalContext';
 import Networks from './networks';
@@ -13,17 +13,14 @@ export default ({ }) => {
     const { toggleTerminal } = useTerminal();
     return (
         <footer className={styles.footer}>
-            {/* <div className={styles.buttonsDiv}>
-                <TileButton icon={<GitHub />} text="GitHub" />
-            </div> */}
             <Networks />
             <div className={styles.buttonsDiv}>
-                <CyberpunkButton
+                <MenuButton
                     icon={Apps}
                     text="APP STORE"
                     tag="1.0"
                 />
-                <CyberpunkButton
+                <MenuButton
                     icon={Terminal}
                     text="TERMINAL"
                     tag="1.0"
