@@ -14,7 +14,7 @@ import useWindowSize from "@/hooks/useWindowSize";
 
 // const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({ section }) {
+export default function Home({ params: { section } }) {
   const {
     section: currentSection,
     setSection,
@@ -49,21 +49,23 @@ export default function Home({ section }) {
   }
 
   useEffect(() => {
-    if (section === 'intro')
+    if (section[0] === 'intro')
       setSection(0);
-    else if (section === 'about-me')
+    else if (section[0] === 'about-me')
       setSection(1);
-    else if (section === 'technologies')
+    else if (section[0] === 'technologies')
       setSection(2);
-    else if (section === 'projects')
+    else if (section[0] === 'projects')
       setSection(3);
-    else if (section === 'contact-form')
+    else if (section[0] === 'contact-form')
       setSection(4);
   }, []);
 
   useEffect(() => {
     refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
   }, [currentSection, size]);
+
+  console.log(section[0])
 
   return (
     <main

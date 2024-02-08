@@ -1,16 +1,2 @@
-1º Ideia
-
-Fundo de particulas com particles.js
-Um ola com o TypeIt e um boneco meu do lado direito
-um pouco abaixo um typeit infinito com pedaços de codigo a serem typed em tempo real com um scrolldown com fade no topo e fade em baixo
-o icon das tecnologias em cima
-
-OU 
-
-O Icon à esquerda com um carrousel infinito e uma animação onde o icon vai trocando á medida que o codigo vai mudando de framework
-
-
-
-2º Ideia
 um modelo 3d com um hacker ou programador de costas numa sala escura, sentado com num setup marado e cheio de posters de coding e hacking
 os cabos extendem-se até cá abaixo e à medida que damos scroll down encontramos mais componentes de pc com a camara a mexer-se para baixo.

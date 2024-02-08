@@ -72,29 +72,31 @@ const Window = forwardRef(({
                 visibility: open ? 'visible' : 'hidden'
             }}
         >
-            <div
-                ref={tabRef}
-                className="window__tab"
-                onMouseDown={draggable ? onDragMouseDown : undefined}
-                style={{ cursor: draggable ? isDragging ? 'grabbing' : 'grab' : 'default' }}
-            >
-                <span><b>{name}</b></span>
-                {
-                    maximizable ?
-                        <button onClick={onMaximize}>
-                            {maximized ? <Minimize /> : <Maximize />}
-                        </button>
-                        :
-                        null
-                }
-                {
-                    closable ?
-                        <button onClick={onClose}>
-                            <X />
-                        </button>
-                        :
-                        null
-                }
+            <div className="window__header">
+                <div
+                    ref={tabRef}
+                    className="window__tab"
+                    onMouseDown={draggable ? onDragMouseDown : undefined}
+                    style={{ cursor: draggable ? isDragging ? 'grabbing' : 'grab' : 'default' }}
+                >
+                    <span><b>{name}</b></span>
+                    {
+                        maximizable ?
+                            <button className="window__icon-button" onClick={onMaximize}>
+                                {maximized ? <Minimize /> : <Maximize />}
+                            </button>
+                            :
+                            null
+                    }
+                    {
+                        closable ?
+                            <button className="window__icon-button" onClick={onClose}>
+                                <X />
+                            </button>
+                            :
+                            null
+                    }
+                </div>
             </div>
             <div
                 className="window__content"
