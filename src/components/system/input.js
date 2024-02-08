@@ -6,6 +6,8 @@ import './input.css';
 const Input = forwardRef(({
     className,
     type = 'text',
+    value,
+    onChange,
     startIcon: StartIcon,
     endIcon: EndIcon,
     onStartIconClick,
@@ -29,6 +31,8 @@ const Input = forwardRef(({
                 ref={ref}
                 className="input"
                 type={type}
+                value={value}
+                onChange={onChange}
             />
             {EndIcon && (
                 onEndIconClick ?

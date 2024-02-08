@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "react";
-import { Home, ChevronLeft, ChevronRight } from 'react-feather';
+import { Home, ChevronLeft, ChevronRight, Folder, Search } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from './window';
 import FileViewer from './file-viewer';
@@ -117,8 +117,14 @@ const Explorer = forwardRef(({
                             <ChevronRight />
                         </button>
                     </div>
-                    <Input className="explorer__path" />
-                    <Input className="explorer__search" />
+                    <Input
+                        className="explorer__path"
+                        startIcon={Folder}
+                    />
+                    <Input
+                        className="explorer__search"
+                        startIcon={Search}
+                    />
                 </div>
                 <div className="explorer__container">
                     <div className="explorer__sidebar">
