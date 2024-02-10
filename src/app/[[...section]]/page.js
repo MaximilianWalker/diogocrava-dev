@@ -65,8 +65,6 @@ export default function Home({ params: { section } }) {
     refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
   }, [currentSection, size]);
 
-  console.log(section[0])
-
   return (
     <main
       className={styles.main}

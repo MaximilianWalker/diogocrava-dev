@@ -2,28 +2,92 @@
 
 import { useState, useContext, createContext } from "react";
 
-const TerminalContext = createContext();
+const WindowContext = createContext();
 
-export const TerminalProvider = ({ children }) => {
-    const [open, setOpen] = useState(false);
-    const [maximized, setMaximized] = useState(false);
+export const WindowProvider = ({ children }) => {
+    const [windows, setWindows] = useState([]);
 
-    const toggleTerminal = () => setOpen((prevState) => !prevState);
+    const registerWindow = (window) => setWindows((prevState) => [...prevState, window]);
 
-    const toggleMaximized = () => setMaximized((prevState) => !prevState);
+    const unregisterWindow = (id) => setWindows((prevState) => prevState.filter((window) => window.id !== id));
+
+    const setWindow = (id, window) => {
+        setWindows((prevState) => prevState.map((w) => {
+            if (w.id === id) return window;
+            return w;
+        }));
+    };
+
+    const setOpen = (id, open) => {
+        setWindows((prevState) => prevState.map((window) => {
+            if (window.id === id) window.open = open;
+            return window;
+        }));
+    };
+
+    const setMaximized = (id, maximized) => {
+        setWindows((prevState) => prevState.map((window) => {
+            if (window.id === id) window.maximized = maximized;
+            return window;
+        }));
+    };
+
+    const bringToFront = (id) => {
+        const { zIndex } = windows.find((window) => window.id === id);
+        setWindows((prevState) => {
+            prevState.map((window) => {
+                if (window.id === id) window.zIndex = prevState.length;
+                else if (window.zIndex > zIndex) window.zIndex -= 1;
+                return window;
+            });
+        });
+    };
 
     return (
-        <TerminalContext.Provider value={{
-            open,
+        <WindowContext.Provider value={{
+            windows,
+            registerWindow,
+            unregisterWindow,
+            setWindow,
             setOpen,
-            toggleTerminal,
-            toggleMaximized
+            setMaximized,
+            bringToFront
         }}>
             {children}
-        </TerminalContext.Provider>
+        </WindowContext.Provider>
     );
 };
 
-export const TerminalConsumer = TerminalContext.Consumer;
+export const WindowConsumer = WindowContext.Consumer;
 
-export const useTerminal = () => useContext(TerminalContext);
+export const useWindowManager = () => useContext(WindowContext);
+
+export const useWindow = (id) => {
+    const {
+        windows,
+        setWindow: setWindowById,
+        setOpen: setOpenById,
+        setMaximized: setMaximizedById,
+        bringToFront: bringToFrontById
+    } = useContext(WindowContext);
+
+    const window = useMemo(() => windows.find(
+        (window) => window.id === id
+    ), [windows, id]);
+
+    const setWindow = useCallback((window) => setWindowById(id, window), [windows, id]);
+
+    const setOpen = useCallback((open) => setOpenById(id, open), [windows, id]);
+
+    const setMaximized = useCallback((maximized) => setMaximizedById(id, maximized), [windows, id]);
+
+    const bringToFront = useCallback(() => bringToFrontById(id), [windows, id]);
+
+    return {
+        ...window,
+        setWindow,
+        setOpen,
+        setMaximized,
+        bringToFront
+    };
+};

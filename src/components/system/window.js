@@ -1,13 +1,14 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
+import { useEffect, useState, useRef, useCallback, forwardRef, useLayoutEffect, useContext } from "react";
 import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
 import useResizable from "@/hooks/useResizable";
 import useMousePositionEdge from "@/hooks/useMousePositionEdge";
 import { getCursorForEdgePosition } from "@/utils/systemUtils";
 import './window.css';
+import { useWindowManager } from "@/contexts/WindowManagerContext";
 
 const Window = forwardRef(({
     className,
@@ -30,6 +31,15 @@ const Window = forwardRef(({
     const tabRef = useRef();
 
     const {
+        registerWindow,
+        unregisterWindow,
+        useWindow
+    } = useWindowManager();
+    const window = useWindow(name);
+
+    console.log(window);
+
+    const {
         isDragging,
         position,
         onMouseDown: onDragMouseDown
@@ -49,6 +59,11 @@ const Window = forwardRef(({
         // e.preventDefault();
         e.stopPropagation();
     };
+
+    useLayoutEffect(() => {
+        registerWindow(name);
+        return () => unregisterWindow(name);
+    });
 
     useEffect(() => {
         if (containerRef.current)
