@@ -4,8 +4,8 @@ import { useState, useContext, createContext } from "react";
 
 const SectionContext = createContext();
 
-export const SectionProvider = ({ defaultValue = 0, children }) => {
-    const [section, setSection] = useState(defaultValue);
+export const SectionProvider = ({ children }) => {
+    const [section, setSection] = useState(0);
 
     const nextSection = (size) => {
         if (section < size - 1) setSection(section + 1);

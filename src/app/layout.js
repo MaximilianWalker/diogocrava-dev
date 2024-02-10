@@ -7,6 +7,7 @@ import { SectionProvider } from '@/contexts/SectionContext';
 import Terminal from '@/components/type-it/terminal';
 import { TerminalProvider } from '@/contexts/TerminalContext';
 import './global.css';
+import { WindowManagerProvider } from '@/contexts/WindowManagerContext';
 
 export default function RootLayout({ children }) {
   return (
@@ -17,18 +18,20 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        <TerminalProvider>
-          <SectionProvider>
-            <ParticlesBackground />
-            <Terminal />
-            <Navbar />
-            {children}
-            <Footer />
-          </SectionProvider>
-        </TerminalProvider>
+        <WindowManagerProvider>
+          <TerminalProvider>
+            <SectionProvider>
+              <ParticlesBackground />
+              <Terminal />
+              <Navbar />
+              {children}
+              <Footer />
+            </SectionProvider>
+          </TerminalProvider>
+        </WindowManagerProvider>
         <Analytics />
         <SpeedInsights />
       </body>
-    </html>
+    </html >
   )
 }
