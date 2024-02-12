@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "react";
-import { Home, ChevronLeft, ChevronRight, Folder, Search } from 'react-feather';
+import { Home, ChevronLeft, ChevronRight, Folder, Search, RefreshCcw } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from './window';
 import FileViewer from './file-viewer';
@@ -115,6 +115,13 @@ const Explorer = forwardRef(({
                             onClick={onForwardClick}
                         >
                             <ChevronRight />
+                        </button>
+                        <button
+                            className="window__icon-button"
+                            disabled={historyIndex === 0}
+                            onClick={onForwardClick}
+                        >
+                            <RefreshCcw />
                         </button>
                     </div>
                     <Input

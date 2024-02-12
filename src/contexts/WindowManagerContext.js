@@ -1,7 +1,6 @@
 'use client';
 
 import useDrag from "@/hooks/useDrag";
-import useMousePositionEdge from "@/hooks/useMousePositionEdge";
 import useResizable from "@/hooks/useResizable";
 import { useState, useContext, createContext, useMemo, useRef } from "react";
 
@@ -20,11 +19,6 @@ const WindowProvider = ({ context: Context, children }) => {
         position,
         onMouseDown: onDragMouseDown
     } = useDrag(containerRef, initialPosition);
-
-    const {
-        edge: mouseEdge,
-        onMouseMove
-    } = useMousePositionEdge();
 
     const {
         size,

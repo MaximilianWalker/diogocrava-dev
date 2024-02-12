@@ -5,7 +5,6 @@ import { useEffect, useState, useRef, useCallback, forwardRef, useLayoutEffect, 
 import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
 import useResizable from "@/hooks/useResizable";
-import useMousePositionEdge from "@/hooks/useMousePositionEdge";
 import { getCursorForEdgePosition } from "@/utils/systemUtils";
 import './window.css';
 import { useWindowManager } from "@/contexts/WindowManagerContext";
@@ -29,15 +28,16 @@ const Window = forwardRef(({
 }, ref) => {
     const containerRef = useRef(ref);
     const tabRef = useRef();
+    const contentRef = useRef();
 
-    const {
-        registerWindow,
-        unregisterWindow,
-        useWindow
-    } = useWindowManager();
-    const window = useWindow(name);
+    // const {
+    //     registerWindow,
+    //     unregisterWindow,
+    //     useWindow
+    // } = useWindowManager();
+    // const window = useWindow(name);
 
-    console.log(window);
+    // console.log(window);
 
     const {
         isDragging,
@@ -46,31 +46,28 @@ const Window = forwardRef(({
     } = useDrag(containerRef, initialPosition);
 
     const {
-        edge: mouseEdge,
-        onMouseMove
-    } = useMousePositionEdge();
-
-    const {
         size,
+        mouseEdge,
         onMouseDown: onResizeMouseDown
-    } = useResizable(containerRef);
+    } = useResizable(contentRef);
 
     const preventWheel = (e) => {
         // e.preventDefault();
         e.stopPropagation();
     };
 
-    useLayoutEffect(() => {
-        registerWindow(name);
-        return () => unregisterWindow(name);
-    });
+    // useLayoutEffect(() => {
+    //     registerWindow(name);
+    //     return () => unregisterWindow(name);
+    // });
 
     useEffect(() => {
         if (containerRef.current)
             containerRef.current.addEventListener("wheel", preventWheel);
 
         return () => {
-            containerRef.current.removeEventListener("wheel", preventWheel);
+            if (containerRef.current)
+                containerRef.current.removeEventListener("wheel", preventWheel);
         };
     }, []);
 
@@ -114,9 +111,9 @@ const Window = forwardRef(({
                 </div>
             </div>
             <div
+                ref={contentRef}
                 className="window__content"
-                onMouseMove={onMouseMove}
-                onMouseDown={resizable && mouseEdge ? onResizeMouseDown : undefined}
+                onMouseDown={resizable ? onResizeMouseDown : undefined}
             >
                 {children}
             </div>

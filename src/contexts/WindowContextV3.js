@@ -2,36 +2,59 @@
 
 import { useState, useContext, createContext } from "react";
 
+const getMouseEdge = (x, y, left, top, width, height, threshold = 5) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const mouseX = x - left;
+    const mouseY = y - top;
+
+    let newEdge = null;
+
+    const nearTop = mouseY < threshold;
+    const nearBottom = mouseY > height - threshold;
+    const nearLeft = mouseX < threshold;
+    const nearRight = mouseX > width - threshold;
+
+    if (nearTop && nearLeft) newEdge = 'top-left';
+    else if (nearTop && nearRight) newEdge = 'top-right';
+    else if (nearBottom && nearLeft) newEdge = 'bottom-left';
+    else if (nearBottom && nearRight) newEdge = 'bottom-right';
+    else if (nearTop) newEdge = 'top';
+    else if (nearBottom) newEdge = 'bottom';
+    else if (nearLeft) newEdge = 'left';
+    else if (nearRight) newEdge = 'right';
+
+    return newEdge;
+};
+
 const WindowContext = createContext();
 
 export const WindowProvider = ({ children }) => {
     const refs = useRef([]);
-    const [windows, setWindows] = useState([]);
+    const [windows, setWindows] = useState({});
 
     const registerWindow = (id, defaults) => {
-        setWindows((prevState) => [
-            ...prevState,
-            {
-                id,
-                open: !!defaults.open,
-                maximized: !!defaults.maximized,
-                isDragging: false,
-                position: {
-                    x: defaults.position?.x,
-                    y: defaults.position?.y
-                },
-                size: {
-                    width: defaults.size?.width,
-                    height: defaults.size?.height
-                },
-                mouseEdge: null
-            }
-        ]);
+        const newWindow = {
+            id,
+            open: !!defaults.open,
+            maximized: !!defaults.maximized,
+            isDragging: false,
+            position: {
+                x: defaults.position?.x,
+                y: defaults.position?.y
+            },
+            size: {
+                width: defaults.size?.width,
+                height: defaults.size?.height
+            },
+            mouseEdge: null
+        };
+        setWindows((prevState) => ({ ...prevState, [id]: newWindow }));
 
         refs.current.push({
             id,
             containerRef: useRef(),
             tabRef: useRef(),
+            containerRef: useRef(),
             mouseDelta: useRef()
         });
     };
@@ -70,6 +93,40 @@ export const WindowProvider = ({ children }) => {
         });
     };
 
+    // ON RESIZE
+    const onMouseDown = (e) => {
+        if (mouseEdge) {
+            mouseDelta.current = {
+                x: e.clientX - ref.current.offsetLeft,
+                y: e.clientY - ref.current.offsetTop
+            };
+            setResizing(true);
+        }
+    };
+
+    // ON RESIZE
+    const onMouseUp = () => {
+        mouseDelta.current = null;
+        setResizing(false);
+    };
+
+    // ON RESIZE
+    const onMouseMove = (e) => {
+        const { left, top, width, height } = resizableRef.current.getBoundingClientRect();
+        const mouseX = e.clientX - left;
+        const mouseY = e.clientY - top;
+
+        const newEdge = getMouseEdge (mouseX, mouseY, left, top, width, height);
+        setMouseEdge(newEdge);
+
+        if (mouseDelta.current) {
+            const newWidth = e.clientX - left;
+            const newHeight = e.clientY - top;
+            setSize({ width: newWidth, height: newHeight });
+        }
+    };
+
+    // ON DRAG
     const onMouseDown = (e) => {
         mouseDelta.current = {
             x: e.clientX - ref.current.offsetLeft,
@@ -78,11 +135,13 @@ export const WindowProvider = ({ children }) => {
         setDragging(true);
     };
 
+    // ON DRAG
     const onMouseUp = () => {
         mouseDelta.current = null;
         setDragging(false);
     };
 
+    // ON DRAG
     const onMouseMove = (e) => {
         if (!mouseDelta.current) return;
 
@@ -93,48 +152,7 @@ export const WindowProvider = ({ children }) => {
         });
     };
 
-    const onMouseMove = useCallback((event) => {
-        if (resizableRef.current) {
-            const newWidth = event.clientX - resizableRef.current.getBoundingClientRect().left;
-            const newHeight = event.clientY - resizableRef.current.getBoundingClientRect().top;
-            setSize({ width: newWidth, height: newHeight });
-        }
-    }, []);
-
-    const onMouseUp = useCallback(() => {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }, [onMouseMove]);
-
-    const onMouseDown = useCallback((event) => {
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    }, [onMouseMove, onMouseUp]);
-
-    const onMouseMove = useCallback((e) => {
-        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-        const mouseX = e.clientX - left;
-        const mouseY = e.clientY - top;
-
-        let newEdge = null;
-
-        const nearTop = mouseY < edgeThreshold;
-        const nearBottom = mouseY > height - edgeThreshold;
-        const nearLeft = mouseX < edgeThreshold;
-        const nearRight = mouseX > width - edgeThreshold;
-
-        if (nearTop && nearLeft) newEdge = 'top-left';
-        else if (nearTop && nearRight) newEdge = 'top-right';
-        else if (nearBottom && nearLeft) newEdge = 'bottom-left';
-        else if (nearBottom && nearRight) newEdge = 'bottom-right';
-        else if (nearTop) newEdge = 'top';
-        else if (nearBottom) newEdge = 'bottom';
-        else if (nearLeft) newEdge = 'left';
-        else if (nearRight) newEdge = 'right';
-
-        setEdge(newEdge);
-    }, [edgeThreshold]);
-
+    // ON DRAG
     useEffect(() => {
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mouseup', onMouseUp);
@@ -143,6 +161,7 @@ export const WindowProvider = ({ children }) => {
             window.removeEventListener('mouseup', onMouseUp);
         };
     }, []);
+
 
     return (
         <WindowContext.Provider value={{
