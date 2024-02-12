@@ -31,8 +31,9 @@
 .window__header {
     width: 100%;
     height: max-content;
-    /* padding-top: 10px;
-    background-color: var(--header-background-color); */
+    /* padding-top: 5px;
+    background-color: var(--header-background-color);
+    border-radius: 5px; */
 }
 
 .window__tab {

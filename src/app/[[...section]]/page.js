@@ -11,8 +11,17 @@ import Projects from '@/components/sections/projects';
 import ContactForm from '@/components/sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
 import useWindowSize from "@/hooks/useWindowSize";
+import { useRouter } from 'next/navigation';
 
 // const inter = Inter({ subsets: ['latin'] })
+
+const SECTIONS = [
+  '',
+  'about-me',
+  'technologies',
+  'projects',
+  'contact-form'  
+];
 
 export default function Home({ params: { section } }) {
   const {
@@ -41,6 +50,7 @@ export default function Home({ params: { section } }) {
   // const [currentSection, setCurrentSection] = useState(0);
   // const currentSectionDeferred = useDeferredValue(currentSection);
 
+  // TO DO: este wheel tem que ser global, nao funciona quando o rato está por cima do header ou do footer
   const onWheel = (e) => {
     if (e.deltaY < 0)
       previousSection();
@@ -49,20 +59,15 @@ export default function Home({ params: { section } }) {
   }
 
   useEffect(() => {
-    if (section[0] === 'intro')
-      setSection(0);
-    else if (section[0] === 'about-me')
-      setSection(1);
-    else if (section[0] === 'technologies')
-      setSection(2);
-    else if (section[0] === 'projects')
-      setSection(3);
-    else if (section[0] === 'contact-form')
-      setSection(4);
+    const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
+    console.log(firstSection)
+    setSection(firstSection);
+    // refs[firstSection].current.scrollIntoView();
   }, []);
 
   useEffect(() => {
-    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
+    window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
+    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });    
   }, [currentSection, size]);
 
   return (
