@@ -20,7 +20,7 @@ const SECTIONS = [
   'about-me',
   'technologies',
   'projects',
-  'contact-form'  
+  'contact-form'
 ];
 
 export default function Home({ params: { section } }) {
@@ -47,10 +47,6 @@ export default function Home({ params: { section } }) {
     contactFormRef
   ];
 
-  // const [currentSection, setCurrentSection] = useState(0);
-  // const currentSectionDeferred = useDeferredValue(currentSection);
-
-  // TO DO: este wheel tem que ser global, nao funciona quando o rato está por cima do header ou do footer
   const onWheel = (e) => {
     if (e.deltaY < 0)
       previousSection();
@@ -60,21 +56,21 @@ export default function Home({ params: { section } }) {
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
-    console.log(firstSection)
     setSection(firstSection);
-    // refs[firstSection].current.scrollIntoView();
   }, []);
 
   useEffect(() => {
+    window.addEventListener('wheel', onWheel);
+    return () => window.removeEventListener('wheel', onWheel);
+  }, [onWheel]);
+
+  useEffect(() => {
     window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
-    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });    
+    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
   }, [currentSection, size]);
 
   return (
-    <main
-      className={styles.main}
-      onWheel={onWheel}
-    >
+    <main className={styles.main}>
       <Section ref={introRef} >
         <Intro active={refs[currentSection] === introRef} />
       </Section>
