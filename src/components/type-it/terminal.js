@@ -31,6 +31,20 @@ const BOOT_STATES = {
     READY: 'ready'
 };
 
+const INPUTS = [
+    'linux_startup',
+    'os_logo',
+    'primary_user',
+    'ai_user'
+];
+
+function convertToCamelCase(name) {
+    return name
+        .split('_')
+        .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
+
 export default function Terminal({ }) {
     const textareaRef = useRef();
     const cursorRef = useRef(0);
@@ -57,26 +71,18 @@ export default function Terminal({ }) {
     const [bootState, setBootState] = useState(BOOT_STATES.OFF);
 
     const getInputs = async () => {
-        let newInputs = {};
+        const searchParams = new URLSearchParams();
+        INPUTS.forEach((input) => searchParams.append('id', input));
 
-        let response = await fetch('/api/input/linux_startup');
+        let response = await fetch(`/api/input?${searchParams}`);
         let result = await response.json();
-        newInputs.linuxStartup = result.value;
 
-        response = await fetch('/api/input/os_logo');
-        result = await response.json();
-        newInputs.osLogo = result.value;
-
-        response = await fetch('/api/input/primary_user');
-        result = await response.json();
-        newInputs.primaryUser = result.value;
-
-        response = await fetch('/api/input/ai_user');
-        result = await response.json();
-        newInputs.aiUser = result.value;
+        const newInputs = {};
+        for (const input of result)
+            newInputs[convertToCamelCase(input.name)] = input.value;
 
         setInputs(newInputs);
-    }
+    };
 
     const writeInputs = () => {
         setBootState(BOOT_STATES.BOOTING);
