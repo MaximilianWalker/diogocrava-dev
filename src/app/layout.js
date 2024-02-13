@@ -22,14 +22,14 @@ export default function RootLayout({ children }) {
         <WindowManagerProvider>
           <TerminalProvider>
             <SectionProvider>
-              <Suspense fallback={<Loading style={{ margin: 'auto' }} />}>
+              {/* <Suspense fallback={<Loading style={{ margin: 'auto' }} />}> */}
                 {/* <ParticlesBackground /> */}
                 <Particles style={{ position: 'fixed', zIndex: -1, width: '100%', height: '100%' }} />
                 <Terminal />
                 <Navbar />
                 {children}
                 <Footer />
-              </Suspense>
+              {/* </Suspense> */}
             </SectionProvider>
           </TerminalProvider>
         </WindowManagerProvider>

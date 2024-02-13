@@ -65,7 +65,7 @@ export default function Home({ params: { section } }) {
   }, [onWheel]);
 
   useEffect(() => {
-    window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
+    // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
     refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
   }, [currentSection, size]);
 
