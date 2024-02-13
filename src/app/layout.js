@@ -7,6 +7,7 @@ import { WindowManagerProvider } from '@/contexts/WindowManagerContext';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
 // import ParticlesBackground from '@/components/layout/particlesBackground';
+import Particles from '@/components/animations/particles';
 // import Terminal from '@/components/type-it/terminal';
 const Terminal = lazy(() => import('@/components/type-it/terminal'));
 import Loading from '@/components/type-it/loading';
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
             <SectionProvider>
               <Suspense fallback={<Loading style={{ margin: 'auto' }} />}>
                 {/* <ParticlesBackground /> */}
+                <Particles style={{ position: 'fixed', zIndex: -1, width: '100%', height: '100%' }} />
                 <Terminal />
                 <Navbar />
                 {children}
