@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { distance, areaOfTriangle } from '@/utils/mathUtils';
+import { distance } from '@/utils/mathUtils';
 import useWindowSize from '@/hooks/useWindowSize';
 
 class Particle {
@@ -158,9 +158,6 @@ const Particles = ({
         canvas.height = rect.height * dpr;
 
         ctx.scale(dpr, dpr);
-
-        canvas.style.width = `${rect.width}px`;
-        canvas.style.height = `${rect.height}px`;
     };
 
     useEffect(() => {
