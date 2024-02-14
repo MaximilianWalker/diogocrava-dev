@@ -15,27 +15,27 @@ import './global.css';
 
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <head />
-      <body>
-        <WindowManagerProvider>
-          <TerminalProvider>
-            <SectionProvider>
-              {/* <Suspense fallback={<Loading style={{ margin: 'auto' }} />}> */}
-                {/* <ParticlesBackground /> */}
-                <Particles style={{ position: 'fixed', zIndex: -1, width: '100%', height: '100%' }} />
-                <Terminal />
-                <Navbar />
-                {children}
-                <Footer />
-              {/* </Suspense> */}
-            </SectionProvider>
-          </TerminalProvider>
-        </WindowManagerProvider>
-        <Analytics />
-        <SpeedInsights />
-      </body>
-    </html >
-  )
+	return (
+		<html lang="en">
+			<head />
+			<body>
+				<WindowManagerProvider>
+					{/* <TerminalProvider> */}
+					<SectionProvider>
+						{/* <Suspense fallback={<Loading style={{ margin: 'auto' }} />}> */}
+						{/* <ParticlesBackground /> */}
+						<Particles className="background" />
+						<Terminal />
+						<Navbar />
+						{children}
+						<Footer />
+						{/* </Suspense> */}
+					</SectionProvider>
+					{/* </TerminalProvider> */}
+				</WindowManagerProvider>
+				<Analytics />
+				<SpeedInsights />
+			</body>
+		</html >
+	)
 }
