@@ -226,10 +226,6 @@ export default function Terminal({ }) {
             className={styles.container}
             id="terminal"
             name=">_ Terminal"
-            initialPosition={{
-                x: 'calc(50vh - (var(--terminal-height) / 2))',
-                y: 'calc(50vw - (var(--terminal-width) / 2))'
-            }}
             // open={open}
             draggable
             maximizable
