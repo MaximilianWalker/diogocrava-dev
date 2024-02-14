@@ -12,17 +12,19 @@ import { useWindowManager } from "@/contexts/WindowManagerContext";
 const Window = forwardRef(({
     className,
     name,
-    open = true,
+    defaultOpen,
+    open: openProp,
     initialPosition,
-    maximized,
+    defaultMaximized,
+    maximized: maximizedProp,
     draggable,
     resizable,
     maximizable,
     closable,
-    onOpen,
-    onClose,
-    onMaximize,
-    onRestore,
+    onOpen: onOpenProp,
+    onClose: onCloseProp,
+    onMaximize: onMaximizeProp,
+    onRestore: onRestoreProp,
     style,
     children
 }, ref) => {
@@ -30,14 +32,18 @@ const Window = forwardRef(({
     const tabRef = useRef();
     const contentRef = useRef();
 
-    // const {
-    //     registerWindow,
-    //     unregisterWindow,
-    //     useWindow
-    // } = useWindowManager();
-    // const window = useWindow(name);
+    const [internalOpen, setOpen] = useState(defaultOpen);
+    const open = openProp !== undefined ? openProp : internalOpen;
 
-    // console.log(window);
+    const [internalMaximized, setMaximized] = useState(defaultMaximized);
+    const maximized = maximizedProp !== undefined ? maximizedProp : internalMaximized;
+
+    const {
+        layers,
+        registerWindow,
+        unregisterWindow,
+        bringToFront
+    } = useWindowManager();
 
     const {
         isDragging,
@@ -56,10 +62,30 @@ const Window = forwardRef(({
         e.stopPropagation();
     };
 
-    // useLayoutEffect(() => {
-    //     registerWindow(name);
-    //     return () => unregisterWindow(name);
-    // });
+    const onOpen = () => {
+        setOpen(true);
+        if (onOpenProp) onOpenProp();
+    };
+
+    const onClose = () => {
+        setOpen(false);
+        if (onCloseProp) onCloseProp();
+    };
+
+    const onMaximize = () => {
+        setMaximized(true);
+        if (onMaximizeProp) onMaximizeProp();
+    };
+    
+    const onRestore = () => {
+        setMaximized(false);
+        if (onRestoreProp) onRestoreProp();
+    };
+
+    useEffect(() => {
+        registerWindow(name);
+        return () => unregisterWindow(name);
+    }, []);
 
     useEffect(() => {
         if (containerRef.current)
@@ -81,7 +107,7 @@ const Window = forwardRef(({
                 width: size.width,
                 height: size.height,
                 cursor: resizable ? getCursorForEdgePosition(mouseEdge) : 'default',
-                visibility: open ? 'visible' : 'hidden'
+                visibility: open  ? 'visible' : 'hidden'
             }}
         >
             <div className="window__header">
@@ -94,7 +120,7 @@ const Window = forwardRef(({
                     <span><b>{name}</b></span>
                     {
                         maximizable ?
-                            <button className="window__icon-button" onClick={onMaximize}>
+                            <button className="window__icon-button" onClick={maximized ? onRestore : onMaximize}>
                                 {maximized ? <Minimize /> : <Maximize />}
                             </button>
                             :

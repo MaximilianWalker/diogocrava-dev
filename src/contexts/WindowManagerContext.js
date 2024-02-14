@@ -1,101 +1,54 @@
 'use client';
 
-import useDrag from "@/hooks/useDrag";
-import useResizable from "@/hooks/useResizable";
-import { useState, useContext, createContext, useMemo, useRef } from "react";
+import { useState, useContext, createContext } from "react";
+
+const ACTIONS = {
+    OPEN: 'open',
+    CLOSE: 'close',
+    MAXIMIZE: 'maximize',
+    MOVE: 'move',
+    RESIZE: 'resize'
+};
 
 const WindowManagerContext = createContext();
 
-const WindowProvider = ({ context: Context, children }) => {
-    // const  = useContext(WindowManagerContext);
-    const containerRef = useRef(ref);
-    const tabRef = useRef();
-
-    const [open, setOpen] = useState(false);
-    const [maximized, setMaximized] = useState(false);
-
-    const {
-        isDragging,
-        position,
-        onMouseDown: onDragMouseDown
-    } = useDrag(containerRef, initialPosition);
-
-    const {
-        size,
-        onMouseDown: onResizeMouseDown
-    } = useResizable(containerRef);
-
-    return (
-        <Context.Provider value={{
-            open,
-            maximized,
-            isDragging,
-            position,
-            size,
-            mouseEdge,
-            onMouseMove,
-            setOpen,
-            setMaximized,
-            onDragMouseDown,
-            onResizeMouseDown//,
-            // bringToFront
-        }}>
-            {children}
-        </Context.Provider>
-    );
-};
-
 export const WindowManagerProvider = ({ children }) => {
-    const [windows, setWindows] = useState([]);
+    const [layers, setLayers] = useState([]);
+    const [action, setAction] = useState(null);
 
-    const registerWindow = (id) => {
-        const context = createContext();
-        setWindows((prevState) => [
-            ...prevState,
-            { id, context }
-        ]);
-        return context;
-    };
+    const registerWindow = (id) => setLayers((prevState) => [id, ...prevState]);
 
-    const unregisterWindow = (id) => setWindows((prevState) => (
-        prevState.filter((window) => window.id !== id)
-    ));
+    const unregisterWindow = (id) => setLayers((prevState) => prevState.filter((layer) => layer !== id));
 
-    const useWindow = (id) => {
-        const window = windows.find((window) => window.id === id);
-        return window ? useContext(window.context) : null;
-    }
+    const bringToFront = (id) => setLayers((prevState) => prevState.filter((layer) => layer !== id).concat(id));
 
-    const AccumulatedContext = useMemo(() => (
-        windows.reduce(
-            (Accumulator, window) => (
-                ({ children }) => (
-                    <Accumulator>
-                        <WindowProvider context={window.context}>
-                            {children}
-                        </WindowProvider>
-                    </Accumulator>
-                )
-            ),
-            ({ children }) => <>{children}</>
-        )
-    ));
+    const open = (id) => setAction({ id, type: ACTIONS.OPEN });
 
-    console.log(windows)
+    const close = (id) => setAction({ id, type: ACTIONS.CLOSE });
+
+    const maximize = (id) => setAction({ id, type: ACTIONS.MAXIMIZE });
+
+    const move = (id) => setAction({ id, type: ACTIONS.MOVE });
+
+    const resize = (id) => setAction({ id, type: ACTIONS.RESIZE });
 
     return (
         <WindowManagerContext.Provider value={{
-            windows,
-            useWindow,
+            layers,
+            action,
             registerWindow,
-            unregisterWindow
+            unregisterWindow,
+            bringToFront,
+            open,
+            close,
+            maximize,
+            move,
+            resize
         }}>
-            <AccumulatedContext>
-                {children}
-            </AccumulatedContext>
+            {children}
         </WindowManagerContext.Provider>
     );
-};
+}
 
 export const WindowManagerConsumer = WindowManagerContext.Consumer;
 
