@@ -1,16 +1,17 @@
 'use client';
 
-import styles from './footer.module.css';
+import { useWindowManager } from '@/contexts/WindowManagerContext';
 import TileButton from "../buttons/tileButton";
 import MenuButton from "../buttons/menu-button";
 // import { Terminal, GitHub } from 'react-feather';
-import { useTerminal } from '@/contexts/TerminalContext';
+// import { useTerminal } from '@/contexts/TerminalContext';
 import Networks from './networks';
 import Terminal from '@/icons/custom/terminal';
 import Apps from '@/icons/custom/apps';
+import styles from './footer.module.css';
 
 export default ({ }) => {
-    const { toggleTerminal } = useTerminal();
+    const { toggle } = useWindowManager();
     return (
         <footer className={styles.footer}>
             <Networks />
@@ -24,7 +25,7 @@ export default ({ }) => {
                     icon={Terminal}
                     text="TERMINAL"
                     tag="1.0"
-                    onClick={toggleTerminal}
+                    onClick={() => toggle('terminal')}
                 />
             </div>
         </footer>

@@ -6,11 +6,12 @@ import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
 import useResizable from "@/hooks/useResizable";
 import { getCursorForEdgePosition } from "@/utils/systemUtils";
+import { useWindowManager, ACTIONS } from "@/contexts/WindowManagerContext";
 import './window.css';
-import { useWindowManager } from "@/contexts/WindowManagerContext";
 
 const Window = forwardRef(({
     className,
+    id,
     name,
     defaultOpen,
     open: openProp,
@@ -40,6 +41,7 @@ const Window = forwardRef(({
 
     const {
         layers,
+        action,
         registerWindow,
         unregisterWindow,
         bringToFront
@@ -62,6 +64,12 @@ const Window = forwardRef(({
         e.stopPropagation();
     };
 
+    const onToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+        if (open) onClose();
+        else onOpen();
+    }
+
     const onOpen = () => {
         setOpen(true);
         if (onOpenProp) onOpenProp();
@@ -76,15 +84,15 @@ const Window = forwardRef(({
         setMaximized(true);
         if (onMaximizeProp) onMaximizeProp();
     };
-    
+
     const onRestore = () => {
         setMaximized(false);
         if (onRestoreProp) onRestoreProp();
     };
 
     useEffect(() => {
-        registerWindow(name);
-        return () => unregisterWindow(name);
+        registerWindow(id);
+        return () => unregisterWindow(id);
     }, []);
 
     useEffect(() => {
@@ -97,6 +105,34 @@ const Window = forwardRef(({
         };
     }, []);
 
+    useEffect(() => {
+        if (!action.id || action.id === id) {
+            switch (action.type) {
+                case ACTIONS.TOGGLE:
+                    onToggle();
+                    break;
+                case ACTIONS.OPEN:
+                    onOpen();
+                    break;
+                case ACTIONS.CLOSE:
+                    onClose();
+                    break;
+                case ACTIONS.MAXIMIZE:
+                    onMaximize();
+                    break;
+                case ACTIONS.RESTORE:
+                    onRestore();
+                    break;
+                case ACTIONS.MOVE:
+                    break;
+                case ACTIONS.RESIZE:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [action]);
+
     return (
         <div
             ref={containerRef}
@@ -107,7 +143,7 @@ const Window = forwardRef(({
                 width: size.width,
                 height: size.height,
                 cursor: resizable ? getCursorForEdgePosition(mouseEdge) : 'default',
-                visibility: open  ? 'visible' : 'hidden'
+                visibility: open ? 'visible' : 'hidden'
             }}
         >
             <div className="window__header">
