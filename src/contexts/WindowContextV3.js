@@ -29,7 +29,7 @@ const getMouseEdge = (x, y, left, top, width, height, threshold = 5) => {
 const WindowContext = createContext();
 
 export const WindowProvider = ({ children }) => {
-    const refs = useRef([]);
+    const refs = useRef({});
     const [windows, setWindows] = useState({});
 
     const registerWindow = (id, defaults) => {
@@ -48,38 +48,43 @@ export const WindowProvider = ({ children }) => {
             },
             mouseEdge: null
         };
+
         setWindows((prevState) => ({ ...prevState, [id]: newWindow }));
 
-        refs.current.push({
-            id,
+        refs.current[id] = {
             containerRef: useRef(),
             tabRef: useRef(),
-            containerRef: useRef(),
+            contentRef: useRef(),
             mouseDelta: useRef()
+        };
+    };
+
+    const unregisterWindow = (id) => {
+        setWindows((prevState) => {
+            delete prevState[id];
+            return prevState;
         });
     };
 
-    const unregisterWindow = (id) => setWindows((prevState) => prevState.filter((window) => window.id !== id));
-
     const setWindow = (id, window) => {
-        setWindows((prevState) => prevState.map((w) => {
-            if (w.id === id) return window;
-            return w;
-        }));
+        setWindows((prevState) =>  {
+            prevState[id] = window;
+            return prevState;
+        });
     };
 
     const setOpen = (id, open) => {
-        setWindows((prevState) => prevState.map((window) => {
-            if (window.id === id) window.open = open;
-            return window;
-        }));
+        setWindows((prevState) =>  {
+            prevState[id].open = open;
+            return prevState;
+        });
     };
 
     const setMaximized = (id, maximized) => {
-        setWindows((prevState) => prevState.map((window) => {
-            if (window.id === id) window.maximized = maximized;
-            return window;
-        }));
+        setWindows((prevState) =>  {
+            prevState[id].maximized = maximized;
+            return prevState;
+        });
     };
 
     const bringToFront = (id) => {
@@ -91,6 +96,10 @@ export const WindowProvider = ({ children }) => {
                 return window;
             });
         });
+    };
+
+    const onMouseDown = (e) => {
+        setWindows
     };
 
     // ON RESIZE
@@ -116,7 +125,7 @@ export const WindowProvider = ({ children }) => {
         const mouseX = e.clientX - left;
         const mouseY = e.clientY - top;
 
-        const newEdge = getMouseEdge (mouseX, mouseY, left, top, width, height);
+        const newEdge = getMouseEdge(mouseX, mouseY, left, top, width, height);
         setMouseEdge(newEdge);
 
         if (mouseDelta.current) {

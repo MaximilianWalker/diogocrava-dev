@@ -108,6 +108,7 @@ class Triangles {
     }
 }
 
+// particleCount = 0.00002617252 * size.width * size.height
 // https://javascript.info/js-animation
 const Particles = ({
     className,
