@@ -15,6 +15,10 @@ function create(db) {
                         bsonType: "string",
                         description: "'icon' must be a string and is required"
                     },
+                    order: {
+                        bsonType: "int",
+                        description: "'order' must be an integer and is required"
+                    },
                     links: {
                         bsonType: "array",
                         items: {
@@ -29,6 +33,10 @@ function create(db) {
                                     bsonType: "string",
                                     description: "'icon' must be a string and is required"
                                 },
+                                order: {
+                                    bsonType: "int",
+                                    description: "'order' must be an integer and is required"
+                                },
                                 path: {
                                     bsonType: "string",
                                     description: "'path' must be a string and is required"
@@ -42,7 +50,7 @@ function create(db) {
         }
     });
 
-    db.tabs.createIndex({ "name": 1 });
+    db.tabs.createIndex({ "order": 1 });
 }
 
 export default {
