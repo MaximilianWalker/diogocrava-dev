@@ -37,7 +37,7 @@ const Explorer = forwardRef(({
     rootDirectory,
     draggable,
     resizable,
-    props
+    ...props
 }, ref) => {
     const [currentDirectory, setCurrentDirectory] = useState(rootDirectory);
     const [selectedItems, setSelectedItems] = useState([]);

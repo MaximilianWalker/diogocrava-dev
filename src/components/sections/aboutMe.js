@@ -10,6 +10,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['mask-window']}
                 name=">_ ? ? ?"
+                defaultOpen
                 draggable
                 resizable
             >
@@ -18,6 +19,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['about-me-window']}
                 name=">_ About Me"
+                defaultOpen
                 draggable
                 resizable
             >
@@ -25,6 +27,7 @@ const AboutMe = ({ active, ...props }) => {
 
             <Explorer
                 className={styles['explorer-window']}
+                defaultOpen
                 draggable
                 resizable
             />
@@ -32,6 +35,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['status-window']}
                 name=">_ Status"
+                defaultOpen
                 draggable
                 resizable
             >
@@ -39,6 +43,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['location-window']}
                 name=">_ Location"
+                defaultOpen
                 draggable
                 resizable
             >
