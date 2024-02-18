@@ -9,10 +9,9 @@ import Footer from '@/components/layout/footer';
 // import ParticlesBackground from '@/components/layout/particlesBackground';
 import Particles from '@/components/animations/particles';
 // import Terminal from '@/components/type-it/terminal';
-const Terminal = lazy(() => import('@/components/type-it/terminal'));
+const Terminal = lazy(() => import('@/components/system/windows/terminal'));
 import Loading from '@/components/type-it/loading';
 import './global.css';
-
 
 export default function RootLayout({ children }) {
 	return (

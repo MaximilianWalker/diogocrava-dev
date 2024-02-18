@@ -5,7 +5,6 @@ import TypeIt from "typeit-react";
 
 import Prism from "prismjs";
 import "prismjs/components/prism-jsx";
-import "./darkPlusPrismTheme.css";
 
 import styles from './hi.module.css';
 

@@ -1,6 +1,6 @@
 const name = 'chat_logs';
 
-function create(db) {
+async function create(db) {
     const locationProperties = {
         country: {
             bsonType: "string",
@@ -12,7 +12,7 @@ function create(db) {
         }
     };
 
-    db.createCollection(name, {
+    return await db.createCollection(name, {
         validator: {
             $jsonSchema: {
                 bsonType: "object",

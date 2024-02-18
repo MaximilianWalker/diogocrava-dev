@@ -1,11 +1,16 @@
-export function generateSystemTree(objects, referenceName = '_id') {
+export function generateSystemTree(objects, referenceName = '_id', parentName = 'parent') {
     const map = new Map();
     objects.forEach(obj => map.set(obj[referenceName], obj));
 
-    objects.forEach(obj => {
-        if (obj.children)
-            obj.children = obj.children.map(childId => map.get(childId));
-    });
+    for(const obj of objects) {
+        if (obj[parentName]) {
+            const parent = map.get(obj[parentName]);
+            if (parent) {
+                if (!parent.children) parent.children = [];
+                parent.children.push(obj);
+            }
+        }
+    }
 
     return objects;
 }

@@ -8,6 +8,8 @@ const Input = forwardRef(({
     type = 'text',
     value,
     onChange,
+    onKeyDown,
+    onKeyUp,
     startIcon: StartIcon,
     endIcon: EndIcon,
     onStartIconClick,
@@ -33,6 +35,8 @@ const Input = forwardRef(({
                 type={type}
                 value={value}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
             {EndIcon && (
                 onEndIconClick ?
