@@ -50,8 +50,34 @@
     background-color: rgba(46, 46, 46, 0.95);
     /* background-color: rgba(255, 255, 255, .20); */
     box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px 0px inset;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    grid-template-rows: repeat(auto-fill, minmax(120px, 150px));
+    grid-gap: 10px;
+    justify-content: space-between;
+    padding: 10px;
 }
 
-.explorer__item {}
+.explorer__item {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    user-select: none;
+}
 
-.explorer__item>span {}
+.explorer__item>svg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+}
+
+.explorer__item>span {
+    text-align: center;
+}
+
+.explorer__item[data-selected=true] {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 0px;
+}

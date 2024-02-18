@@ -1,8 +1,8 @@
 import styles from './aboutMe.module.css';
-import Window from '../system/window';
+import Window from '../system/common/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
-import Explorer from '../system/explorer';
+import Explorer from '../system/windows/explorer';
 
 const AboutMe = ({ active, ...props }) => {
     return (

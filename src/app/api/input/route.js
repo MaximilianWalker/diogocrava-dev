@@ -1,4 +1,4 @@
-import { getDatabase } from '../mongodb';
+import { getDatabase } from '@/app/api/mongodb';
 
 export async function GET(request, { params }) {
 	const { searchParams } = new URL(request.url);

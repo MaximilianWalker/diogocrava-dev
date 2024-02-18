@@ -2,24 +2,13 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, useLayoutEffect } from "react";
-
-import Prism from "prismjs";
-
-// Languages
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-python";
-
-// Themes
-import "./darkPlusPrismTheme.css";
-
 import TypeIt from "typeit-react";
 import { Maximize, X } from 'react-feather';
 import { useChat } from 'ai/react';
 import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
 import useDrag from "@/hooks/useDrag";
-import Window from "@/components/system/window";
+import Window from "@/components/system/common/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 
@@ -70,8 +59,8 @@ export default function Terminal({ }) {
         const searchParams = new URLSearchParams();
         INPUTS.forEach((input) => searchParams.append('id', input));
 
-        let response = await fetch(`/api/input?${searchParams}`);
-        let result = await response.json();
+        const response = await fetch(`/api/input?${searchParams}`);
+        const result = await response.json();
 
         const newInputs = {};
         for (const input of result)
