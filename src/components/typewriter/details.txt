@@ -25,3 +25,21 @@ ação instatanea
 
 instant action counter / index
 
+
+--------------------------------------------------
+
+controlar atraves dos props:
+
+value
+cursor position
+options
+onStart
+onStop
+onPause
+onNext
+
+MAS DEPOIS NÂO DÁ PARA TER UM LOOP
+
+ou
+
+animation
