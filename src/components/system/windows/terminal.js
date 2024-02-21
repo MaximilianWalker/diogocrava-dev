@@ -11,6 +11,7 @@ import useDrag from "@/hooks/useDrag";
 import Window from "@/components/system/common/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
+import { useWindowManager } from "@/contexts/WindowManagerContext";
 
 const AI_LOADING_INTERVAL = 400;
 
@@ -41,6 +42,8 @@ export default function Terminal({ }) {
     const intervalRef = useRef();
     const dotCounterRef = useRef(0);
     const isIncrementingRef = useRef(true);
+
+    const { bringToFront } = useWindowManager();
 
     const {
         messages,
@@ -170,6 +173,8 @@ export default function Terminal({ }) {
             else if (delta > 0) instance.type(typed, { instant: true });
             else instance.delete(Math.abs(delta), { instant: true });
 
+            console.log(delta)
+
             instance.flush();
             setInput(value);
         }
@@ -183,6 +188,7 @@ export default function Terminal({ }) {
     }, []);
 
     useEffect(() => {
+        bringToFront('terminal');
         if (open) textareaRef.current.focus();
         else textareaRef.current.blur();
     }, [open]);

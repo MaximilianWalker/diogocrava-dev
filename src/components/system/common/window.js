@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef, useLayoutEffect, useContext } from "react";
+import PropTypes from "prop-types";
 import { Maximize, Minimize, X } from 'react-feather';
 import useDrag from "@/hooks/useDrag";
 import useResizable from "@/hooks/useResizable";
@@ -137,11 +138,13 @@ const Window = forwardRef(({
         <div
             ref={containerRef}
             className={`window ${className ?? ''}`}
+            onMouseDown={() => bringToFront(id)}
             style={{
                 top: position.y,
                 left: position.x,
                 width: size.width,
                 height: size.height,
+                zIndex: layers.indexOf(id),
                 cursor: resizable ? getCursorForEdgePosition(mouseEdge) : 'default',
                 visibility: open ? 'visible' : 'hidden'
             }}
@@ -182,5 +185,19 @@ const Window = forwardRef(({
         </div>
     );
 });
+
+Window.propTypes = {
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    draggable: PropTypes.bool,
+    resizable: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
+    defaultMaximized: PropTypes.bool,
+    className: PropTypes.string,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
+    onMaximize: PropTypes.func,
+    onRestore: PropTypes.func
+};
 
 export default Window;

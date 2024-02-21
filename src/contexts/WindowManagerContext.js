@@ -20,7 +20,7 @@ export const WindowManagerProvider = ({ children }) => {
 
     const registerWindow = (id) => {
         if (layers.includes(id)) throw new Error('Window already registered!');
-        setLayers((prevState) => [id, ...prevState]);
+        setLayers((prevState) => [...prevState, id]);
     };
 
     const unregisterWindow = (id) => setLayers((prevState) => prevState.filter((layer) => layer !== id));
