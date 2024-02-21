@@ -76,3 +76,14 @@
     width: var(--location-window-width);
     height: var(--location-window-height);
 }
+
+.about-me-window>.window__content {
+    display: flex !important;
+}
+
+.about-me-text {
+    width: 100%;
+    /* height: 100%; */
+    margin-top: auto;
+    margin-bottom: auto;
+}

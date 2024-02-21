@@ -173,42 +173,40 @@ const Explorer = forwardRef(({
                         startIcon={Search}
                     />
                 </div>
-                <div className="explorer__container">
-                    <div className="explorer__sidebar">
+                <div className="explorer__sidebar">
 
-                    </div>
-                    <div
-                        className="explorer__content"
-                        onClick={(e) => removeSelectedItems(e)}
-                    >
-                        {
-                            currentDirectory ?
-                                currentDirectory.map((child, index) => {
-                                    const Icon = (
-                                        child.icon ?
-                                            getIconByName(child.icon) :
-                                            child.type === 'file' ?
-                                                getIconByMimetype(child.mimetype) :
-                                                getIconByName('DarkFolder')
-                                    );
-                                    return (
-                                        <div
-                                            key={index}
-                                            ref={(ref) => itemsRefs.current[index] = ref}
-                                            className="explorer__item"
-                                            data-selected={selectedItems.includes(index)}
-                                            onClick={(e) => onItemClick(e, index)}
-                                            onDoubleClick={() => onOpen(child)}
-                                        >
-                                            <Icon />
-                                            <span>{child.name}</span>
-                                        </div>
-                                    );
-                                })
-                                :
-                                <Loading />
-                        }
-                    </div>
+                </div>
+                <div
+                    className="explorer__content"
+                    onClick={(e) => removeSelectedItems(e)}
+                >
+                    {
+                        currentDirectory ?
+                            currentDirectory.map((child, index) => {
+                                const Icon = (
+                                    child.icon ?
+                                        getIconByName(child.icon) :
+                                        child.type === 'file' ?
+                                            getIconByMimetype(child.mimetype) :
+                                            getIconByName('DarkFolder')
+                                );
+                                return (
+                                    <div
+                                        key={index}
+                                        ref={(ref) => itemsRefs.current[index] = ref}
+                                        className="explorer__item"
+                                        data-selected={selectedItems.includes(index)}
+                                        onClick={(e) => onItemClick(e, index)}
+                                        onDoubleClick={() => onOpen(child)}
+                                    >
+                                        <Icon />
+                                        <span>{child.name}</span>
+                                    </div>
+                                );
+                            })
+                            :
+                            <Loading />
+                    }
                 </div>
             </Window>
             {

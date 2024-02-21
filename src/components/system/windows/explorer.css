@@ -1,13 +1,24 @@
 .explorer>.window__content {
-    display: flex;
-    flex-direction: column;
+    --explorer-padding: 10px;
+    --topbar-height: 30px;
+    --sidebar-width: fit-content(100%);
+
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: var(--topbar-height) 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: var(--explorer-padding);
+
+    padding: var(--explorer-padding);
+    overflow-y: hidden;
 }
 
 .explorer__topbar {
     display: flex;
     flex-direction: row;
-    padding: 10px;
     gap: 10px;
+
+    grid-column: span 2;
 }
 
 .explorer__button-group {
@@ -31,17 +42,6 @@
 
 .explorer__search {}
 
-.explorer__container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-    flex-shrink: 1;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-}
-
 .explorer__sidebar {}
 
 .explorer__content {
@@ -50,6 +50,8 @@
     background-color: rgba(46, 46, 46, 0.95);
     /* background-color: rgba(255, 255, 255, .20); */
     box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px 0px inset;
+
+    overflow-y: auto;
 
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);
