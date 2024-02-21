@@ -10,16 +10,28 @@ import Technologies from '@/components/sections/technologies';
 import Projects from '@/components/sections/projects';
 import ContactForm from '@/components/sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
+import useWindowSize from "@/hooks/useWindowSize";
+import { useRouter } from 'next/navigation';
 
 // const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({ section }) {
+const SECTIONS = [
+  '',
+  'about-me',
+  'technologies',
+  'projects',
+  'contact-form'
+];
+
+export default function Home({ params: { section } }) {
   const {
     section: currentSection,
     setSection,
     nextSection,
     previousSection
   } = useSection();
+
+  const size = useWindowSize();
 
   const introRef = useRef(null);
   const aboutMeRef = useRef(null);
@@ -35,9 +47,6 @@ export default function Home({ section }) {
     contactFormRef
   ];
 
-  // const [currentSection, setCurrentSection] = useState(0);
-  // const currentSectionDeferred = useDeferredValue(currentSection);
-
   const onWheel = (e) => {
     if (e.deltaY < 0)
       previousSection();
@@ -46,27 +55,22 @@ export default function Home({ section }) {
   }
 
   useEffect(() => {
-    if (section === 'intro')
-      setSection(0);
-    else if (section === 'about-me')
-      setSection(1);
-    else if (section === 'technologies')
-      setSection(2);
-    else if (section === 'projects')
-      setSection(3);
-    else if (section === 'contact-form')
-      setSection(4);
+    const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
+    setSection(firstSection);
   }, []);
 
   useEffect(() => {
+    window.addEventListener('wheel', onWheel);
+    return () => window.removeEventListener('wheel', onWheel);
+  }, [onWheel]);
+
+  useEffect(() => {
+    // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
     refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
-  }, [currentSection]);
+  }, [currentSection, size]);
 
   return (
-    <main
-      className={styles.main}
-      onWheel={onWheel}
-    >
+    <main className={styles.main}>
       <Section ref={introRef} >
         <Intro active={refs[currentSection] === introRef} />
       </Section>

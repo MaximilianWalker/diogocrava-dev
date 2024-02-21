@@ -30,7 +30,7 @@ async function deploy() {
 
         for (const schema of schemas) {
             if (!collectionNames.includes(schema.name)) {
-                await db.createCollection(schema.name);
+                await schema.create(db);
                 console.log(`Collection created: ${schema.name}`);
             }
         }
@@ -38,6 +38,7 @@ async function deploy() {
         console.error(err);
     } finally {
         await client.close();
+        console.log('Connection closed');
     }
 }
 

@@ -1,4 +1,9 @@
-import { ApplicationGeneric } from '@/icons/system'
+import * as FeatherIcons from 'react-feather';
+import SystemIcons from '@/icons/system';
+
+const {
+    ApplicationGeneric
+} = SystemIcons;
 
 const MIMETYPES_ICONS = {
     "text/plain": null,
@@ -26,7 +31,11 @@ const MIMETYPES_ICONS = {
     "video/quicktime": null, // MOV
 };
 
-export function getIcon(mimetype) {
+export function getIconByName(name) {
+    return SystemIcons[name] || FeatherIcons[name];
+}
+
+export function getIconByMimetype(mimetype) {
     const icon = MIMETYPES_ICONS[mimetype];
     const genericIcon = MIMETYPES_ICONS[`${mimetype.split("/")[0]}/generic`];
     const defaultIcon = MIMETYPES_ICONS["application/generic"];

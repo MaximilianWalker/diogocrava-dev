@@ -1,7 +1,7 @@
 const name = 'inputs';
 
-function create(db) {
-    db.createCollection(name, {
+async function create(db) {
+    await db.createCollection(name, {
         validator: {
             $jsonSchema: {
                 bsonType: "object",
@@ -24,7 +24,7 @@ function create(db) {
         }
     });
 
-    db.inputs.createIndex({ "name": 1 });
+    await db.inputs.createIndex({ "name": 1 });
 }
 
 export default {

@@ -1,19 +1,14 @@
 'use client';
 
 import { useEffect } from "react";
-
 import Prism from "prismjs";
+import TypeIt from "typeit-react";
+import styles from './code.module.css';
 
 // Languages
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-python";
-
-// Themes
-import "./darkPlusPrismTheme.css";
-
-import TypeIt from "typeit-react";
-import styles from './code.module.css';
 
 function htmlEncode(text) {
     return text.replace(/[\u00A0-\u9999<>\&]/gim, (i) => `&#${i.charCodeAt(0)};`);

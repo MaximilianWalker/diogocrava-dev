@@ -6,11 +6,11 @@ import './select.css';
 
 // create context
 
-const SelectContext = createContext({
+const FileSelectContext = createContext({
     size: 0
 });
 
-const Select = ({ children }, ref) => {
+const FileSelect = ({ children }, ref) => {
     return (
         <div>
             {children}
@@ -23,4 +23,4 @@ Select.propTypes = {
     
 };
 
-export default { Select,  };
+export default { FileSelect,  };

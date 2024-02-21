@@ -1,19 +1,31 @@
-import styles from './aboutMe.module.css';
-import Window from '../system/window';
+import { useState, useEffect } from 'react';
+import Window from '../system/common/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
-import Explorer from '../system/explorer';
+import Explorer from '../system/windows/explorer';
+import PrismViewer from '../common/PrismViewer';
+import styles from './aboutMe.module.css';
 
 const AboutMe = ({ active, ...props }) => {
+    const [aboutMe, setAboutMe] = useState();
+
+    const getAboutMe = async () => {
+        const response = await fetch('/api/input?id=about_me');
+        const result = await response.json();
+        setAboutMe(result[0].value);
+    };
+
+    useEffect(() => {
+        getAboutMe();
+    }, []);
+
     return (
         <div className={styles.container}>
             <Window
                 className={styles['mask-window']}
+                id="mask-window"
                 name=">_ ? ? ?"
-                initialPosition={{
-                    x: 'var(--window-gap)',
-                    y: 'var(--window-gap)'
-                }}
+                defaultOpen
                 draggable
                 resizable
             >
@@ -21,37 +33,41 @@ const AboutMe = ({ active, ...props }) => {
             </Window>
             <Window
                 className={styles['about-me-window']}
+                id="about-me-window"
                 name=">_ About Me"
-                initialPosition={{
-                    x: 'var(--window-gap)',
-                    y: 'calc((2 * var(--window-gap)) + var(--mask-window-height))'
-                }}
+                defaultOpen
                 draggable
                 resizable
             >
+                <PrismViewer
+                    className={styles['about-me-text']}
+                    code={aboutMe}
+                    language="json"
+                />
             </Window>
 
             <Explorer
                 className={styles['explorer-window']}
+                id="explorer-window"
+                defaultOpen
+                draggable
+                resizable
             />
 
             <Window
                 className={styles['status-window']}
+                id="status-window"
                 name=">_ Status"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
+                defaultOpen
                 draggable
+                resizable
             >
             </Window>
             <Window
                 className={styles['location-window']}
+                id="location-window"
                 name=">_ Location"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
+                defaultOpen
                 draggable
                 resizable
             >

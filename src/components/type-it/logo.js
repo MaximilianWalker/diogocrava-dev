@@ -26,7 +26,7 @@ export default () => {
             <TypeIt
                 className={styles.text}
                 options={{
-                    // loop: true,
+                    loop: true,
                     lifeLike: true,
                     deleteSpeed: 50,
                     cursorChar: '_',

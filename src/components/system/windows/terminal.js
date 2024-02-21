@@ -2,26 +2,16 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, useLayoutEffect } from "react";
-
-import Prism from "prismjs";
-
-// Languages
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-python";
-
-// Themes
-import "./darkPlusPrismTheme.css";
-
 import TypeIt from "typeit-react";
 import { Maximize, X } from 'react-feather';
 import { useChat } from 'ai/react';
 import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
 import useDrag from "@/hooks/useDrag";
-import Window from "@/components/system/window";
+import Window from "@/components/system/common/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
+import { useWindowManager } from "@/contexts/WindowManagerContext";
 
 const AI_LOADING_INTERVAL = 400;
 
@@ -31,6 +21,20 @@ const BOOT_STATES = {
     READY: 'ready'
 };
 
+const INPUTS = [
+    'linux_startup',
+    'os_logo',
+    'primary_user',
+    'ai_user'
+];
+
+function convertToCamelCase(name) {
+    return name
+        .split('_')
+        .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
+
 export default function Terminal({ }) {
     const textareaRef = useRef();
     const cursorRef = useRef(0);
@@ -39,10 +43,7 @@ export default function Terminal({ }) {
     const dotCounterRef = useRef(0);
     const isIncrementingRef = useRef(true);
 
-    const {
-        open,
-        setOpen
-    } = useTerminal();
+    const { bringToFront } = useWindowManager();
 
     const {
         messages,
@@ -52,31 +53,24 @@ export default function Terminal({ }) {
         isLoading: isLoadingResponse,
     } = useChat();
 
+    const [open, setOpen] = useState(false);
     const [instance, setInstance] = useState();
     const [inputs, setInputs] = useState();
     const [bootState, setBootState] = useState(BOOT_STATES.OFF);
 
     const getInputs = async () => {
-        let newInputs = {};
+        const searchParams = new URLSearchParams();
+        INPUTS.forEach((input) => searchParams.append('id', input));
 
-        let response = await fetch('/api/input/linux_startup');
-        let result = await response.json();
-        newInputs.linuxStartup = result.value;
+        const response = await fetch(`/api/input?${searchParams}`);
+        const result = await response.json();
 
-        response = await fetch('/api/input/os_logo');
-        result = await response.json();
-        newInputs.osLogo = result.value;
-
-        response = await fetch('/api/input/primary_user');
-        result = await response.json();
-        newInputs.primaryUser = result.value;
-
-        response = await fetch('/api/input/ai_user');
-        result = await response.json();
-        newInputs.aiUser = result.value;
+        const newInputs = {};
+        for (const input of result)
+            newInputs[convertToCamelCase(input.name)] = input.value;
 
         setInputs(newInputs);
-    }
+    };
 
     const writeInputs = () => {
         setBootState(BOOT_STATES.BOOTING);
@@ -179,6 +173,8 @@ export default function Terminal({ }) {
             else if (delta > 0) instance.type(typed, { instant: true });
             else instance.delete(Math.abs(delta), { instant: true });
 
+            console.log(delta)
+
             instance.flush();
             setInput(value);
         }
@@ -192,6 +188,7 @@ export default function Terminal({ }) {
     }, []);
 
     useEffect(() => {
+        bringToFront('terminal');
         if (open) textareaRef.current.focus();
         else textareaRef.current.blur();
     }, [open]);
@@ -222,15 +219,13 @@ export default function Terminal({ }) {
     return (
         <Window
             className={styles.container}
+            id="terminal"
             name=">_ Terminal"
-            initialPosition={{
-                x: 'calc(50vh - (var(--terminal-height) / 2))',
-                y: 'calc(50vw - (var(--terminal-width) / 2))'
-            }}
-            open={open}
+            // open={open}
             draggable
             maximizable
             closable
+            onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
         >
             <TypeIt

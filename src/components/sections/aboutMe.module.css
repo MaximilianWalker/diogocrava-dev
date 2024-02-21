@@ -1,14 +1,30 @@
 .container {
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
-    --window-gap: 10px;
+    --window-gap: 20px;
 
-    --mask-window-width: 20vh;
+    --mask-window-top: 0px;
+    --mask-window-left: calc(var(--explorer-window-left) - var(--window-gap) - var(--mask-window-width));
+    --mask-window-width: 15vw;
     --mask-window-height: 20vh;
 
-    --about-me-window-width: 20vh;
-    --about-me-window-height: calc(100% - (4 * var(--window-gap)) - var(--location-window-height) - var(--mask-window-height));
+    --about-me-window-top: calc(100% - var(--about-me-window-height));
+    --about-me-window-left: calc(var(--explorer-window-left) - var(--window-gap) - var(--about-me-window-width));
+    --about-me-window-width: 15vw;
+    --about-me-window-height: calc(100% - var(--window-gap) - var(--mask-window-height));
 
-    --location-window-width: 20vh;
+    --explorer-window-top: calc(50% - (var(--explorer-window-height) / 2));
+    --explorer-window-left: calc(50% - (var(--explorer-window-width) / 2));
+    --explorer-window-width: 40vw;
+    --explorer-window-height: 60vh;
+
+    --status-window-top: 0px;
+    --status-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
+    --status-window-width: 15vw;
+    --status-window-height: calc(100% - var(--window-gap) - var(--location-window-height));
+
+    --location-window-top: calc(100% - var(--location-window-height));
+    --location-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
+    --location-window-width: 15vw;
     --location-window-height: 20vh;
 
     width: 100%;
@@ -18,21 +34,56 @@
     position: relative;
 }
 
-.mask-window, .about-me-window {
+.mask-window,
+.about-me-window,
+.explorer-window,
+.status-window,
+.location-window {
     position: absolute;
 }
 
 .mask-window {
+    top: var(--mask-window-top);
+    left: var(--mask-window-left);
     width: var(--mask-window-width);
     height: var(--mask-window-height);
 }
 
 .about-me-window {
+    top: var(--about-me-window-top);
+    left: var(--about-me-window-left);
     width: var(--about-me-window-width);
     height: var(--about-me-window-height);
 }
 
+.explorer-window {
+    top: var(--explorer-window-top);
+    left: var(--explorer-window-left);
+    width: var(--explorer-window-width);
+    height: var(--explorer-window-height);
+}
+
+.status-window {
+    top: var(--status-window-top);
+    left: var(--status-window-left);
+    width: var(--status-window-width);
+    height: var(--status-window-height);
+}
+
 .location-window {
+    top: var(--location-window-top);
+    left: var(--location-window-left);
     width: var(--location-window-width);
     height: var(--location-window-height);
+}
+
+.about-me-window>.window__content {
+    display: flex !important;
+}
+
+.about-me-text {
+    width: 100%;
+    /* height: 100%; */
+    margin-top: auto;
+    margin-bottom: auto;
 }

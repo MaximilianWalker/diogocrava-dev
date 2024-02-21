@@ -1,0 +1,121 @@
+.wrapper{
+  --primary: white;
+  --secondary: rgb(45, 45, 45);
+  --shadow-primary: rgb(54, 54, 54);
+  --color: black;
+  --shadow-color: white;
+  --tag-color: white;
+  --font-size: 20px;
+  --label-size: 9px;
+  --icon-size: 24px;
+  --padding: 20px;
+  --corner-clip-size: 15px;
+  --text-clip-right-padding: 3px;
+  --border: 4px;
+  --clip: polygon(
+    0 0,
+    calc(100% - var(--corner-clip-size)) 0,
+    100% var(--corner-clip-size),
+    100% 100%,
+    var(--corner-clip-size) 100%, 
+    0 calc(100% - var(--corner-clip-size))
+  );
+  --shimmy-distance: 5;
+  --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
+  --clip-two: polygon(0 78%, 100% 78%, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 78%);
+  --clip-three: polygon(0 44%, 100% 44%, 100% 54%, 95% 54%, 95% 54%, 85% 54%, 85% 54%, 8% 54%, 0 54%);
+  --clip-four: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+  --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+  --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
+  --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
+
+
+  display: flex;
+  position: relative;
+  width: max-content;
+  height: max-content;
+  margin-top: auto;
+  overflow: visible;
+}
+
+.button, .shadow {
+  clip-path: var(--clip);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  color: var(--color) !important;
+  cursor: pointer;
+  background: var(--primary);
+  font-size: var(--font-size);
+  outline: transparent;
+  letter-spacing: 2px;
+  position: relative;
+  font-weight: 700;
+  padding: 0px var(--padding);
+  border: 0;
+  height: 50px;
+  width: calc(var(--icon-size) + (2 * var(--padding)));
+  overflow: hidden;
+  transition-property: width, background;
+  transition-duration: 0.8s, 0.8s;
+  transition-delay: 0s;
+}
+
+.button:hover {
+  /* background: var(--secondary); */
+  background: var(--shadow-primary);
+  color: var(--primary);
+  width: 200px;
+}
+
+.button:hover .text {
+  color: var(--shadow-color);
+}
+
+.button:hover svg {
+  fill: var(--shadow-color);
+  transition-property: fill;
+  transition-duration: 0.8s;
+  transition-delay: 0s;
+}
+
+.button:active {
+}
+
+.button:before {
+  /* background: var(--shadow-primary); */
+  transform: translate(var(--border), 0);
+}
+
+.button svg {
+  flex-shrink: 0;
+  width: auto;
+  height: 24px;
+  fill: var(--color);
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--shadow-primary);
+  transform: translate(var(--border), 0);
+  z-index: -1;
+}
+
+.text {
+  flex-shrink: 1;
+  margin-left: 20px;
+  width: auto;
+  text-wrap: nowrap;
+  color: transparent;
+  transition: color 0.8s;
+  color: var(--color);
+  transition-property: color;
+  transition-duration: 0.8s;
+  transition-delay: 0s;
+}
