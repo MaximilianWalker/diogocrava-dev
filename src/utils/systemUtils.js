@@ -2,12 +2,16 @@ export function generateSystemTree(objects, referenceName = '_id', parentName = 
     const map = new Map();
     objects.forEach(obj => map.set(obj[referenceName], obj));
 
-    for(const obj of objects) {
+    for (let i = 0; i < objects.length; i++) {
+        const obj = objects[i];
         if (obj[parentName]) {
+            objects.splice(i--, 1);
             const parent = map.get(obj[parentName]);
             if (parent) {
                 if (!parent.children) parent.children = [];
                 parent.children.push(obj);
+            } else {
+                throw new Error(`Parent not found: ${obj[parentName]}`);
             }
         }
     }

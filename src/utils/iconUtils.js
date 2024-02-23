@@ -1,5 +1,5 @@
 import * as FeatherIcons from 'react-feather';
-import SystemIcons from '@/icons/system';
+import * as SystemIcons from '@/icons/system';
 
 const {
     ApplicationGeneric

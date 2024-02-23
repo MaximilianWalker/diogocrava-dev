@@ -5,7 +5,7 @@ import Prism from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-json";
-import "prismjs/components/prism-json5";
+import "prismjs/components/prism-xml-doc";
 import "prismjs/components/prism-python";
 
 export default function PrismViewer({ className, code, language }) {

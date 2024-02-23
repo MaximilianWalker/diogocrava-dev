@@ -3,8 +3,8 @@ const name = 'system';
 async function create(db) {
     const commonProperties = {
         parent: {
-            bsonType: ["null", "objectId"],
-            description: "'parent' must be an objectId"
+            bsonType: ["null", "string"],
+            description: "'parent' must be an string"
         },
         name: {
             bsonType: "string",

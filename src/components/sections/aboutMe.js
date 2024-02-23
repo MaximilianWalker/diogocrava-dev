@@ -35,15 +35,24 @@ const AboutMe = ({ active, ...props }) => {
                 className={styles['about-me-window']}
                 id="about-me-window"
                 name=">_ About Me"
+                style={{ justifyContent: 'space-around' }}
                 defaultOpen
                 draggable
                 resizable
             >
-                <PrismViewer
+                {/* <PrismViewer
                     className={styles['about-me-text']}
                     code={aboutMe}
-                    language="json"
-                />
+                    language="xml"
+                /> */}
+                {
+                    aboutMe?.split('\n').map((paragraph, index) => (
+                        paragraph.replace(/\n/g, ' ') !== '' ?
+                            <p key={index} style={{ whiteSpace: 'pre-wrap', margin: '4px' }}>{paragraph}</p>
+                            :
+                            <br />
+                    ))
+                }
             </Window>
 
             <Explorer

@@ -2,12 +2,21 @@ import PropTypes from "prop-types";
 import styles from './menu-button.module.css';
 
 // https://codepen.io/jh3y/pen/PoGbxLp
-const MenuButton = ({ icon: Icon, text, tag, selected, ...props }) => {
+const MenuButton = ({ className, icon: Icon, text, selected, expandable, ...props }) => {
     return (
-        <div className={styles.wrapper}>
-            <button className={styles.button} {...props}>
+        <div className={`${styles.wrapper} ${className}`}>
+            <button
+                className={styles.button}
+                data-expandable={expandable}
+                {...props}
+            >
                 {Icon ? <Icon /> : null}
-                <span className={styles.text}>{text}</span>
+                <span
+                    className={styles.text}
+                    data-icon={!!Icon}
+                >
+                    {text}
+                </span>
             </button>
             <div className={styles.shadow} />
         </div>

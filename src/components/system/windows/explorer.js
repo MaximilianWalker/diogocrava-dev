@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "r
 import { Home, ChevronLeft, ChevronRight, Folder, Search, RefreshCcw } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from '../common/window';
+import { default as ErrorWindow } from './error';
 import FileViewer from './file-viewer';
 import Input from "../common/input";
 import Loading from "@/components/type-it/loading";
@@ -52,6 +53,7 @@ const Explorer = forwardRef(({
 
     // Windows
     const [openFiles, setOpenFiles] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const itemsRefs = useRef({});
 
@@ -62,15 +64,15 @@ const Explorer = forwardRef(({
         setCurrentDirectory(result);
     };
 
-    const changeDirectory = () => {
-        const directories = path.split('/');
+    const changeDirectory = (path) => {
+        const directories = path.split('/').slice(1);
         let currentDirectory = system;
         for (const directory of directories) {
-            const subDirectory = currentDirectory.children.find((child) => child.name === directory);
+            const subDirectory = currentDirectory.children?.find((child) => child.name === directory);
             if (subDirectory)
                 currentDirectory = subDirectory;
             else
-                throwErrorWindow('Directory not found!');
+                throwErrorWindow('404', 'Directory not found!');
         }
     };
 
@@ -79,18 +81,28 @@ const Explorer = forwardRef(({
         setSelectedItems([index]);
     };
 
-    const onItemDoubleClick = (item) => item.type === 'folder' ? onFolderClick(item) : onFileClick(item);
+    const onItemDoubleClick = (item) => {
+        if (item.access) {
+            if (item.type === 'folder')
+                onFolderClick(item);
+
+            if (item.type === 'file')
+                onFileClick(item);
+        } else {
+            throwErrorWindow('401','You don\'t have access to this item!');
+        }
+    };
 
     const removeSelectedItems = (e) => {
         setSelectedItems([]);
     };
 
     const onFolderClick = (folder) => {
-        setCurrentDirectory(folder);
-        history.splice(0, historyIndex);
-        const newHistory = [folder, ...history];
-        setHistory(newHistory);
-        setHistoryIndex(0);
+        const newPath = `${path}/${folder.name}`;
+        setPath(newPath);
+        changeDirectory(newPath);
+        setHistory((prevHistory) => [...prevHistory, newPath]);
+        setHistoryIndex(prevIndex => prevIndex + 1);
     };
 
     const onFileClick = () => {
@@ -109,15 +121,13 @@ const Explorer = forwardRef(({
 
     };
 
-    const throwErrorWindow = (error) => {
+    const throwErrorWindow = (title, message) => setErrors(prevErrors => [...prevErrors, { title, message }]);
 
-    };
+    const closeErrorWindow = (index) => setErrors(prevErrors => prevErrors.filter((_, i) => i !== index));
 
     useEffect(() => {
         getSystemData();
     }, []);
-
-    console.log(selectedItems)
 
     // meter seta para a direita no fim do path para poderem navegar para o novo endereço com o rato
     // meter os paddings correctos
@@ -164,6 +174,8 @@ const Explorer = forwardRef(({
                     <Input
                         className="explorer__path"
                         startIcon={Folder}
+                        value={path}
+                        onChange={(e) => setPath(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') changeDirectory(path);
                         }}
@@ -197,7 +209,7 @@ const Explorer = forwardRef(({
                                         className="explorer__item"
                                         data-selected={selectedItems.includes(index)}
                                         onClick={(e) => onItemClick(e, index)}
-                                        onDoubleClick={() => onOpen(child)}
+                                        onDoubleClick={() => onItemDoubleClick(child)}
                                     >
                                         <Icon />
                                         <span>{child.name}</span>
@@ -210,8 +222,20 @@ const Explorer = forwardRef(({
                 </div>
             </Window>
             {
-                openFiles.map((file) => (
-                    <FileViewer name={file.name} />
+                openFiles.map((file, index) => (
+                    <FileViewer
+                        key={`file-${index}`}
+                        {...file}
+                    />
+                ))
+            }
+            {
+                errors.map((error, index) => (
+                    <ErrorWindow
+                        key={`error-${index}`}
+                        onClose={() => closeErrorWindow(index)}
+                        {...error}
+                    />
                 ))
             }
         </>

@@ -12,7 +12,7 @@ async function create(db) {
                         description: "'name' must be a string and is required"
                     },
                     value: {
-                        bsonType: "string",
+                        bsonType: ["string", "object"],
                         description: "'value' must be a string and is required"
                     },
                     timestamp: {
@@ -24,7 +24,7 @@ async function create(db) {
         }
     });
 
-    await db.inputs.createIndex({ "name": 1 });
+    await db[name].createIndex({ "name": 1 });
 }
 
 export default {

@@ -1,7 +1,6 @@
 .window {
-    /* --window-width: 1050px;
-    --window-height: 600px; */
     --window-border-size: 0px;
+    --window-background: rgba(30, 30, 30, 0.95);
     --window-background-color: rgba(30, 30, 30, 0.95);
     --window-border-color: white;
 
@@ -11,8 +10,6 @@
     --tab-text-margin: 10px;
     --tab-triangle-width: 30px;
 
-    /* top: calc(50vh - (var(--window-height) / 2));
-    left: calc(50vw - (var(--window-width) / 2)); */
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -22,6 +19,7 @@
 }
 
 .window__content, .window__tab {
+    background: var(--window-background);
     background-color: var(--window-background-color);
     border-style: solid;
     border-width: var(--window-border-size);
@@ -43,6 +41,9 @@
     width: max-content;
     min-height: var(--tab-height);
     height: var(--tab-height);
+
+    background: none;
+    background-color: var(--window-background-color);
 
     border-left-width: var(--window-border-size);
     border-right-width: var(--window-border-size);
@@ -67,21 +68,25 @@
 
 .window__tab::before {
     left: calc(-1 * var(--tab-triangle-width));
-    background-image: linear-gradient(to bottom right,
-            transparent calc(50%),
-            var(--window-border-color) 50%,
-            var(--window-border-color) calc(50% + var(--window-border-size)),
-            var(--window-background-color) calc(50% + var(--window-border-size)));
+    background-image: linear-gradient(
+        to bottom right,
+        transparent calc(50%),
+        var(--window-border-color) 50%,
+        var(--window-border-color) calc(50% + var(--window-border-size)),
+        var(--window-background-color) calc(50% + var(--window-border-size))
+    );
     background-position: left;
 }
 
 .window__tab::after {
     right: calc(-1 * var(--tab-triangle-width));
-    background-image: linear-gradient(to bottom left,
-            transparent calc(50%),
-            var(--window-border-color) 50%,
-            var(--window-border-color) calc(50% + var(--window-border-size)),
-            var(--window-background-color) calc(50% + var(--window-border-size)));
+    background-image: linear-gradient(
+        to bottom left,
+        transparent calc(50%),
+        var(--window-border-color) 50%,
+        var(--window-border-color) calc(50% + var(--window-border-size)),
+        var(--window-background-color) calc(50% + var(--window-border-size))
+    );
     background-position: right;
 }
 
