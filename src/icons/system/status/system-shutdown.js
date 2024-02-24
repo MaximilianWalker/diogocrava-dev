@@ -6,7 +6,7 @@ export default () => (
             </filter>
         </defs>
         <g transform="matrix(2,0,0,2,0,-64)">
-            <g fill-opacity=".992" stroke-width="1.0343">
+            <g fill-opacity=".992" strokeWidth="1.0343">
                 <path d="m16 33.5c-8.2768 0-15 6.7232-15 15s6.7232 15 15 15c8.2768 0 15-6.7232 15-15s-6.7232-15-15-15z" color="#000000" opacity=".15" overflow="visible" />
                 <path d="m16 33c-8.2768 0-15 6.7232-15 15s6.7232 15 15 15c8.2768 0 15-6.7232 15-15s-6.7232-15-15-15z" color="#000000" filter="url(#a)" opacity=".15" overflow="visible" />
                 <path d="m16 33c-8.2768 0-15 6.7232-15 15s6.7232 15 15 15c8.2768 0 15-6.7232 15-15s-6.7232-15-15-15z" color="#000000" fill="#d93c3f" overflow="visible" />

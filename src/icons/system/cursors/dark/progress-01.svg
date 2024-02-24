@@ -56,11 +56,11 @@
        gradientTransform="matrix(.60764 0 0 .58122 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#FBB114"
+         stopColor="#FBB114"
          offset="0"
          id="stop2" />
       <stop
-         stop-color="#FF9508"
+         stopColor="#FF9508"
          offset="1"
          id="stop4" />
     </linearGradient>
@@ -73,11 +73,11 @@
        gradientTransform="matrix(.5582 0 0 .6327 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#FF645D"
+         stopColor="#FF645D"
          offset="0"
          id="stop7" />
       <stop
-         stop-color="#FF4332"
+         stopColor="#FF4332"
          offset="1"
          id="stop9" />
     </linearGradient>
@@ -90,11 +90,11 @@
        gradientTransform="matrix(.65219 0 0 .54152 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#CA70E1"
+         stopColor="#CA70E1"
          offset="0"
          id="stop12" />
       <stop
-         stop-color="#B452CB"
+         stopColor="#B452CB"
          offset="1"
          id="stop14" />
     </linearGradient>
@@ -107,11 +107,11 @@
        gradientTransform="matrix(.60764 0 0 .58122 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#14ADF6"
+         stopColor="#14ADF6"
          offset="0"
          id="stop17" />
       <stop
-         stop-color="#1191F4"
+         stopColor="#1191F4"
          offset="1"
          id="stop19" />
     </linearGradient>
@@ -124,11 +124,11 @@
        gradientTransform="matrix(.5582 0 0 .6327 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#52CF30"
+         stopColor="#52CF30"
          offset="0"
          id="stop22" />
       <stop
-         stop-color="#3BBD1C"
+         stopColor="#3BBD1C"
          offset="1"
          id="stop24" />
     </linearGradient>
@@ -141,11 +141,11 @@
        gradientTransform="matrix(.65219 0 0 .54152 11.1 1033.5)"
        gradientUnits="userSpaceOnUse">
       <stop
-         stop-color="#FFD305"
+         stopColor="#FFD305"
          offset="0"
          id="stop27" />
       <stop
-         stop-color="#FDCF01"
+         stopColor="#FDCF01"
          offset="1"
          id="stop29" />
     </linearGradient>

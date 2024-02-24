@@ -1,5 +1,5 @@
 export default () => (
-    <svg viewBox="0 0 512 512" enable-background="new" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink">
+    <svg viewBox="0 0 512 512" enableBackground="new" version="1.0" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <filter id="b" x="-.026526" y="-.021913" width="1.0531" height="1.0438" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="3.36" />
@@ -10,19 +10,19 @@ export default () => (
         </defs>
         <g transform="translate(0,212)">
             <g display="none">
-                <text id="context" x="15.006836" y="332.76685" display="inline" enable-background="new" fill="#000000" font-family="'DejaVu Sans'" style="line-height:0%" xml: space="preserve"><tspan x="15.006836" y="332.76685" font-family="'DejaVu Sans'" font-size="18px" style="line-height:1.25">apps</tspan></text>
-                <text id="icon-name" x="142.48828" y="332.76685" display="inline" enable-background="new" fill="#000000" font-family="'DejaVu Sans'" font-weight="bold" style="line-height:0%" xml: space="preserve"><tspan x="142.48828" y="332.76685" font-family="'DejaVu Sans'" font-size="18px" font-weight="bold" style="line-height:1.25">preferences-desktop-font</tspan></text>
+                <text id="context" x="15.006836" y="332.76685" display="inline" enableBackground="new" fill="#000000" fontFamily="'DejaVu Sans'" style="line-height:0%" space="preserve"><tspan x="15.006836" y="332.76685" fontFamily="'DejaVu Sans'" fontSize="18px" style="line-height:1.25">apps</tspan></text>
+                <text id="icon-name" x="142.48828" y="332.76685" display="inline" enableBackground="new" fill="#000000" fontFamily="'DejaVu Sans'" fontWeight="bold" style="line-height:0%" space="preserve"><tspan x="142.48828" y="332.76685" fontFamily="'DejaVu Sans'" fontSize="18px" fontWeight="bold" style="line-height:1.25">preferences-desktop-font</tspan></text>
                 <g fill="#e9e9e9">
-                    <rect transform="scale(-1,1)" x="-32" y="268" width="16" height="16" display="inline" enable-background="accumulate" />
-                    <rect transform="scale(-1,1)" x="-76" y="260" width="24" height="24" display="inline" enable-background="accumulate" />
-                    <rect transform="scale(-1,1)" x="-128" y="252" width="32" height="32" display="inline" enable-background="accumulate" />
-                    <rect transform="scale(-1,1)" x="-192" y="236" width="48" height="48" display="inline" enable-background="accumulate" />
-                    <rect transform="scale(-1,1)" x="-720" y="-228" width="512" height="512" display="inline" enable-background="accumulate" />
+                    <rect transform="scale(-1,1)" x="-32" y="268" width="16" height="16" display="inline" enableBackground="accumulate" />
+                    <rect transform="scale(-1,1)" x="-76" y="260" width="24" height="24" display="inline" enableBackground="accumulate" />
+                    <rect transform="scale(-1,1)" x="-128" y="252" width="32" height="32" display="inline" enableBackground="accumulate" />
+                    <rect transform="scale(-1,1)" x="-192" y="236" width="48" height="48" display="inline" enableBackground="accumulate" />
+                    <rect transform="scale(-1,1)" x="-720" y="-228" width="512" height="512" display="inline" enableBackground="accumulate" />
                 </g>
             </g>
             <g>
                 <g transform="translate(-208,16)">
-                    <rect x="368" y="-192" width="304" height="368" rx="16" ry="16" filter="url(#a)" opacity=".1" stroke="#000" stroke-width="8" />
+                    <rect x="368" y="-192" width="304" height="368" rx="16" ry="16" filter="url(#a)" opacity=".1" stroke="#000" strokeWidth="8" />
                     <rect x="368" y="-192" width="304" height="368" rx="16" ry="16" filter="url(#a)" opacity=".2" />
                     <rect x="368" y="-196" width="304" height="368" rx="16" ry="16" fill="#d8d8d8" />
                     <g transform="matrix(4.474 0 0 4.474 -344.17 -1074.9)" opacity=".49">
@@ -30,7 +30,7 @@ export default () => (
                         <path d="m214.99 239.12c0-2.52-0.44-3.8-1.6-4.76-1.32-1.04-3.28-1.6-5.84-1.6-4.48 0-7.8 2.12-7.8 5 0 1.52 0.92 2.48 2.32 2.48 1.24 0 2.16-0.84 2.16-2.04 0-0.52-0.2-1.08-0.6-1.64-0.24-0.28-0.28-0.4-0.28-0.52 0-0.84 1.64-1.56 3.56-1.56 1.24 0 2.64 0.4 3.28 1 0.76 0.64 1.04 1.6 1.04 3.4v1.56c-4.2 0.72-5.48 1.04-7.44 1.8-3.44 1.28-5.12 3.16-5.12 5.68 0 2.84 2.28 4.68 5.8 4.68 2.76 0 5.24-1.12 6.96-3.16 0.64 2.04 1.64 2.84 3.52 2.84 1.8 0 3.68-1.16 3.68-2.32 0-0.28-0.2-0.48-0.4-0.48-0.16 0-0.32 0.04-0.6 0.16-0.64 0.24-0.8 0.28-1.12 0.28-1.12 0-1.52-0.76-1.52-2.76zm-3.76 4.88c0 2.4-0.12 2.96-0.8 4-1 1.48-2.84 2.48-4.56 2.48-1.8 0-3.16-1.32-3.16-3.12 0-1.68 0.84-2.88 2.6-3.72 1.24-0.56 2.8-0.96 5.92-1.48z" />
                     </g>
                     <path d="m384-196c-8.864 0-16 7.136-16 16v2c0-8.864 7.136-16 16-16h272c8.864 0 16 7.136 16 16v-2c0-8.864-7.136-16-16-16z" fill="#fff" opacity=".4" />
-                    <rect x="256" y="-112" width="304" height="368" rx="16" ry="16" filter="url(#b)" opacity=".1" stroke="#000" stroke-width="8" />
+                    <rect x="256" y="-112" width="304" height="368" rx="16" ry="16" filter="url(#b)" opacity=".1" stroke="#000" strokeWidth="8" />
                     <rect x="256" y="-112" width="304" height="368" rx="16" ry="16" filter="url(#b)" opacity=".2" />
                     <rect x="256" y="-116" width="304" height="368" rx="16" ry="16" fill="#ebebeb" />
                     <g transform="matrix(11.2 0 0 11.2 -1309.3 -2911.2)" opacity=".5">

@@ -71,21 +71,21 @@
         <path
            d="m131 166v4h-4v6h4v4h6v-4h4v-6h-4v-4z"
            color="#000000"
-           color-rendering="auto"
+           colorRendering="auto"
            filter="url(#a)"
-           image-rendering="auto"
+           imageRendering="auto"
            opacity=".35"
-           shape-rendering="auto"
-           solid-color="#000000"
+           shapeRendering="auto"
+           solidColor="#000000"
            style="isolation:auto;mix-blend-mode:normal;text-decoration-color:#000000;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-transform:none;white-space:normal"
            id="path7" />
         <path
            d="m131 166v4h-4v4h4v4h4v-4h4v-4h-4v-4z"
            fill="none"
            stroke="#fff"
-           stroke-linecap="round"
-           stroke-linejoin="round"
-           stroke-width="2"
+           strokeLinecap="round"
+           strokeLinejoin="round"
+           strokeWidth="2"
            id="path9" />
         <path
            d="m131 166v4h-4v4h4v4h4v-4h4v-4h-4v-4z"

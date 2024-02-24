@@ -40,11 +40,11 @@
        y2="19.256279"
        id="linearGradient-colour2">
       <stop
-         stop-color="#FF645D"
+         stopColor="#FF645D"
          offset="0%"
          id="stop12" />
       <stop
-         stop-color="#FF4332"
+         stopColor="#FF4332"
          offset="100%"
          id="stop14" />
     </linearGradient>

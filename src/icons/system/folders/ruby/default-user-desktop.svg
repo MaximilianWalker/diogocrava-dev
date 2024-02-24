@@ -2,7 +2,7 @@
  <defs>
   <radialGradient id="b" cx="32" cy="1021.9" r="25" gradientTransform="matrix(-1 0 0 -.080001 64 137.7)" gradientUnits="userSpaceOnUse">
    <stop offset="0"/>
-   <stop stop-opacity="0" offset="1"/>
+   <stop stopOpacity="0" offset="1"/>
   </radialGradient>
  </defs>
  <g fill-rule="evenodd">
@@ -18,5 +18,5 @@
  </g>
  <path d="m7 8c-1.662 0-3 1.338-3 3v0.5c0-1.385 1.338-2.5 3-2.5h50c1.662 0 3 1.115 3 2.5v-0.5c0-1.662-1.338-3-3-3z" fill="#fff" fill-rule="evenodd" opacity=".1" style="paint-order:fill markers stroke"/>
  <path d="m4 52.062v0.9375c0 1.662 1.338 3 3 3h50c1.662 0 3-1.338 3-3v-0.9375c0 1.6274-1.338 2.9375-3 2.9375h-50c-1.662 0-3-1.3101-3-2.9375z" fill-rule="evenodd" opacity=".2" style="paint-order:fill markers stroke"/>
- <rect x="7" y="56" width="50" height="5" ry="0" fill="url(#b)" opacity=".15" stroke-width="1.4088"/>
+ <rect x="7" y="56" width="50" height="5" ry="0" fill="url(#b)" opacity=".15" strokeWidth="1.4088"/>
 </svg>

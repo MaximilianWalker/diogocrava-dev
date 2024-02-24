@@ -1,5 +1,5 @@
 export default () => (
-    <svg width="512" height="512" enable-background="new" version="1.0" xmlns="http://www.w3.org/2000/svg">
+    <svg width="512" height="512" enableBackground="new" version="1.0" xmlns="http://www.w3.org/2000/svg">
         <title>Paper Icon Theme</title>
         <defs>
             <filter id="a" x="-.028364" y="-.0208" width="1.0567" height="1.0416" colorInterpolationFilters="sRGB">

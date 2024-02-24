@@ -62,7 +62,7 @@ export default () => (
          id="stop5"
           />
       <stop
-         stop-opacity="0"
+         stopOpacity="0"
          offset="1"
          id="stop7" 
          />
@@ -106,12 +106,12 @@ export default () => (
      gradientUnits="userSpaceOnUse"
      >
     <stop
-       stop-color="#f0f0f0"
+       stopColor="#f0f0f0"
        offset="0"
        id="stop15" 
        />
     <stop
-       stop-color="#fcfcfc"
+       stopColor="#fcfcfc"
        offset="1"
        id="stop17" 
        />
@@ -126,13 +126,13 @@ export default () => (
      gradientUnits="userSpaceOnUse"
      >
     <stop
-       stop-color="#f3f3f3"
+       stopColor="#f3f3f3"
        offset="0"
        id="stop20"
         />
     <stop
-       stop-color="#fcfcfc"
-       stop-opacity="0"
+       stopColor="#fcfcfc"
+       stopOpacity="0"
        offset="1"
        id="stop22" 
        />
@@ -206,7 +206,7 @@ export default () => (
          filter="url(#c)"
          opacity=".2"
          stroke="#000"
-         stroke-width="2"
+         strokeWidth="2"
          id="path39"
           />
       <rect
