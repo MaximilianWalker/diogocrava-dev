@@ -35,7 +35,7 @@ const Explorer = forwardRef(({
     resizable,
     ...props
 }, ref) => {
-    const defaultPath = '/';
+    const defaultPath = '/home/diogo';
 
     // System Data
     const [sections, setSections] = useState();
@@ -67,22 +67,32 @@ const Explorer = forwardRef(({
         setCurrentDirectory(result);
     };
 
-    const changeDirectory = (path) => {
+    const getDirectory = (path) => {
+        if (path === '/') return system;
+
         const directories = path.substring(1).split('/');
         let currentDirectory = system;
         for (const directory of directories) {
-            const subDirectory = currentDirectory.children?.find((child) => child.name === directory);
-            if (subDirectory) {
-                currentDirectory = subDirectory;
-            } else {
-                setPath(history[historyIndex]);
-                throwErrorWindow('Error Code: 404', 'Directory not found!');
+            const subDirectory = currentDirectory.find((child) => child.name === directory);
+            if (subDirectory)
+                currentDirectory = subDirectory.children ?? [];
+            else
                 return;
-            }
         }
-        setCurrentDirectory(currentDirectory);
-        setHistory(prevHistory => [...prevHistory, path]);
-        setHistoryIndex(prevIndex => prevIndex + 1);
+        return currentDirectory;
+    }
+
+    const changeDirectory = (path) => {
+        const currentDirectory = getDirectory(path);
+        if (!currentDirectory) {
+            setPath(history[historyIndex]);
+            throwErrorWindow('Error Code: 404', 'Directory not found!');
+        } else {
+            setCurrentDirectory(currentDirectory);
+            setPath(path);
+            setHistory(prevHistory => [...prevHistory.slice(0, historyIndex + 1), path]);
+            setHistoryIndex(prevIndex => prevIndex + 1);
+        }
     };
 
     const onItemClick = (e, index) => {
@@ -106,13 +116,7 @@ const Explorer = forwardRef(({
         setSelectedItems([]);
     };
 
-    const onFolderClick = (folder) => {
-        const newPath = `${path}/${folder.name}`;
-        setPath(newPath);
-        changeDirectory(newPath);
-        setHistory((prevHistory) => [...prevHistory, newPath]);
-        setHistoryIndex(prevIndex => prevIndex + 1);
-    };
+    const onFolderClick = (folder) => changeDirectory(path.length === 1 ? `/${folder.name}` : `${path}/${folder.name}`);
 
     const onFileClick = () => {
 
@@ -123,7 +127,8 @@ const Explorer = forwardRef(({
     };
 
     const onBackClick = () => {
-
+        changeDirectory(history[historyIndex - 1]);
+        setHistoryIndex(prevIndex => prevIndex - 1);
     };
 
     const onForwardClick = () => {
@@ -138,9 +143,14 @@ const Explorer = forwardRef(({
         getSystemData();
     }, []);
 
+    useEffect(() => {
+        if (system)
+            setCurrentDirectory(getDirectory(defaultPath));
+    }, [system])
+
     // meter seta para a direita no fim do path para poderem navegar para o novo endereço com o rato
     // meter os paddings correctos
-    // substituir o topo das windows por icons em vez de ">_"
+    // meter a palavra empty caso a pasta seja vazia
     return (
         <>
             <Window
@@ -154,12 +164,12 @@ const Explorer = forwardRef(({
             >
                 <div className="explorer__topbar">
                     <div className="explorer__button-group">
-                        <button
+                        {/* <button
                             className="window__icon-button"
                             onClick={onHomeClick}
                         >
                             <Home />
-                        </button>
+                        </button> */}
                         <button
                             className="window__icon-button"
                             onClick={onBackClick}
@@ -173,13 +183,13 @@ const Explorer = forwardRef(({
                         >
                             <ChevronRight />
                         </button>
-                        <button
+                        {/* <button
                             className="window__icon-button"
                             disabled={historyIndex === 0}
                             onClick={onForwardClick}
                         >
                             <RefreshCcw />
-                        </button>
+                        </button> */}
                     </div>
                     <Input
                         className="explorer__path"
@@ -193,6 +203,11 @@ const Explorer = forwardRef(({
                     <Input
                         className="explorer__search"
                         startIcon={Search}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter');
+                        }}
                     />
                 </div>
                 <div className="explorer__sidebar">
@@ -205,13 +220,7 @@ const Explorer = forwardRef(({
                     {
                         currentDirectory ?
                             currentDirectory.map((child, index) => {
-                                const Icon = (
-                                    child.icon ?
-                                        getIconByName(child.icon) :
-                                        child.type === 'file' ?
-                                            getIconByMimetype(child.mimetype) :
-                                            getIconByName('DarkFolder')
-                                );
+                                const Icon = getIconByName(child.icon) ?? (child.type === 'file' ? getIconByMimetype(child.mimetype) : getIconByName('DarkFolder'));
                                 return (
                                     <div
                                         key={index}
@@ -227,7 +236,7 @@ const Explorer = forwardRef(({
                                 );
                             })
                             :
-                            <Loading />
+                            <Loading className="explorer__loading" />
                     }
                 </div>
             </Window>

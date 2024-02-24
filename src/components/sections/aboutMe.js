@@ -45,14 +45,19 @@ const AboutMe = ({ active, ...props }) => {
                     code={aboutMe}
                     language="xml"
                 /> */}
-                {
-                    aboutMe?.split('\n').map((paragraph, index) => (
-                        paragraph.replace(/\n/g, ' ') !== '' ?
-                            <p key={index} style={{ whiteSpace: 'pre-wrap', margin: '4px' }}>{paragraph}</p>
-                            :
-                            <br />
-                    ))
-                }
+                {/* {
+                    aboutMe ?
+                        Object.entries(aboutMe).map(([key, value]) => (
+                            <p key={key}><b>{key}:</b> {
+                                typeof value === 'string' ?
+                                    value
+                                    :
+
+                            }</p>
+                        ))
+                        :
+                        null
+                } */}
             </Window>
 
             <Explorer

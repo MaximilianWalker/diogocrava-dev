@@ -5,7 +5,7 @@ export default () => (
                 <feGaussianBlur stdDeviation="0.20637525" />
             </filter>
         </defs>
-        <g fill-rule="evenodd">
+        <g fillRule="evenodd">
             <path transform="scale(3.7796)" d="m3.4395 1.3543c-0.73289 0-1.3229 0.59001-1.3229 1.3229v12.171c0 0.73289 0.59001 1.3229 1.3229 1.3229h10.054c0.73289 0 1.3229-0.59001 1.3229-1.3229v-10.319l-3.175-3.175z" filter="url(#a)" opacity=".15" strokeWidth=".26458" style="paint-order:stroke fill markers" />
             <g transform="scale(3.7796)">
                 <path transform="scale(.26458)" d="m13 4c-2.77 0-5 2.23-5 5v46c0 2.77 2.23 5 5 5h38c2.77 0 5-2.23 5-5v-39l-12-12z" fill="#1facf5" style="paint-order:stroke fill markers" />

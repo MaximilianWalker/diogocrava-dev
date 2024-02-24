@@ -36,8 +36,10 @@ export function getIconByName(name) {
 }
 
 export function getIconByMimetype(mimetype) {
+    if (!mimetype)
+        return MIMETYPES_ICONS["application/generic"];
+
     const icon = MIMETYPES_ICONS[mimetype];
     const genericIcon = MIMETYPES_ICONS[`${mimetype.split("/")[0]}/generic`];
-    const defaultIcon = MIMETYPES_ICONS["application/generic"];
-    return icon || genericIcon || defaultIcon;
+    return icon || genericIcon;
 };

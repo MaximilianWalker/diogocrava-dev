@@ -8,7 +8,7 @@ export default () => (
                 <feGaussianBlur stdDeviation="0.20637525" />
             </filter>
         </defs>
-        <g fill-rule="evenodd">
+        <g fillRule="evenodd">
             <path d="m15.875 3.6932c0-0.73289-0.59001-1.3229-1.3229-1.3229h-12.171c-0.73289 0-1.3229 0.59001-1.3229 1.3229v10.054c0 0.73289 0.59001 1.3229 1.3229 1.3229h10.319l3.175-3.175z" filter="url(#b)" opacity=".15" strokeWidth=".26458" style="paint-order:stroke fill markers" />
             <path d="m15.875 3.4395c0-0.73289-0.59001-1.3229-1.3229-1.3229h-12.171c-0.73289 0-1.3229 0.59001-1.3229 1.3229v10.054c0 0.73289 0.59001 1.3229 1.3229 1.3229h10.319l3.175-3.175z" fill="#5e35b1" strokeWidth=".26458" style="paint-order:stroke fill markers" />
             <path d="m12.7 14.816 3.1749-3.1749h-1.852c-0.73288 0-1.3229 0.59001-1.3229 1.3229z" fill="#fff" opacity=".35" style="paint-order:stroke fill markers" />

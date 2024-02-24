@@ -20,7 +20,7 @@ export default () => (
         <rect x="7" y="56.04" width="50" height="5" ry="0" fill="url(#c)" opacity=".1" strokeWidth="1.4088" />
         <rect x="4" y="17.04" width="56" height="39" rx="2" ry="2.0001" fill="#686868" strokeWidth="1.4241" />
         <path d="m4 53.039v1c0 1.1081 0.892 2 2 2h52c1.108 0 2-0.89194 2-2v-1c0 1.108-0.892 2-2 2h-52c-1.108 0-2-0.892-2-2z" opacity=".15" strokeWidth="1.4241" />
-        <path d="m43.316 31.34c2.4853 0 4.5 2.0148 4.5 4.5s-2.0147 4.5-4.5 4.5-4.5-2.0148-4.5-4.5 2.0147-4.5 4.5-4.5zm3.45e-4 12c8.9997 0 8.9997 6.0051 8.9997 6.0051v1.9949h-18v-1.9949s0-6 9.0003-6.0051z" color="#000000" filter="url(#d)" opacity=".15" style="text-decoration-line:none;text-indent:0;text-transform:none" />
-        <path d="m43 31.04c2.4853 0 4.5 2.0148 4.5 4.5s-2.0147 4.5-4.5 4.5-4.5-2.0148-4.5-4.5 2.0147-4.5 4.5-4.5zm3.45e-4 12c8.9997 0 8.9997 6.0051 8.9997 6.0051v1.9949h-18v-1.9949s0-6 9.0003-6.0051z" color="#000000" fill="#fff" style="text-decoration-line:none;text-indent:0;text-transform:none" />
+        <path d="m43.316 31.34c2.4853 0 4.5 2.0148 4.5 4.5s-2.0147 4.5-4.5 4.5-4.5-2.0148-4.5-4.5 2.0147-4.5 4.5-4.5zm3.45e-4 12c8.9997 0 8.9997 6.0051 8.9997 6.0051v1.9949h-18v-1.9949s0-6 9.0003-6.0051z" color="#000000" filter="url(#d)" opacity=".15" style={{ textDecorationLine: 'none', textIndent: 0, textTransform: 'none' }} />
+        <path d="m43 31.04c2.4853 0 4.5 2.0148 4.5 4.5s-2.0147 4.5-4.5 4.5-4.5-2.0148-4.5-4.5 2.0147-4.5 4.5-4.5zm3.45e-4 12c8.9997 0 8.9997 6.0051 8.9997 6.0051v1.9949h-18v-1.9949s0-6 9.0003-6.0051z" color="#000000" fill="#fff" style={{ textDecorationLine: 'none', textIndent: 0, textTransform: 'none' }} />
     </svg>
 );

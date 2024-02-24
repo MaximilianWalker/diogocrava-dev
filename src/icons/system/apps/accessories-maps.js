@@ -18,7 +18,7 @@ export default () => (
         <rect transform="matrix(0,-1,-1,0,0,0)" x="-480" y="-480" width="448" height="448" rx="24" ry="24" fill="#d7ccc8" />
         <path d="m56 32c-13.296 0-24 10.704-24 24v2c0-13.296 10.704-24 24-24h400c13.296 0 24 10.704 24 24v-2c0-13.296-10.704-24-24-24z" fill="#fff" opacity=".1" />
         <path d="m456 480c13.296 0 24-10.704 24-24v-2c0 13.296-10.704 24-24 24h-400c-13.296 0-24-10.704-24-24v2c0 13.296 10.704 24 24 24z" opacity=".2" />
-        <g fill-rule="evenodd">
+        <g fillRule="evenodd">
             <path d="M 54.4,480 256,278.4 457.6,480 Z" fill="#2196f3" />
             <path d="M 480,457.6 278.4,256 480,54.4 Z" fill="#4caf50" />
             <path d="m275.8 236.2-39.598 39.598 204.2 204.2h15.598c13.296 0 24-10.704 24-24v-15.598l-204.2-204.2z" color="#000000" colorRendering="auto" dominantBaseline="auto" enableBackground="accumulate" fill="#feea3a" imageRendering="auto" shapeRendering="auto" solidColor="#000000" style="font-feature-settings:normal;font-variant-alternates:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-variant-numeric:normal;font-variant-position:normal;isolation:auto;mix-blend-mode:normal;shape-padding:0;text-decoration-color:#000000;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-orientation:mixed;text-transform:none;white-space:normal" />
