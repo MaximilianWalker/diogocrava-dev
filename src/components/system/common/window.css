@@ -138,6 +138,10 @@
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px 0px inset;
 }
 
+.window__icon-button:disabled svg {
+    stroke: gray;
+}
+
 .window__icon-button svg {
     width: 14px;
     height: 14px;

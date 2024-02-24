@@ -82,15 +82,17 @@ const Explorer = forwardRef(({
         return currentDirectory;
     }
 
-    const changeDirectory = (path) => {
-        const currentDirectory = getDirectory(path);
+    const changeDirectory = (newPath) => {
+        if (newPath === path) return;
+
+        const currentDirectory = getDirectory(newPath);
         if (!currentDirectory) {
             setPath(history[historyIndex]);
             throwErrorWindow('Error Code: 404', 'Directory not found!');
         } else {
             setCurrentDirectory(currentDirectory);
-            setPath(path);
-            setHistory(prevHistory => [...prevHistory.slice(0, historyIndex + 1), path]);
+            setPath(newPath);
+            setHistory(prevHistory => [...prevHistory.slice(0, historyIndex + 1), newPath]);
             setHistoryIndex(prevIndex => prevIndex + 1);
         }
     };
@@ -127,12 +129,23 @@ const Explorer = forwardRef(({
     };
 
     const onBackClick = () => {
-        changeDirectory(history[historyIndex - 1]);
+        if (historyIndex === 0) return;
+
+        const previousPath = history[historyIndex - 1];
+        const directory = getDirectory(previousPath);
+        setCurrentDirectory(directory);
+        setPath(previousPath);
         setHistoryIndex(prevIndex => prevIndex - 1);
     };
 
     const onForwardClick = () => {
+        if (historyIndex === history.length - 1) return;
 
+        const nextPath = history[historyIndex + 1];
+        const directory = getDirectory(nextPath);
+        setCurrentDirectory(directory);
+        setPath(nextPath);
+        setHistoryIndex(prevIndex => prevIndex + 1);
     };
 
     const throwErrorWindow = (title, message) => setErrors(prevErrors => [...prevErrors, { title, message }]);
@@ -146,7 +159,9 @@ const Explorer = forwardRef(({
     useEffect(() => {
         if (system)
             setCurrentDirectory(getDirectory(defaultPath));
-    }, [system])
+    }, [system]);
+
+    console.log(history, historyIndex);
 
     // meter seta para a direita no fim do path para poderem navegar para o novo endereço com o rato
     // meter os paddings correctos
@@ -172,13 +187,14 @@ const Explorer = forwardRef(({
                         </button> */}
                         <button
                             className="window__icon-button"
+                            disabled={historyIndex === 0}
                             onClick={onBackClick}
                         >
                             <ChevronLeft />
                         </button>
                         <button
                             className="window__icon-button"
-                            disabled={historyIndex === 0}
+                            disabled={historyIndex === history.length - 1}
                             onClick={onForwardClick}
                         >
                             <ChevronRight />
