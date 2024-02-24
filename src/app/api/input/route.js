@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
 		const cursor = await db.collection("inputs").find({ name: { $in: ids } }).sort({ timestamp: -1 });
 		const result = await cursor.toArray();
 
-		if (result.length !== ids.length)
+		if (result.length < ids.length)
 		    return new Response("Some inputs were not found!", { status: 400 });
 
 		return Response.json(result);

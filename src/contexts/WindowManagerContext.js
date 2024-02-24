@@ -41,8 +41,6 @@ export const WindowManagerProvider = ({ children }) => {
 
     const resize = (id) => setAction({ id, type: ACTIONS.RESIZE });
 
-    console.log({ layers, action });
-
     return (
         <WindowManagerContext.Provider value={{
             layers,

@@ -1,5 +1,5 @@
 export default () => (
-    <svg width="16.933" height="16.933" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <svg viewBox="0 0 16.933 16.933" xmlns="http://www.w3.org/2000/svg" version="1.1">
         <defs>
             <filter colorInterpolationFilters="sRGB" height="1.0669" width="1.078" y="-0.03343" x="-0.039" id="a">
                 <feGaussianBlur stdDeviation="0.20638" />

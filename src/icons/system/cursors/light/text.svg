@@ -53,7 +53,7 @@
        y="-.16941"
        width="1.8229"
        height="1.3388"
-       color-interpolation-filters="sRGB">
+       colorInterpolationFilters="sRGB">
       <feGaussianBlur
          stdDeviation="1.2"
          id="feGaussianBlur2" />
@@ -68,21 +68,21 @@
       <path
          d="m271 164v3h2v11h-2v3h7v-3h-2v-11h2v-3z"
          color="#000000"
-         color-rendering="auto"
+         colorRendering="auto"
          filter="url(#a)"
-         image-rendering="auto"
+         imageRendering="auto"
          opacity=".35"
-         shape-rendering="auto"
-         solid-color="#000000"
+         shapeRendering="auto"
+         solidColor="#000000"
          style="isolation:auto;mix-blend-mode:normal;text-decoration-color:#000000;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-transform:none;white-space:normal"
          id="path7" />
       <path
          d="m271 164v1h2v13h-2v1h5v-1h-2v-13h2v-1z"
          fill="none"
          stroke="#323232"
-         stroke-linecap="round"
-         stroke-linejoin="round"
-         stroke-width="2"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+         strokeWidth="2"
          id="path9" />
       <path
          d="m271 164v1h2v13h-2v1h5v-1h-2v-13h2v-1z"

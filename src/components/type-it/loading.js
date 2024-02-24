@@ -6,7 +6,7 @@ import styles from './loading.module.css';
 
 const PAUSE_TIME = 600;
 
-export default ({ message = "LOADING" }) => {
+export default ({ className, message = "LOADING" }) => {
     const onAnimation = (instance) => {
         instance
             .type(".")
@@ -18,7 +18,7 @@ export default ({ message = "LOADING" }) => {
     };
 
     return (
-        <h1 className={styles.container}>
+        <h1 className={`${styles.container} ${className}`}>
             <TypeIt
                 className={styles.text}
                 options={{

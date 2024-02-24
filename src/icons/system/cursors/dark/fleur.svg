@@ -58,7 +58,7 @@
        y="-.12"
        width="1.24"
        height="1.24"
-       color-interpolation-filters="sRGB">
+       colorInterpolationFilters="sRGB">
       <feGaussianBlur
          stdDeviation="1.1000633"
          id="feGaussianBlur2" />

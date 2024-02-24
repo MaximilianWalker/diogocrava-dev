@@ -1,5 +1,57 @@
 .error-window {
-    --window-background-color: rgba(188, 37, 37, 0.95);
+    --window-background: linear-gradient(180deg, rgba(121,9,9,1) 0%, rgba(164,0,12,1) 100%);
+    --window-background-color: rgba(121, 9, 9, 1);
 
-    z-index: 300;
+    top: calc(50% - (510px / 2));
+    left: calc(50% - (885px / 2));
+}
+
+.error-window>.window__content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.error-container>svg {
+    width: 50px !important;
+    aspect-ratio: 1;
+}
+
+.error-text-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.error-title, .error-message {
+    color: white;
+    margin: 0px;
+}
+
+.error-title {
+    font-size: 20px;
+}
+
+.error-message {
+    font-size: 15px;
+}
+
+.error-button {
+    /* --primary: rgba(	255	152	0) !important; */
+    --secondary: rgb(121, 9, 9) !important;
+    --height: 35px !important;
+    --font-size: 16px !important;
+    --corner-clip-size: 10px !important;
+    --padding: 18px !important;
+
+    margin-top: 10px !important;
 }

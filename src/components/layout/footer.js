@@ -19,12 +19,12 @@ export default ({ }) => {
                 <MenuButton
                     icon={Apps}
                     text="APP STORE"
-                    tag="1.0"
+                    expandable
                 />
                 <MenuButton
                     icon={Terminal}
                     text="TERMINAL"
-                    tag="1.0"
+                    expandable
                     onClick={() => toggle('terminal')}
                 />
             </div>

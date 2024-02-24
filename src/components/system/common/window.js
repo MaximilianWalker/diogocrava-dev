@@ -14,6 +14,7 @@ const Window = forwardRef(({
     className,
     id,
     name,
+    icon: Icon,
     defaultOpen,
     open: openProp,
     initialPosition,
@@ -153,9 +154,11 @@ const Window = forwardRef(({
                 <div
                     ref={tabRef}
                     className="window__tab"
+                    data-icon={!!Icon}
                     onMouseDown={draggable ? onDragMouseDown : undefined}
                     style={{ cursor: draggable ? isDragging ? 'grabbing' : 'grab' : 'default' }}
                 >
+                    {Icon ? <Icon /> : null}
                     <span><b>{name}</b></span>
                     {
                         maximizable ?
