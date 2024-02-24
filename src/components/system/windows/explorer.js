@@ -10,6 +10,7 @@ import FileViewer from './file-viewer';
 import Input from "../common/input";
 import Loading from "@/components/type-it/loading";
 import { getIconByName, getIconByMimetype } from '@/utils/iconUtils';
+import { DarkFileManager } from "@/icons/system";
 import './explorer.css';
 
 // const fileExample = {
@@ -65,15 +66,18 @@ const Explorer = forwardRef(({
     };
 
     const changeDirectory = (path) => {
-        const directories = path.split('/').slice(1);
+        const directories = path.substring(1).split('/');
         let currentDirectory = system;
         for (const directory of directories) {
             const subDirectory = currentDirectory.children?.find((child) => child.name === directory);
-            if (subDirectory)
+            if (subDirectory) {
                 currentDirectory = subDirectory;
-            else
-                throwErrorWindow('404', 'Directory not found!');
+            } else {
+                throwErrorWindow('Error Code: 404', 'Directory not found!');
+                return;
+            }
         }
+        setCurrentDirectory(currentDirectory);
     };
 
     const onItemClick = (e, index) => {
@@ -89,7 +93,7 @@ const Explorer = forwardRef(({
             if (item.type === 'file')
                 onFileClick(item);
         } else {
-            throwErrorWindow('401','You don\'t have access to this item!');
+            throwErrorWindow('Error Code: 401', 'You don\'t have access to this item!');
         }
     };
 
@@ -137,7 +141,8 @@ const Explorer = forwardRef(({
             <Window
                 ref={ref}
                 className={`explorer ${className}`}
-                name=">_ Explorer"
+                icon={DarkFileManager}
+                name="Explorer"
                 draggable={draggable}
                 resizable={resizable}
                 {...props}

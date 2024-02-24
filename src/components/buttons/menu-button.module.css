@@ -11,7 +11,7 @@
   --icon-size: 24px;
   --padding: 20px;
   --corner-clip-size: 15px;
-  --text-clip-right-padding: 3px;
+  /* --text-clip-right-padding: 3px; */
   --border: 4px;
   --clip: polygon(0 0,
       calc(100% - var(--corner-clip-size)) 0,

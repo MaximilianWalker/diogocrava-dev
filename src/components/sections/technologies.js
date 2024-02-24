@@ -14,19 +14,19 @@ const Technologies = ({ children, ...props }) => {
         <div className={styles.container}>
             {/* <Window
                 className={styles['mask-window']}
-                name=">_ ? ? ?"
+                name="? ? ?"
                 draggable
             >
             </Window>
             <Window
                 className={styles['about-me-window']}
-                name=">_ About Me"
+                name="About Me"
                 draggable
             >
             </Window>
             <Window
                 className={styles['location-window']}
-                name=">_ Location"
+                name="Location"
                 initialPosition={{
                     x: 'var(--windows-gap)',
                     y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
@@ -36,7 +36,7 @@ const Technologies = ({ children, ...props }) => {
             </Window>
             <Window
                 className={styles['location-window']}
-                name=">_ Location"
+                name="Location"
                 draggable
             >
             </Window> */}

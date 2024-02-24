@@ -1,4 +1,4 @@
-<svg width="64" height="64" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg">
  <defs>
   <radialGradient id="b" cx="32" cy="1021.9" r="25" gradientTransform="matrix(-1 0 0 -.080001 64 137.7)" gradientUnits="userSpaceOnUse">
    <stop offset="0"/>

@@ -24,7 +24,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['mask-window']}
                 id="mask-window"
-                name=">_ ? ? ?"
+                name="? ? ?"
                 defaultOpen
                 draggable
                 resizable
@@ -34,7 +34,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['about-me-window']}
                 id="about-me-window"
-                name=">_ About Me"
+                name="About Me"
                 style={{ justifyContent: 'space-around' }}
                 defaultOpen
                 draggable
@@ -66,7 +66,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['status-window']}
                 id="status-window"
-                name=">_ Status"
+                name="Status"
                 defaultOpen
                 draggable
                 resizable
@@ -75,7 +75,7 @@ const AboutMe = ({ active, ...props }) => {
             <Window
                 className={styles['location-window']}
                 id="location-window"
-                name=">_ Location"
+                name="Location"
                 defaultOpen
                 draggable
                 resizable

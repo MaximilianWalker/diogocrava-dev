@@ -1,4 +1,4 @@
-<svg width="64" height="64" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <g transform="translate(0,1)" stroke-width=".5">
   <g id="a" transform="matrix(4,0,0,4,-222,-1044)" enable-background="new" stroke-width=".5">
    <rect transform="matrix(0,-1,-1,0,0,0)" x="-266.5" y="-70.5" width="4.5" height="14" rx=".5" ry=".5" fill="#787c82"/>

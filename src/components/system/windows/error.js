@@ -15,7 +15,7 @@ const Error = forwardRef(({ className, title, message, onClose, props }, ref) =>
             ref={ref}
             id={id}
             className={`error-window ${className}`}
-            name=">_ Error"
+            name="Error"
             defaultOpen
             draggable
             {...props}

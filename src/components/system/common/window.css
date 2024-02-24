@@ -10,12 +10,16 @@
     --tab-text-margin: 10px;
     --tab-triangle-width: 30px;
 
+    --text-color: white;
+    --text-color-hover: white;
+
     position: absolute;
     display: flex;
     flex-direction: column;
     width: max-content;
     height: max-content;
     z-index: 100;
+    color: var(--text-color);
 }
 
 .window__content, .window__tab {
@@ -68,31 +72,37 @@
 
 .window__tab::before {
     left: calc(-1 * var(--tab-triangle-width));
-    background-image: linear-gradient(
-        to bottom right,
-        transparent calc(50%),
-        var(--window-border-color) 50%,
-        var(--window-border-color) calc(50% + var(--window-border-size)),
-        var(--window-background-color) calc(50% + var(--window-border-size))
-    );
+    background-image: linear-gradient(to bottom right,
+            transparent calc(50%),
+            var(--window-border-color) 50%,
+            var(--window-border-color) calc(50% + var(--window-border-size)),
+            var(--window-background-color) calc(50% + var(--window-border-size)));
     background-position: left;
 }
 
 .window__tab::after {
     right: calc(-1 * var(--tab-triangle-width));
-    background-image: linear-gradient(
-        to bottom left,
-        transparent calc(50%),
-        var(--window-border-color) 50%,
-        var(--window-border-color) calc(50% + var(--window-border-size)),
-        var(--window-background-color) calc(50% + var(--window-border-size))
-    );
+    background-image: linear-gradient(to bottom left,
+            transparent calc(50%),
+            var(--window-border-color) 50%,
+            var(--window-border-color) calc(50% + var(--window-border-size)),
+            var(--window-background-color) calc(50% + var(--window-border-size)));
     background-position: right;
 }
 
-.window__tab span {
+.window__tab>* {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.window__tab>svg {
+    height: 20px;
+    aspect-ratio: 1;
+    margin-left: var(--tab-text-margin);
+    fill: var(--text-color);
+}
+
+.window__tab>span {
     margin-left: var(--tab-text-margin);
     margin-right: var(--tab-text-margin);
     height: max-content;

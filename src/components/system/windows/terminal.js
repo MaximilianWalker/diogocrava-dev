@@ -12,6 +12,7 @@ import Window from "@/components/system/common/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 import { useWindowManager } from "@/contexts/WindowManagerContext";
+import TerminalIcon from '@/icons/custom/terminal';
 
 const AI_LOADING_INTERVAL = 400;
 
@@ -220,7 +221,8 @@ export default function Terminal({ }) {
         <Window
             className={styles.container}
             id="terminal"
-            name=">_ Terminal"
+            name="Terminal"
+            icon={TerminalIcon}
             // open={open}
             draggable
             maximizable
