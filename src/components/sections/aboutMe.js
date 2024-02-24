@@ -58,6 +58,7 @@ const AboutMe = ({ active, ...props }) => {
                         :
                         null
                 } */}
+                {/* k */}
             </Window>
 
             <Explorer
