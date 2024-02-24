@@ -35,6 +35,8 @@ const Explorer = forwardRef(({
     resizable,
     ...props
 }, ref) => {
+    const defaultPath = '/';
+
     // System Data
     const [sections, setSections] = useState();
     const [system, setSystem] = useState();
@@ -45,11 +47,11 @@ const Explorer = forwardRef(({
     const [selectedItems, setSelectedItems] = useState([]);
 
     // Inputs
-    const [path, setPath] = useState('/');
+    const [path, setPath] = useState(defaultPath);
     const [search, setSearch] = useState('');
 
     // History
-    const [history, setHistory] = useState(['/']);
+    const [history, setHistory] = useState([defaultPath]);
     const [historyIndex, setHistoryIndex] = useState(0);
 
     // Windows
@@ -73,11 +75,14 @@ const Explorer = forwardRef(({
             if (subDirectory) {
                 currentDirectory = subDirectory;
             } else {
+                setPath(history[historyIndex]);
                 throwErrorWindow('Error Code: 404', 'Directory not found!');
                 return;
             }
         }
         setCurrentDirectory(currentDirectory);
+        setHistory(prevHistory => [...prevHistory, path]);
+        setHistoryIndex(prevIndex => prevIndex + 1);
     };
 
     const onItemClick = (e, index) => {
