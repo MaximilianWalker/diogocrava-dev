@@ -4,13 +4,13 @@ export default () => (
             <clipPath id="d">
                 <path d="m207 224c-1.662 0-3 1.338-3 3v50c0 1.662 1.338 3 3 3h29l24-24v-29c0-1.662-1.338-3-3-3z" fill="#fecd38" />
             </clipPath>
-            <filter id="c" x="-.022286" y="-.026" width="1.0446" height="1.052" color-interpolation-filters="sRGB">
+            <filter id="c" x="-.022286" y="-.026" width="1.0446" height="1.052" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="4.16" />
             </filter>
-            <filter id="b" x="-.022286" y="-.026" width="1.0446" height="1.052" color-interpolation-filters="sRGB">
+            <filter id="b" x="-.022286" y="-.026" width="1.0446" height="1.052" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="4.16" />
             </filter>
-            <filter id="a" x="-.06" y="-.06" width="1.12" height="1.12" color-interpolation-filters="sRGB">
+            <filter id="a" x="-.06" y="-.06" width="1.12" height="1.12" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.6" />
             </filter>
         </defs>

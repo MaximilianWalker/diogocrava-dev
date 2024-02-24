@@ -1,16 +1,16 @@
 export default () => (
     <svg viewBox="0 0 512 512" enable-background="new" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns: osb="http://www.openswatchbook.org/uri/2009/osb" xmlns: xlink="http://www.w3.org/1999/xlink">
         <defs>
-            <filter id="e" x="-.165" y="-.165" width="1.33" height="1.33" color-interpolation-filters="sRGB">
+            <filter id="e" x="-.165" y="-.165" width="1.33" height="1.33" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="2.2" />
             </filter>
-            <filter id="d" x="-.165" y="-.165" width="1.33" height="1.33" color-interpolation-filters="sRGB">
+            <filter id="d" x="-.165" y="-.165" width="1.33" height="1.33" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="2.2" />
             </filter>
-            <filter id="c" x="-.165" y="-.165" width="1.33" height="1.33" color-interpolation-filters="sRGB">
+            <filter id="c" x="-.165" y="-.165" width="1.33" height="1.33" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="2.2" />
             </filter>
-            <filter id="b" x="-.023571" y="-.024444" width="1.0471" height="1.0489" color-interpolation-filters="sRGB">
+            <filter id="b" x="-.023571" y="-.024444" width="1.0471" height="1.0489" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="4.4" />
             </filter>
         </defs>

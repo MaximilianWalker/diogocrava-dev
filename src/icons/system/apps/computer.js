@@ -1,10 +1,10 @@
 export default () => (
     <svg viewBox="0 0 512 512" enable-background="new" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink">
         <defs>
-            <filter id="a" x="-.022714" y="-.02544" width="1.0454" height="1.0509" color-interpolation-filters="sRGB">
+            <filter id="a" x="-.022714" y="-.02544" width="1.0454" height="1.0509" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="4.24" />
             </filter>
-            <filter id="c" color-interpolation-filters="sRGB">
+            <filter id="c" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="2.4" />
             </filter>
             <linearGradient id="f" x1="-180" x2="-228" y1="-472" y2="-472" gradientTransform="translate(14)" gradientUnits="userSpaceOnUse">

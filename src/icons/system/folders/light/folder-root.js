@@ -7,7 +7,7 @@ export default () => (
             </linearGradient>
             <linearGradient id="c" x1="31" x2="31" y1="1005.4" y2="1003.4" gradientTransform="matrix(.92593 0 0 1 2.3704 -988.36)" gradientUnits="userSpaceOnUse" />
             <radialGradient id="b" cx="32" cy="1021.9" r="25" gradientTransform="matrix(-1 0 0 -.080001 64 137.74)" gradientUnits="userSpaceOnUse" />
-            <filter id="d" x="-.036" y="-.036" width="1.072" height="1.072" color-interpolation-filters="sRGB">
+            <filter id="d" x="-.036" y="-.036" width="1.072" height="1.072" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.18" />
             </filter>
         </defs>

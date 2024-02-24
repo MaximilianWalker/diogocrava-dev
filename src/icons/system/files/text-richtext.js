@@ -4,7 +4,7 @@ export default () => (
             <clipPath id="a">
                 <path d="m102.92 44c-35.297 0-39.095 3.6254-38.922 38.994v146.01c-0.17299 35.368 3.6249 38.994 38.922 38.994h98.157c35.297 0 38.922-3.625 38.922-38.994v-146.01c0-35.369-3.6249-38.994-38.922-38.994z" color="#000000" fill="url(#linearGradient3288)" />
             </clipPath>
-            <filter id="b" x="-.039001" y="-.033428" width="1.078" height="1.0669" color-interpolation-filters="sRGB">
+            <filter id="b" x="-.039001" y="-.033428" width="1.078" height="1.0669" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.20637525" />
             </filter>
         </defs>

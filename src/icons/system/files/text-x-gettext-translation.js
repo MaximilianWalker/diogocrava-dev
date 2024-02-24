@@ -1,13 +1,13 @@
 export default () => (
     <svg viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <filter id="a" x="-.039001" y="-.033428" width="1.078" height="1.0669" color-interpolation-filters="sRGB">
+            <filter id="a" x="-.039001" y="-.033428" width="1.078" height="1.0669" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.20637525" />
             </filter>
-            <filter id="c" x="-.036" y="-.036" width="1.072" height="1.072" color-interpolation-filters="sRGB">
+            <filter id="c" x="-.036" y="-.036" width="1.072" height="1.072" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.3" />
             </filter>
-            <filter id="b" x="-.06" y="-.06" width="1.12" height="1.12" color-interpolation-filters="sRGB">
+            <filter id="b" x="-.06" y="-.06" width="1.12" height="1.12" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.5" />
             </filter>
         </defs>

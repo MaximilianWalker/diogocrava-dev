@@ -1,7 +1,7 @@
 export default () => (
     <svg width="512" height="512" enable-background="new" version="1.0" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <filter id="a" x="-.026933" y="-.021643" width="1.0539" height="1.0433" color-interpolation-filters="sRGB">
+            <filter id="a" x="-.026933" y="-.021643" width="1.0539" height="1.0433" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="4.04" />
             </filter>
         </defs>

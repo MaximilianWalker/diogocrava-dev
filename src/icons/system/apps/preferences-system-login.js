@@ -41,7 +41,7 @@ export default () => (
        y="-0.025439999"
        width="1.0454286"
        height="1.05088"
-       color-interpolation-filters="sRGB"
+       colorInterpolationFilters="sRGB"
        >
       <feGaussianBlur
          stdDeviation="4.24"
@@ -69,7 +69,7 @@ export default () => (
     </linearGradient>
     <filter
        id="c"
-       color-interpolation-filters="sRGB"
+       colorInterpolationFilters="sRGB"
        x="-0.030000001"
        y="-inf"
        width="1.06"

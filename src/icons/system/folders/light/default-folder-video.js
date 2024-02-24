@@ -5,7 +5,7 @@ export default () => (
                 <stop offset="0" />
                 <stop stop-opacity="0" offset="1" />
             </linearGradient>
-            <filter id="d" x="-.03" y="-.045" width="1.06" height="1.09" color-interpolation-filters="sRGB">
+            <filter id="d" x="-.03" y="-.045" width="1.06" height="1.09" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.3" />
             </filter>
             <linearGradient id="b" x1="31" x2="31" y1="1005.4" y2="1003.4" gradientTransform="matrix(.92593 0 0 1 2.3704 -988.36)" gradientUnits="userSpaceOnUse" />

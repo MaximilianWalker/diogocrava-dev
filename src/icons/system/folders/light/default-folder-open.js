@@ -7,7 +7,7 @@ export default () => (
                 <stop stop-opacity="0" offset="1" />
             </linearGradient>
             <radialGradient id="b" cx="32" cy="1021.9" r="25" gradientTransform="matrix(-1 0 0 -.080001 64 137.74)" gradientUnits="userSpaceOnUse" />
-            <filter id="d" x="-.046837" y="-.028823" width="1.0937" height="1.0576" color-interpolation-filters="sRGB">
+            <filter id="d" x="-.046837" y="-.028823" width="1.0937" height="1.0576" colorInterpolationFilters="sRGB">
                 <feGaussianBlur stdDeviation="0.31224941" />
             </filter>
         </defs>
