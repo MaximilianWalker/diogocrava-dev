@@ -1,7 +1,7 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "react";
+import { useEffect, useState, useRef, useCallback, forwardRef, useMemo, Fragment } from "react";
 import { Home, ChevronLeft, ChevronRight, Folder, Search, RefreshCcw } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from '../common/window';
@@ -13,20 +13,39 @@ import { getIconByName, getIconByMimetype } from '@/utils/iconUtils';
 import { DarkFileManager } from "@/icons/system";
 import './explorer.css';
 
-// const fileExample = {
-//     type: 'file',
-//     name: 'cv.txt',
-//     icon: '',
-//     access: false
-// }
+const ExplorerItem = forwardRef(({ icon, name, type, mimetype, selected, onClick, onDoubleClick }, ref) => {
+    const Icon = getIconByName(icon) ?? (
+        type === 'file' ?
+            getIconByMimetype(mimetype)
+            :
+            getIconByName('DarkFolder')
+    );
+    return (
+        <div
+            ref={ref}
+            className="explorer__item"
+            data-selected={selected}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
+        >
+            <Icon />
+            <span>{name}</span>
+        </div>
+    );
+});
 
-// const folderExample = {
-//     type: 'file',
-//     name: 'Home',
-//     icon: '',
-//     access: false,
-//     children: []
-// }
+const SidebarLink = forwardRef(({ name, icon, onClick }, ref) => {
+    const Icon = getIconByName(icon);
+    return (
+        <button
+            className="explorer__sidebar__link"
+            onClick={onClick}
+        >
+            <Icon />
+            <span>{name}</span>
+        </button>
+    );
+});
 
 const Explorer = forwardRef(({
     className,
@@ -60,11 +79,15 @@ const Explorer = forwardRef(({
 
     const itemsRefs = useRef({});
 
-    const getSystemData = async () => {
-        const response = await fetch('/api/system/directories');
-        const result = await response.json();
+    const getData = async () => {
+        let response = await fetch('/api/system/directories');
+        let result = await response.json();
         setSystem(result);
         setCurrentDirectory(result);
+
+        response = await fetch('/api/system/explorer-sections');
+        result = await response.json();
+        setSections(result);
     };
 
     const getDirectory = (path) => {
@@ -83,7 +106,8 @@ const Explorer = forwardRef(({
     }
 
     const changeDirectory = (newPath) => {
-        if (newPath === path) return;
+        if (newPath === history[historyIndex]) return;
+        if (newPath.replace(' ', '') === '') newPath = '/';
 
         const currentDirectory = getDirectory(newPath);
         if (!currentDirectory) {
@@ -124,9 +148,17 @@ const Explorer = forwardRef(({
 
     };
 
-    const onHomeClick = () => {
-
+    const onSectionClick = (index) => {
+        setSections((prevSections) => (
+            prevSections.map((section, i) => (
+                i === index ? { ...section, open: !section.open } : section
+            ))
+        ));
     };
+
+    // const onHomeClick = () => {
+
+    // };
 
     const onBackClick = () => {
         if (historyIndex === 0) return;
@@ -153,15 +185,13 @@ const Explorer = forwardRef(({
     const closeErrorWindow = (index) => setErrors(prevErrors => prevErrors.filter((_, i) => i !== index));
 
     useEffect(() => {
-        getSystemData();
+        getData();
     }, []);
 
     useEffect(() => {
         if (system)
             setCurrentDirectory(getDirectory(defaultPath));
     }, [system]);
-
-    console.log(history, historyIndex);
 
     // meter seta para a direita no fim do path para poderem navegar para o novo endereço com o rato
     // meter os paddings correctos
@@ -215,6 +245,7 @@ const Explorer = forwardRef(({
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') changeDirectory(path);
                         }}
+                        onBlur={() => setPath(history[historyIndex])}
                     />
                     <Input
                         className="explorer__search"
@@ -227,7 +258,25 @@ const Explorer = forwardRef(({
                     />
                 </div>
                 <div className="explorer__sidebar">
-
+                    {
+                        sections?.map((section, i) => (
+                            <Fragment key={`section-${i}`}>
+                                <span className="explorer__sidebar__section">
+                                    {section.name}
+                                </span>
+                                {
+                                    section.links.map((link, j) => (
+                                        <SidebarLink
+                                            key={`link-${j}`}
+                                            className="explorer__sidebar__link"
+                                            onClick={() => changeDirectory(link.path)}
+                                            {...link}
+                                        />
+                                    ))
+                                }
+                            </Fragment>
+                        ))
+                    }
                 </div>
                 <div
                     className="explorer__content"
@@ -235,22 +284,17 @@ const Explorer = forwardRef(({
                 >
                     {
                         currentDirectory ?
-                            currentDirectory.map((child, index) => {
-                                const Icon = getIconByName(child.icon) ?? (child.type === 'file' ? getIconByMimetype(child.mimetype) : getIconByName('DarkFolder'));
-                                return (
-                                    <div
-                                        key={index}
-                                        ref={(ref) => itemsRefs.current[index] = ref}
-                                        className="explorer__item"
-                                        data-selected={selectedItems.includes(index)}
-                                        onClick={(e) => onItemClick(e, index)}
-                                        onDoubleClick={() => onItemDoubleClick(child)}
-                                    >
-                                        <Icon />
-                                        <span>{child.name}</span>
-                                    </div>
-                                );
-                            })
+                            currentDirectory.map((child, index) => (
+                                <ExplorerItem
+                                    key={`item-${index}`}
+                                    ref={(ref) => itemsRefs.current[index] = ref}
+                                    className="explorer__item"
+                                    selected={selectedItems.includes(index)}
+                                    onClick={(e) => onItemClick(e, index)}
+                                    onDoubleClick={() => onItemDoubleClick(child)}
+                                    {...child}
+                                />
+                            ))
                             :
                             <Loading className="explorer__loading" />
                     }

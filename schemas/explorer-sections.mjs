@@ -30,7 +30,7 @@ async function create(db) {
                                     description: "'name' must be a string and is required"
                                 },
                                 icon: {
-                                    bsonType: "string",
+                                    bsonType: ["null", "string"],
                                     description: "'icon' must be a string and is required"
                                 },
                                 order: {

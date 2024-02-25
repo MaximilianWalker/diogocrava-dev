@@ -3,6 +3,7 @@ import DarkFolder from "./folders/dark/default-folder";
 import DarkFolderCloud from "./folders/dark/default-folder-cloud";
 import DarkFolderDocuments from "./folders/dark/default-folder-documents";
 import DarkFolderDownload from "./folders/dark/default-folder-download";
+import DarkFolderGithub from "./folders/dark/default-folder-github";
 import DarkFolderLocked from "./folders/dark/default-folder-locked";
 import DarkFolderMusic from "./folders/dark/default-folder-music";
 import DarkFolderOpen from "./folders/dark/default-folder-open";
@@ -48,6 +49,7 @@ export {
     DarkFolderCloud,
     DarkFolderDocuments,
     DarkFolderDownload,
+    DarkFolderGithub,
     DarkFolderLocked,
     DarkFolderMusic,
     DarkFolderOpen,

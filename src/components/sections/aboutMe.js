@@ -4,6 +4,7 @@ import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
 import Explorer from '../system/windows/explorer';
 import PrismViewer from '../common/PrismViewer';
+import { MapPin } from 'react-feather';
 import styles from './aboutMe.module.css';
 
 const AboutMe = ({ active, ...props }) => {
@@ -58,7 +59,6 @@ const AboutMe = ({ active, ...props }) => {
                         :
                         null
                 } */}
-                {/* k */}
             </Window>
 
             <Explorer
@@ -82,6 +82,7 @@ const AboutMe = ({ active, ...props }) => {
                 className={styles['location-window']}
                 id="location-window"
                 name="Location"
+                icon={MapPin}
                 defaultOpen
                 draggable
                 resizable

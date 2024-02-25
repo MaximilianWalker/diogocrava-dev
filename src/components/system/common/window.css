@@ -99,7 +99,7 @@
     height: 20px;
     aspect-ratio: 1;
     margin-left: var(--tab-text-margin);
-    fill: var(--text-color);
+    /* fill: var(--text-color); */
 }
 
 .window__tab>span {
