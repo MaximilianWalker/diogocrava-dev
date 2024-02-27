@@ -1,3 +1,4 @@
+import mime from 'mime';
 import { getDatabase } from '@/app/api/mongodb';
 import { generateSystemTree } from "@/utils/systemUtils";
 
@@ -5,13 +6,14 @@ export async function GET(request, { params }) {
 	try {
 		const db = await getDatabase();
 		const cursor = await db.collection("system").find();
-		const kek = await getRepositoryTree();
+		const treeResponse = await getRepositoryTree();
+		const repositoryTree = mapRepositoryTree(treeResponse.tree, 'diogocravaDevId');
 
 		if (!(await cursor.hasNext()))
 			return new Response("Couldn't find any folders or files!", { status: 404 });
 
 		const result = await cursor.toArray();
-		const system = generateSystemTree(result);
+		const system = generateSystemTree([...result, ...repositoryTree]);
 		return Response.json(system);
 	} catch (err) {
 		console.log(err);
@@ -52,6 +54,23 @@ async function getRepositoryTree() {
 
 		return await treeResponse.json();
 	} catch (error) {
+		console.log("super kek")
 		console.error('Error:', error);
+		throw error;
 	}
+}
+
+function mapRepositoryTree(tree, parent) {
+	return tree.map(({ sha, path, type }) => ({
+		_id: sha,
+		name: path.split('/').pop(),
+		type: type === 'tree' ? 'folder' : 'file',
+		mimetype: type === 'blob' ? mime.getType(path) : undefined,
+		parent: tree.find((child) => (
+			child.path.split('/').pop() === path.split('/').slice(0, -1).pop()
+		))?.sha ?? parent,
+		content_url: type === 'blob' ? `/api/system/github-blobs/${sha}` : undefined,
+		access: true,
+		hidden: false
+	}));
 }

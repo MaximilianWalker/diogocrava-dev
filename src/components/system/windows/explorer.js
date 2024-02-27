@@ -20,6 +20,8 @@ const ExplorerItem = forwardRef(({ icon, name, type, mimetype, selected, onClick
             :
             getIconByName('DarkFolder')
     );
+    console.log(mimetype)
+    console.log(Icon)
     return (
         <div
             ref={ref}
@@ -83,12 +85,18 @@ const Explorer = forwardRef(({
         let response = await fetch('/api/system/directories');
         let result = await response.json();
         setSystem(result);
-        setCurrentDirectory(result);
+        setCurrentDirectory(result.sort(sortDirectories));
 
         response = await fetch('/api/system/explorer-sections');
         result = await response.json();
         setSections(result);
     };
+
+    const sortDirectories = (a, b) => {
+        // sort by type: folder and file first and then name
+       if(a.type === b.type) return a.name.localeCompare(b.name);
+       else return a.type === 'folder' ? -1 : 1;
+    }
 
     const getDirectory = (path) => {
         if (path === '/') return system;
@@ -114,7 +122,7 @@ const Explorer = forwardRef(({
             setPath(history[historyIndex]);
             throwErrorWindow('Error Code: 404', 'Directory not found!');
         } else {
-            setCurrentDirectory(currentDirectory);
+            setCurrentDirectory(currentDirectory.sort(sortDirectories));
             setPath(newPath);
             setHistory(prevHistory => [...prevHistory.slice(0, historyIndex + 1), newPath]);
             setHistoryIndex(prevIndex => prevIndex + 1);
@@ -165,7 +173,7 @@ const Explorer = forwardRef(({
 
         const previousPath = history[historyIndex - 1];
         const directory = getDirectory(previousPath);
-        setCurrentDirectory(directory);
+        setCurrentDirectory(directory.sort(sortDirectories));
         setPath(previousPath);
         setHistoryIndex(prevIndex => prevIndex - 1);
     };
@@ -175,7 +183,7 @@ const Explorer = forwardRef(({
 
         const nextPath = history[historyIndex + 1];
         const directory = getDirectory(nextPath);
-        setCurrentDirectory(directory);
+        setCurrentDirectory(directory.sort(sortDirectories));
         setPath(nextPath);
         setHistoryIndex(prevIndex => prevIndex + 1);
     };
@@ -284,6 +292,7 @@ const Explorer = forwardRef(({
                 >
                     {
                         currentDirectory ?
+                        currentDirectory.length > 0 ?
                             currentDirectory.map((child, index) => (
                                 <ExplorerItem
                                     key={`item-${index}`}
@@ -295,6 +304,8 @@ const Explorer = forwardRef(({
                                     {...child}
                                 />
                             ))
+                            :
+                            <Loading className="explorer__loading" message="Empty" />
                             :
                             <Loading className="explorer__loading" />
                     }

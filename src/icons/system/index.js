@@ -39,6 +39,12 @@ import LightFileManager from "./folders/light/system-file-manager";
 
 // Files
 import ApplicationGeneric from "./files/application-generic";
+import ApplicationJson from "./files/application-json";
+import ApplicationPdf from "./files/application-pdf";
+import TextCss from "./files/text-css";
+import TextHtml from "./files/text-html";
+import TextMarkdown from "./files/text-markdown";
+import TextJavascript from "./files/text-x-javascript";
 
 // Status
 import DialogError from "./status/dialog-error";
@@ -83,6 +89,15 @@ export {
     LightFolderRoot,
     LightFileManager,
 
+    // Files
     ApplicationGeneric,
+    ApplicationJson,
+    ApplicationPdf,
+    TextCss,
+    TextHtml,
+    TextMarkdown,
+    TextJavascript,
+
+    // Status
     DialogError
 };
