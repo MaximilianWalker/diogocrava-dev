@@ -3,6 +3,7 @@ import DarkFolder from "./folders/dark/default-folder";
 import DarkFolderCloud from "./folders/dark/default-folder-cloud";
 import DarkFolderDocuments from "./folders/dark/default-folder-documents";
 import DarkFolderDownload from "./folders/dark/default-folder-download";
+import DarkFolderGithub from "./folders/dark/default-folder-github";
 import DarkFolderLocked from "./folders/dark/default-folder-locked";
 import DarkFolderMusic from "./folders/dark/default-folder-music";
 import DarkFolderOpen from "./folders/dark/default-folder-open";
@@ -38,6 +39,12 @@ import LightFileManager from "./folders/light/system-file-manager";
 
 // Files
 import ApplicationGeneric from "./files/application-generic";
+import ApplicationJson from "./files/application-json";
+import ApplicationPdf from "./files/application-pdf";
+import TextCss from "./files/text-css";
+import TextHtml from "./files/text-html";
+import TextMarkdown from "./files/text-markdown";
+import TextJavascript from "./files/text-x-javascript";
 
 // Status
 import DialogError from "./status/dialog-error";
@@ -48,6 +55,7 @@ export {
     DarkFolderCloud,
     DarkFolderDocuments,
     DarkFolderDownload,
+    DarkFolderGithub,
     DarkFolderLocked,
     DarkFolderMusic,
     DarkFolderOpen,
@@ -81,6 +89,15 @@ export {
     LightFolderRoot,
     LightFileManager,
 
+    // Files
     ApplicationGeneric,
+    ApplicationJson,
+    ApplicationPdf,
+    TextCss,
+    TextHtml,
+    TextMarkdown,
+    TextJavascript,
+
+    // Status
     DialogError
 };

@@ -1,7 +1,8 @@
 .explorer>.window__content {
     --explorer-padding: 10px;
     --topbar-height: 30px;
-    --sidebar-width: fit-content(100%);
+    /* --sidebar-width: fit-content(100%); */
+    --sidebar-width: 150px;
 
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
@@ -42,7 +43,36 @@
 
 .explorer__search {}
 
-.explorer__sidebar {}
+.explorer__sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.explorer__sidebar__section,
+.explorer__sidebar__link {
+    height: 30px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    text-align: left;
+}
+
+.explorer__sidebar__link>* {
+    height: 18px;
+}
+
+.explorer__sidebar__link>svg {
+    margin-right: 10px;
+}
+
+
+.explorer__sidebar__section {}
+
+.explorer__sidebar__link {
+    margin-left: 20px;
+}
 
 .explorer__content {
     position: relative;

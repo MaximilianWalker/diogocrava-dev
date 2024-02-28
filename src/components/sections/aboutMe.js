@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { MapPin, Eye, EyeOff } from 'react-feather';
+import ObjectToText from '../common/ObjectToText';
 import Window from '../system/common/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
@@ -8,6 +10,7 @@ import styles from './aboutMe.module.css';
 
 const AboutMe = ({ active, ...props }) => {
     const [aboutMe, setAboutMe] = useState();
+    const [show, setShow] = useState(false);
 
     const getAboutMe = async () => {
         const response = await fetch('/api/input?id=about_me');
@@ -40,25 +43,13 @@ const AboutMe = ({ active, ...props }) => {
                 draggable
                 resizable
             >
-                {/* <PrismViewer
-                    className={styles['about-me-text']}
-                    code={aboutMe}
-                    language="xml"
-                /> */}
-                {/* {
-                    aboutMe ?
-                        Object.entries(aboutMe).map(([key, value]) => (
-                            <p key={key}><b>{key}:</b> {
-                                typeof value === 'string' ?
-                                    value
-                                    :
-
-                            }</p>
-                        ))
+                {
+                    show ?
+                        <EyeOff style={{ position: 'absolute', right: '10px', top: '10px', zIndex: 1 }} onClick={() => setShow(!show)} />
                         :
-                        null
-                } */}
-                {/* k */}
+                        <Eye style={{ position: 'absolute', right: '10px', top: '10px', zIndex: 1 }} onClick={() => setShow(!show)} />
+                }
+                <ObjectToText className={styles['about-me']} value={aboutMe} />
             </Window>
 
             <Explorer
@@ -82,6 +73,7 @@ const AboutMe = ({ active, ...props }) => {
                 className={styles['location-window']}
                 id="location-window"
                 name="Location"
+                icon={MapPin}
                 defaultOpen
                 draggable
                 resizable

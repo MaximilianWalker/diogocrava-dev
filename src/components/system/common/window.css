@@ -99,7 +99,7 @@
     height: 20px;
     aspect-ratio: 1;
     margin-left: var(--tab-text-margin);
-    fill: var(--text-color);
+    /* fill: var(--text-color); */
 }
 
 .window__tab>span {
@@ -136,6 +136,10 @@
     /* background-color: #2e2e2e; */
     /* box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; */
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px 0px inset;
+}
+
+.window__icon-button:disabled svg {
+    stroke: gray;
 }
 
 .window__icon-button svg {

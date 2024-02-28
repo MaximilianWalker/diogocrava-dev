@@ -10,6 +10,8 @@ const Input = forwardRef(({
     onChange,
     onKeyDown,
     onKeyUp,
+    onFocus,
+    onBlur,
     startIcon: StartIcon,
     endIcon: EndIcon,
     onStartIconClick,
@@ -37,6 +39,8 @@ const Input = forwardRef(({
                 onChange={onChange}
                 onKeyDown={onKeyDown}
                 onKeyUp={onKeyUp}
+                onFocus={onFocus}
+                onBlur={onBlur}
             />
             {EndIcon && (
                 onEndIconClick ?
