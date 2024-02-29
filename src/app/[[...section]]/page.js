@@ -2,16 +2,18 @@
 
 import { useState, useEffect, useRef, useDeferredValue } from "react";
 import { Inter } from 'next/font/google';
-import styles from './page.module.css';
-import Section from "@/components/sections/section";
-import Intro from '@/components/sections/intro';
-import AboutMe from "@/components/sections/aboutMe";
-import Technologies from '@/components/sections/technologies';
-import Projects from '@/components/sections/projects';
-import ContactForm from '@/components/sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from 'next/navigation';
+
+import Section from "@/components/sections/section";
+import Intro from '@/components/sections/intro';
+import AboutMe from "@/components/sections/about-me";
+import Technologies from '@/components/sections/technologies';
+import Projects from '@/components/sections/projects';
+import ContactForm from '@/components/sections/contactForm';
+
+import styles from './page.module.css';
 
 // const inter = Inter({ subsets: ['latin'] })
 

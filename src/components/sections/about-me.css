@@ -1,30 +1,41 @@
 .container {
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
     --window-gap: 20px;
+    --side-windows-width: 300px;
+    --explorer-aspect-ratio: 1.5;
+    --explorer-reversed-aspect-ratio: calc(1 / var(--explorer-aspect-ratio));
 
     --mask-window-top: 0px;
     --mask-window-left: calc(var(--explorer-window-left) - var(--window-gap) - var(--mask-window-width));
-    --mask-window-width: 15vw;
+    --mask-window-width: var(--side-windows-width);
     --mask-window-height: 20vh;
 
     --about-me-window-top: calc(100% - var(--about-me-window-height));
     --about-me-window-left: calc(var(--explorer-window-left) - var(--window-gap) - var(--about-me-window-width));
-    --about-me-window-width: 15vw;
+    --about-me-window-width: var(--side-windows-width);
     --about-me-window-height: calc(100% - var(--window-gap) - var(--mask-window-height));
 
     --explorer-window-top: calc(50% - (var(--explorer-window-height) / 2));
     --explorer-window-left: calc(50% - (var(--explorer-window-width) / 2));
-    --explorer-window-width: 40vw;
-    --explorer-window-height: 60vh;
+    --explorer-window-width: max(
+        40vw, 
+        var(--explorer-window-min-width)
+    );
+    --explorer-window-height: max(
+        calc(var(--explorer-window-width) * var(--explorer-reversed-aspect-ratio)), 
+        var(--explorer-window-min-height)
+    );
+    --explorer-window-min-width: 600px;
+    --explorer-window-min-height: 600px;
 
     --status-window-top: 0px;
     --status-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
-    --status-window-width: 15vw;
+    --status-window-width: var(--side-windows-width);
     --status-window-height: calc(100% - var(--window-gap) - var(--location-window-height));
 
     --location-window-top: calc(100% - var(--location-window-height));
     --location-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
-    --location-window-width: 15vw;
+    --location-window-width: var(--side-windows-width);
     --location-window-height: 20vh;
 
     width: 100%;
@@ -32,6 +43,7 @@
     /* margin: 5%; */
     display: flex;
     position: relative;
+    overflow: hidden;
 }
 
 .mask-window,
@@ -77,13 +89,19 @@
     height: var(--location-window-height);
 }
 
-.about-me-window>.window__content {
+/* .about-me-window>.window__content {
     display: flex !important;
+} */
+.about-me-text {
+    user-select: none;
 }
 
-.about-me-text {
-    width: 100%;
-    /* height: 100%; */
-    margin: auto !important;
-    tab-size: 1;
+.about-me-text.visible .object-to-text__value {
+    -webkit-text-security: none;
+    text-security: none;
+}
+
+.about-me-text.secure .object-to-text__value {
+    -webkit-text-security: disc;
+    text-security: disc;
 }

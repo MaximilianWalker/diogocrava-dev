@@ -1,4 +1,4 @@
-.container {
+.object-to-text__container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -7,28 +7,25 @@
     overflow: scroll;
 }
 
-.line {
+.object-to-text__line {
     --line-padding: 40px;
     display: flex;
     width: 100%;
     height: max-content;
 }
 
-.name, .value {
+.object-to-text__name, .object-to-text__value {
     align-items: center;
     display: inline-flex;
     line-height: 30px;
 }
 
-.name {
+.object-to-text__name {
     min-width: max-content;
     margin-right: 10px;
 }
 
-.value {
+.object-to-text__value {
     width: max-content;
     color: gray;
-
-    -webkit-text-security: disc;
-    text-security: disc;
 }

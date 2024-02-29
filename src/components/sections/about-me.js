@@ -6,7 +6,7 @@ import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
 import Explorer from '../system/windows/explorer';
 import PrismViewer from '../common/PrismViewer';
-import styles from './aboutMe.module.css';
+import './about-me.css';
 
 const AboutMe = ({ active, ...props }) => {
     const [aboutMe, setAboutMe] = useState();
@@ -23,9 +23,9 @@ const AboutMe = ({ active, ...props }) => {
     }, []);
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Window
-                className={styles['mask-window']}
+                className="mask-window"
                 id="mask-window"
                 name="? ? ?"
                 defaultOpen
@@ -35,7 +35,7 @@ const AboutMe = ({ active, ...props }) => {
                 <Mask />
             </Window>
             <Window
-                className={styles['about-me-window']}
+                className="about-me-window"
                 id="about-me-window"
                 name="About Me"
                 style={{ justifyContent: 'space-around' }}
@@ -49,11 +49,11 @@ const AboutMe = ({ active, ...props }) => {
                         :
                         <Eye style={{ position: 'absolute', right: '10px', top: '10px', zIndex: 1 }} onClick={() => setShow(!show)} />
                 }
-                <ObjectToText className={styles['about-me']} value={aboutMe} />
+                <ObjectToText className={`about-me-text ${show ? 'visible' : 'secure'}`} value={aboutMe} />
             </Window>
 
             <Explorer
-                className={styles['explorer-window']}
+                className="explorer-window"
                 id="explorer-window"
                 defaultOpen
                 draggable
@@ -61,7 +61,7 @@ const AboutMe = ({ active, ...props }) => {
             />
 
             <Window
-                className={styles['status-window']}
+                className="status-window"
                 id="status-window"
                 name="Status"
                 defaultOpen
@@ -70,7 +70,7 @@ const AboutMe = ({ active, ...props }) => {
             >
             </Window>
             <Window
-                className={styles['location-window']}
+                className="location-window"
                 id="location-window"
                 name="Location"
                 icon={MapPin}

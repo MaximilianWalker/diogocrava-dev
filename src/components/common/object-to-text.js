@@ -7,22 +7,22 @@ function PropertyElement({ className, name, value, depth = 0 }) {
     };
     if (!name) {
         return (
-            <div className="line" style={style}>
-                <span className="value">{value}</span>
+            <div className="object-to-text__line" style={style}>
+                <span className="object-to-text__value">{value}</span>
             </div>
         );
     } else if (typeof value === 'string') {
         return (
-            <div className="line" style={style}>
-                <span className="name">{name}:</span>
-                <span className="value">{value}</span>
+            <div className="object-to-text__line" style={style}>
+                <span className="object-to-text__name">{name}:</span>
+                <span className="object-to-text__value">{value}</span>
             </div>
         );
     } else if (typeof value === 'object') {
         return (
             <>
-                <div className="line" style={style}>
-                    <span className="name">{name}</span>
+                <div className="object-to-text__line" style={style}>
+                    <span className="object-to-text__name">{name}</span>
                 </div>
                 <ObjectEelement className={className} value={value} depth={depth + 1} />
             </>
@@ -30,10 +30,9 @@ function PropertyElement({ className, name, value, depth = 0 }) {
     } else if (typeof value === 'array') {
         return (
             <>
-                <div className="line" style={style}>
-                    <span className="name">{name}:</span>
+                <div className="object-to-text__line" style={style}>
+                    <span className="object-to-text__name">{name}:</span>
                 </div>
-                <div className="break" />
                 {
                     value.map((val, i) => (
                         <PropertyElement className={className} name={i} value={val} depth={depth + 1} />
@@ -63,7 +62,7 @@ function ObjectEelement({ className, value, depth = 0 }) {
 
 export default function ObjectToText({ className, value }) {
     return (
-        <div className={`container ${className ?? ''}`}>
+        <div className={`object-to-text__container ${className ?? ''}`}>
             <ObjectEelement className={className} value={value} />
         </div>
     );
