@@ -8,11 +8,13 @@ const {
     TextCss,
     TextHtml,
     TextMarkdown,
+    TextGeneric,
     TextJavascript,
+    ImageGeneric
 } = SystemIcons;
 
 const MIMETYPES_ICONS = {
-    "text/plain": ApplicationGeneric,
+    "text/plain": TextGeneric,
     "text/html": TextHtml,
     "text/markdown": TextMarkdown,
     "text/csv": null,
@@ -27,12 +29,13 @@ const MIMETYPES_ICONS = {
     // "application/javascript": TextJavascript,
     "application/json": ApplicationJson,
     "application/xml": null,
-    "image/jpeg": null,
-    "image/png": null,
-    "image/gif": null,
-    "image/svg+xml": null,
-    "image/webp": null,
-    "image/tiff": null,
+    "image/jpeg": ImageGeneric,
+    "image/png": ImageGeneric,
+    "image/gif": ImageGeneric,
+    "image/svg+xml": ImageGeneric,
+    "image/webp": ImageGeneric,
+    "image/tiff": ImageGeneric,
+    "image/vnd.microsoft.icon": ImageGeneric,
     "video/mp4": null,
     "video/webm": null,
     "video/x-msvideo": null, // AVI

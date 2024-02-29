@@ -94,8 +94,8 @@ const Explorer = forwardRef(({
 
     const sortDirectories = (a, b) => {
         // sort by type: folder and file first and then name
-       if(a.type === b.type) return a.name.localeCompare(b.name);
-       else return a.type === 'folder' ? -1 : 1;
+        if (a.type === b.type) return a.name.localeCompare(b.name);
+        else return a.type === 'folder' ? -1 : 1;
     }
 
     const getDirectory = (path) => {
@@ -292,20 +292,24 @@ const Explorer = forwardRef(({
                 >
                     {
                         currentDirectory ?
-                        currentDirectory.length > 0 ?
-                            currentDirectory.map((child, index) => (
-                                <ExplorerItem
-                                    key={`item-${index}`}
-                                    ref={(ref) => itemsRefs.current[index] = ref}
-                                    className="explorer__item"
-                                    selected={selectedItems.includes(index)}
-                                    onClick={(e) => onItemClick(e, index)}
-                                    onDoubleClick={() => onItemDoubleClick(child)}
-                                    {...child}
-                                />
-                            ))
-                            :
-                            <Loading className="explorer__loading" message="Empty" />
+                            currentDirectory.length > 0 ?
+                                <div className="explorer__grid">
+                                    {
+                                        currentDirectory.map((child, index) => (
+                                            <ExplorerItem
+                                                key={`item-${index}`}
+                                                ref={(ref) => itemsRefs.current[index] = ref}
+                                                className="explorer__item"
+                                                selected={selectedItems.includes(index)}
+                                                onClick={(e) => onItemClick(e, index)}
+                                                onDoubleClick={() => onItemDoubleClick(child)}
+                                                {...child}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                                :
+                                <Loading className="explorer__loading" message="Empty" />
                             :
                             <Loading className="explorer__loading" />
                     }

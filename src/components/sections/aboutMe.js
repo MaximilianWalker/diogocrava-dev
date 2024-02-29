@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Eye, EyeOff } from 'react-feather';
-import ObjectToText from '../common/ObjectToText';
+import ObjectToText from '../common/object-to-text';
 import Window from '../system/common/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
