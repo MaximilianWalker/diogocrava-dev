@@ -3,10 +3,10 @@ import { generateSystemTree } from "@/utils/systemUtils";
 
 export async function GET(request, { params: { sha } }) {
 	try {
-		const githubResponse = await fetch(`https://api.github.com/repos/username/repository/git/blobs/${sha}`, {
+		const githubResponse = await fetch(`https://api.github.com/repos/username/repository/git/blobs/${sha}?raw=true`, {
 			headers: {
 				// 'Authorization': `Bearer ${githubToken}`,
-				'Accept': 'application/vnd.github.v3.raw',
+				// 'Accept': 'application/vnd.github.v3.raw',
 			},
 		});
 
