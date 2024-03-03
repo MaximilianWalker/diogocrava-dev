@@ -1,4 +1,4 @@
-.container {
+.intro__container {
     display: inline-flex;
     width: 100%;
     justify-content: space-between;
@@ -6,7 +6,7 @@
     padding-right: 15vw;
 }
 
-.portraitContainer {
+.intro__portrait-container {
     position: relative;
     width: 100%;
     height: 80vh;
@@ -14,72 +14,72 @@
     margin-bottom: calc(-1 * var(--footbar-height));
 }
 
-.portrait {
+.intro__portrait {
     object-fit: contain;
     object-position: right bottom;
 }
 
 @media (max-width: 600px) {
-    .container {
+    .intro__container {
         padding-left: 5vw;
         padding-right: 5vw;
         display: flex;
         flex-direction: column;
     }
 
-    .portrait {
+    .intro__portrait {
         object-position: center bottom;
     }
 }
 
 @media (min-width: 601px) and (max-width: 768px) {
-    .container {
+    .intro__container {
         padding-left: 5vw;
         padding-right: 5vw;
         display: flex;
         flex-direction: column;
     }
 
-    .portrait {
+    .intro__portrait {
         object-position: center bottom;
     }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
-    .container {
+    .intro__container {
         padding-left: 10vw;
         padding-right: 10vw;
         display: flex;
         flex-direction: column;
     }
 
-    .portrait {
+    .intro__portrait {
         object-position: center bottom;
     }
 }
 
 @media (min-width: 993px) and (max-width: 1200px) {
-    .container {
+    .intro__container {
         padding-left: 10vw;
         padding-right: 10vw;
         display: flex;
         flex-direction: column;
     }
 
-    .portrait {
+    .intro__portrait {
         object-position: center bottom;
     }
 }
 
 @media (min-width: 1201px) and (max-width: 1500px) {
-    .container {
+    .intro__container {
         padding-left: 5vw;
         padding-right: 5vw;
     }
 }
 
 @media (min-width: 1501px) and (max-width: 2000px) {
-    .container {
+    .intro__container {
         padding-left: 10vw;
         padding-right: 10vw;
     }

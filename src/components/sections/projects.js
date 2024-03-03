@@ -1,5 +1,5 @@
-import styles from './projects.module.css';
 import Loading from '../type-it/loading';
+import './projects.css';
 
 const AboutMe = ({ children, ...props }) => {
     return (

@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import styles from './contactForm.module.css';
+import './contact-form.css';
 
 const AboutMe = ({ children, ...props }) => {
     return (
         <>
-            <div className={styles.container}>
+            <div className="contact-form__container">
             </div>
-
         </>
     );
 };

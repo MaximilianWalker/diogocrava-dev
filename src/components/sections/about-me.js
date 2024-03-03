@@ -5,7 +5,6 @@ import Window from '../system/common/window';
 import Mask from '../3d-models/mask';
 import GoogleMap from '../map';
 import Explorer from '../system/windows/explorer';
-import PrismViewer from '../common/PrismViewer';
 import './about-me.css';
 
 const AboutMe = ({ active, ...props }) => {

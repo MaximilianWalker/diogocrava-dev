@@ -3,39 +3,30 @@
 
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
 import PropTypes from "prop-types";
-import { Home, ChevronLeft, ChevronRight } from 'react-feather';
-import usePrevious from "@/hooks/usePrevious";
-import './ide.css';
+import Window from "@/components/system/common/window";
+import Code from "@/components/common/code";
+import './animated-ide.css';
 
-const IDE = forwardRef(({
-    className,
-    mode,
-    name,
-    icon: Icon,
-    selected,
-    onSelect,
-    onOpen,
-    ...props
-}, ref) => {
+const AnimatedIDE = forwardRef(({ className, language, code, ...props }, ref) => {
     return (
-        <div 
-            ref={ref} 
-            className={`file ${className}`} 
+        <Window
+            ref={ref}
+            className={`animated-ide ${className}`}
+            id="animated-ide"
+            name="IDE"
             {...props}
         >
-            {Icon ? <Icon /> : null}
-            <span className="file__text">{name}</span>
-        </div>
+            <Code
+                language={language}
+                code={code}
+                showLineNumbers={false}
+            />
+        </Window>
     );
 });
 
-File.propTypes = {
-    mode: PropTypes.oneOf(["grid", "list"]).isRequired,
-    name: PropTypes.string.isRequired,
-    icon: PropTypes.elementType,
-    selected: PropTypes.bool,
-    onSelect: PropTypes.func,
-    onOpen: PropTypes.func
+AnimatedIDE.propTypes = {
+
 };
 
-export default IDE;
+export default AnimatedIDE;

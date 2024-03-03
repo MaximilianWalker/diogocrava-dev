@@ -11,7 +11,7 @@ import Intro from '@/components/sections/intro';
 import AboutMe from "@/components/sections/about-me";
 import Technologies from '@/components/sections/technologies';
 import Projects from '@/components/sections/projects';
-import ContactForm from '@/components/sections/contactForm';
+import ContactForm from '@/components/sections/contact-form';
 
 import styles from './page.module.css';
 

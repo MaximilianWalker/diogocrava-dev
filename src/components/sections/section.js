@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
-import styles from './section.module.css';
+import './section.css';
 
 export default forwardRef(({ children, ...props }, ref) => {
     return (
-        <div ref={ref} className={styles.section} {...props}>
+        <div ref={ref} className="section" {...props}>
             {children}
         </div>
     );

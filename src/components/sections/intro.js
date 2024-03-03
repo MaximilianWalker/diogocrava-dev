@@ -1,15 +1,17 @@
 import Image from 'next/image';
-import styles from './intro.module.css';
 import Section from './section';
 import Hi from '../type-it/hi';
 
+import './intro.css';
+
+
 const Intro = ({ active, ...props }) => {
     return (
-        <div className={styles.container}>
+        <div className="intro__container">
             <Hi freeze={!active} />
-            <div className={styles.portraitContainer}>
+            <div className="intro__portrait-container">
                 <Image
-                    className={styles.portrait}
+                    className="intro__portrait"
                     src="/portraits/portrait_with_border.png"
                     alt="Diogo Crava"
                     fill

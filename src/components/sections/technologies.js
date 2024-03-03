@@ -1,45 +1,49 @@
-import Image from 'next/image';
+import { useState } from 'react';
 import Window from '../system/common/window';
-import styles from './technologies.module.css';
-
-const technologies = [
-    {
-        alt: 'FastAPI',
-        src: '/technologies/fastapi.png'
-    },
-];
+import AnimatedIDE from '../system/windows/animated-ide';
+import './technologies.css';
 
 const Technologies = ({ children, ...props }) => {
+    const [technologies, setTechnologies] = useState();
+    const [selectedTechnology, setSelectedTechnology] = useState();
+    const [codeSnippet, setCodeSnippet] = useState('');
+
     return (
-        <div className={styles.container}>
-            {/* <Window
-                className={styles['mask-window']}
-                name="? ? ?"
+        <div className="technologies__container">
+            <Window
+                className="frontend-window"
+                id="frontend-window"
+                name="Frontend"
+                defaultOpen
                 draggable
+                resizable
             >
             </Window>
             <Window
-                className={styles['about-me-window']}
-                name="About Me"
+                className="backend-window"
+                id="backend-window"
+                name="Backend"
+                defaultOpen
                 draggable
+                resizable
             >
             </Window>
             <Window
-                className={styles['location-window']}
-                name="Location"
-                initialPosition={{
-                    x: 'var(--windows-gap)',
-                    y: 'calc(100% - var(--window-gap) - var(--location-window-height))'
-                }}
+                className="databases-window"
+                id="databases-window"
+                name="Databases"
+                defaultOpen
                 draggable
+                resizable
             >
             </Window>
-            <Window
-                className={styles['location-window']}
-                name="Location"
+
+            <AnimatedIDE 
+                className="ide-window"
+                defaultOpen
                 draggable
-            >
-            </Window> */}
+                resizable
+            />
         </div>
     );
 };
