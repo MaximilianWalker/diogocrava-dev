@@ -8,19 +8,19 @@ import MenuButton from "../buttons/menu-button";
 import Networks from './networks';
 import Terminal from '@/icons/custom/terminal';
 import Apps from '@/icons/custom/apps';
-import styles from './footer.module.css';
+import './footer.css';
 
 export default ({ }) => {
     const { toggle } = useWindowManager();
     return (
-        <footer className={styles.footer}>
-            <Networks />
-            <div className={styles.buttonsDiv}>
-                <MenuButton
+        <footer className="footer">
+            <Networks className="footer__networks" />
+            <div className="footer__buttons">
+                {/* <MenuButton
                     icon={Apps}
                     text="APP STORE"
                     expandable
-                />
+                /> */}
                 <MenuButton
                     icon={Terminal}
                     text="TERMINAL"

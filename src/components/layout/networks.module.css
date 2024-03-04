@@ -4,8 +4,8 @@
     --main-color: white;
     --text-color: black;
 
-    --network-icon-box-size: 80px;
-    --network-icon-size: 30px;
+    --network-icon-box-size: 50px;
+    --network-icon-size: 20px;
 
     width: max-content;
     height: max-content;

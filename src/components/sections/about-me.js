@@ -23,7 +23,7 @@ const AboutMe = ({ active, ...props }) => {
 
     return (
         <div className="container">
-            <Window
+            {/* <Window
                 className="mask-window"
                 id="mask-window"
                 name="? ? ?"
@@ -32,7 +32,7 @@ const AboutMe = ({ active, ...props }) => {
                 resizable
             >
                 <Mask />
-            </Window>
+            </Window> */}
             <Window
                 className="about-me-window"
                 id="about-me-window"
@@ -59,7 +59,7 @@ const AboutMe = ({ active, ...props }) => {
                 resizable
             />
 
-            <Window
+            {/* <Window
                 className="status-window"
                 id="status-window"
                 name="Status"
@@ -67,7 +67,7 @@ const AboutMe = ({ active, ...props }) => {
                 draggable
                 resizable
             >
-            </Window>
+            </Window> */}
             <Window
                 className="location-window"
                 id="location-window"

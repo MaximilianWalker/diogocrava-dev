@@ -3,19 +3,27 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: var(--footbar-height);
+    height: var(--footer-height);
     padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+    /* justify-content: space-between;
+    align-items: flex-end; */
 }
 
-.buttonsDiv {
+.footer__networks {
+    position: relative;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.footer__buttons {
     display: flex;
     height: max-content;
     width: max-content;
     margin-top: auto;
+    margin-left: auto;
     gap: 20px;
 }
 

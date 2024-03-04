@@ -13,6 +13,7 @@ const Intro = ({ active, ...props }) => {
                 <Image
                     className="intro__portrait"
                     src="/portraits/portrait_with_border.png"
+                    // src="/portraits/portrait.png"
                     alt="Diogo Crava"
                     fill
                     priority
