@@ -37,9 +37,9 @@ const NETWORKS = [
 ];
 
 // https://codepen.io/Limbian/pen/WGeNBO
-const Networks = ({ }) => {
+const Networks = ({ className }) => {
     return (
-        <div className={styles.networks}>
+        <div className={`${styles.networks} ${className ?? ''}`}>
             <div className={styles.tooltip}>
 
             </div>

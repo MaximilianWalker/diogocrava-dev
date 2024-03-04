@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef, useMemo, Fragment } from "react";
-import { Home, ChevronLeft, ChevronRight, Folder, Search, RefreshCcw } from 'react-feather';
+import { Home, ChevronLeft, ChevronRight, ChevronDown, Folder, Search, RefreshCcw } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from '../common/window';
 import { default as ErrorWindow } from './error';
@@ -269,9 +269,10 @@ const Explorer = forwardRef(({
                     {
                         sections?.map((section, i) => (
                             <Fragment key={`section-${i}`}>
-                                <span className="explorer__sidebar__section">
+                                <div className="explorer__sidebar__section">
+                                    <ChevronDown onClick={() => onSectionClick(i)} />
                                     {section.name}
-                                </span>
+                                </div>
                                 {
                                     section.links.map((link, j) => (
                                         <SidebarLink

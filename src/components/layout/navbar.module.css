@@ -11,10 +11,14 @@
 }
 
 .buttonsDiv {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+
     display: flex;
     height: max-content;
     width: max-content;
-    margin-top: auto;
-    margin-bottom: auto;
+    /* margin-top: auto;
+    margin-bottom: auto; */
     gap: 10px;
 }
