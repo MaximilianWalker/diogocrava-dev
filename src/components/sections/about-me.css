@@ -1,4 +1,4 @@
-.container {
+.about-me__container {
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
     --window-gap: 20px;
     --side-windows-width: 300px;
@@ -43,7 +43,7 @@
     /* margin: 5%; */
     display: flex;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .mask-window,

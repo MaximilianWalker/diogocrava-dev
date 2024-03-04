@@ -22,7 +22,7 @@ const AboutMe = ({ active, ...props }) => {
     }, []);
 
     return (
-        <div className="container">
+        <div className="about-me__container">
             {/* <Window
                 className="mask-window"
                 id="mask-window"
