@@ -1,0 +1,191 @@
+.networks {
+    --background-color: white;
+    --soft-color: #444;
+    --main-color: white;
+    --text-color: black;
+
+    --network-icon-box-size: 42px;
+    --network-icon-size: 30px;
+    --network-icons-gap: 30px;
+
+    width: max-content;
+    height: max-content;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.networks * {
+    color: var(--text-color);
+}
+
+.networks__label-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+}
+
+.networks__label {
+    min-width: max-content;
+    min-height: max-content;
+    font-size: 18px;
+    color: white;
+}
+
+.networks__line {
+    width: 100%;
+    height: 1px;
+    background-color: white;
+}
+
+.networks__netbox {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--network-icons-gap);
+
+    color: var(--soft-color);
+}
+
+.networks__icon-container {
+    width: var(--network-icon-box-size);
+    height: var(--network-icon-box-size);
+    display: flex;
+    transition: fill 140ms ease;
+    position: relative;
+}
+
+.networks__icon-container svg {
+    width: var(--network-icon-size);
+    height: var(--network-icon-size);
+    margin: auto;
+    fill: white;
+    transition: fill 140ms ease;
+}
+
+.networks__icon-container:hover svg {
+    fill: gray;
+}
+
+.networks__netbox .networks__icon::after {
+    position: absolute;
+    right: 0;
+    bottom: 3.5rem;
+    z-index: 20;
+
+    content: attr(data-tip);
+    display: block;
+    width: auto;
+
+    font-size: 0.6rem;
+    fill: var(--background-color);
+    background-color: var(--main-color);
+    padding: 1rem;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(1rem);
+    transition: all 300ms ease 200ms;
+}
+
+.networks__netbox .networks__icon:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Extra small devices (phones, up to 600px) */
+@media (max-width: 600px) {
+   
+}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    /* .networks {
+        flex-direction: row;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        text-orientation: upright;
+    } */
+
+    /* .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
+    } */
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    /* .networks {
+        flex-direction: row;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        text-orientation: upright; 
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
+    } */
+}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    /* .networks {
+        flex-direction: row;
+    }
+
+    .netbox {
+        flex-direction: column;
+    }
+
+    .labelContainer {
+        flex-direction: column-reverse;
+    }
+
+    .label {
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+        text-orientation: upright;
+    }
+
+    .line {
+        width: 1px;
+        height: 100%;
+        background-color: white;
+    } */
+}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) {}

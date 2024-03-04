@@ -6,7 +6,7 @@ import { useSection } from "@/contexts/SectionContext";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from 'next/navigation';
 
-import Section from "@/components/sections/section";
+import Section from "@/components/common/section";
 import Intro from '@/components/sections/intro';
 import AboutMe from "@/components/sections/about-me";
 import Technologies from '@/components/sections/technologies';
@@ -26,6 +26,7 @@ const SECTIONS = [
 ];
 
 export default function Home({ params: { section } }) {
+  const [scrolling, setScrolling] = useState(false);
   const {
     section: currentSection,
     setSection,
@@ -50,15 +51,36 @@ export default function Home({ params: { section } }) {
   ];
 
   const onWheel = (e) => {
-    if (e.deltaY < 0)
-      previousSection();
-    else if (e.deltaY > 0)
-      nextSection(refs.length);
-  }
+    if (!scrolling) {
+      setScrolling(true);
+      if (e.deltaY < 0) previousSection();
+      else if (e.deltaY > 0) nextSection(refs.length);
+    }
+  };
+
+  const onScrollEnd = () => setScrolling(false);
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
     setSection(firstSection);
+  }, []);
+
+  useEffect(() => {
+    const observe = (entries) => {
+      entries.forEach((entry) => {
+        console.log('kek')
+        console.log(entry)
+        if (entry.intersectionRatio === 1) setScrolling(false);
+      });
+    };
+
+    const observer = new IntersectionObserver(observe);
+
+    refs.forEach(target => observer.observe(target.current));
+
+    return () => {
+      refs.forEach(target => observer.unobserve(target.current));
+    };
   }, []);
 
   useEffect(() => {

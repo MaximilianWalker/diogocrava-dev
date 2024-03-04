@@ -20,8 +20,6 @@ const ExplorerItem = forwardRef(({ icon, name, type, mimetype, selected, onClick
             :
             getIconByName('DarkFolder')
     );
-    console.log(mimetype)
-    console.log(Icon)
     return (
         <div
             ref={ref}

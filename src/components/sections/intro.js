@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Section from './section';
+import Section from '../common/section';
 import Hi from '../type-it/hi';
 
 import './intro.css';
@@ -13,7 +13,6 @@ const Intro = ({ active, ...props }) => {
                 <Image
                     className="intro__portrait"
                     src="/portraits/portrait_with_border.png"
-                    // src="/portraits/portrait.png"
                     alt="Diogo Crava"
                     fill
                     priority

@@ -1,4 +1,4 @@
-.navbar {
+.navbar__container {
     position: fixed;
     left: 0px;
     top: 0px;
@@ -10,7 +10,7 @@
     justify-content: space-between;
 }
 
-.buttonsDiv {
+.navbar__buttons {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0%);

@@ -7,5 +7,5 @@
     flex-shrink: 0;
     overflow: hidden;
     padding-top: var(--navbar-height);
-    padding-bottom: var(--footer-height);
+    /* padding-bottom: var(--footer-height); */
 }

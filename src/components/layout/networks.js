@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import styles from './networks.module.css';
 import {
     CV,
     LinkedIn,
@@ -7,22 +5,18 @@ import {
     HackTheBox,
     Codewars
 } from '@/icons/networks';
+import './networks.css';
 
 const NETWORKS = [
     {
-        icon: CV,
-        description: 'Curriculum Vitae',
-        link: '/documents/cv.pdf'
+        icon: GitHub,
+        description: 'GitHub',
+        link: 'https://github.com/MaximilianWalker'
     },
     {
         icon: LinkedIn,
         description: 'LinkedIn',
         link: 'https://www.linkedin.com/in/diogo-crava/'
-    },
-    {
-        icon: GitHub,
-        description: 'GitHub',
-        link: 'https://github.com/MaximilianWalker'
     },
     {
         icon: HackTheBox,
@@ -39,26 +33,30 @@ const NETWORKS = [
 // https://codepen.io/Limbian/pen/WGeNBO
 const Networks = ({ className }) => {
     return (
-        <div className={`${styles.networks} ${className ?? ''}`}>
-            <div className={styles.tooltip}>
+        <div className={`networks ${className ?? ''}`}>
+            <div className="networks__netbox">
+                {
+                    NETWORKS.map(({ icon: Icon, description, link }) => (
+                        <a
+                            key={description}
+                            className="networks__icon-container"
+                            href={link}
+                            target="_blank"
+                            description={description}
+                        >
+                            <Icon />
+                        </a>
+                    ))
+                }
+            </div>
+            <div className="networks__tooltip">
 
             </div>
-            <div className={styles.labelContainer}>
-                <span className={styles.label}>Find me on my Networks!</span>
-                <div className={styles.line} />
-            </div>
-            <div className={styles.netbox}>
-                {NETWORKS.map(({ icon: Icon, description, link }) => (
-                    <a
-                        key={description}
-                        className={styles.iconContainer}
-                        href={link}
-                        target="_blank"
-                        description={description}
-                    >
-                        <Icon />
-                    </a>
-                ))}
+            <div className="networks__label-container">
+                <div className="networks__line" />
+                <span className="networks__label">
+                    Find me on my Networks!
+                </span>
             </div>
         </div>
     );

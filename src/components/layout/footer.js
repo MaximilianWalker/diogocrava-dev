@@ -5,7 +5,7 @@ import TileButton from "../buttons/tileButton";
 import MenuButton from "../buttons/menu-button";
 // import { Terminal, GitHub } from 'react-feather';
 // import { useTerminal } from '@/contexts/TerminalContext';
-import Networks from './networks';
+import Networks from './networks__old';
 import Terminal from '@/icons/custom/terminal';
 import Apps from '@/icons/custom/apps';
 import './footer.css';

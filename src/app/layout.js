@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
 						<Terminal />
 						<Navbar />
 						{children}
-						<Footer />
+						{/* <Footer /> */}
 						{/* </Suspense> */}
 					</SectionProvider>
 					{/* </TerminalProvider> */}

@@ -2,8 +2,9 @@
 
 import TypeItLogo from "../type-it/logo";
 import GlitchyButton from "../buttons/glitchyButton";
-import styles from './navbar.module.css';
 import { useSection } from "@/contexts/SectionContext";
+import Networks from "./networks";
+import './navbar.css';
 
 export default () => {
     const {
@@ -11,9 +12,15 @@ export default () => {
         setSection
     } = useSection();
     return (
-        <nav className={styles.navbar}>
+        <nav className="navbar__container">
             <TypeItLogo />
-            <div className={styles.buttonsDiv}>
+            <div className="navbar__buttons">
+            <GlitchyButton
+                    selected={section === 0}
+                    onClick={() => setSection(0)}
+                >
+                    0. Intro
+                </GlitchyButton>
                 <GlitchyButton
                     selected={section === 1}
                     onClick={() => setSection(1)}
@@ -39,6 +46,7 @@ export default () => {
                     4. Contact Form
                 </GlitchyButton>
             </div>
+            <Networks />
         </nav>
     );
 };
