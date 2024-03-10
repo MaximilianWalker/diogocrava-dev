@@ -11,9 +11,9 @@
 }
 
 .navbar__buttons {
-    position: absolute;
+    /* position: absolute;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%); */
 
     display: flex;
     height: max-content;

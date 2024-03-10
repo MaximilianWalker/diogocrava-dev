@@ -34,6 +34,12 @@ const NETWORKS = [
 const Networks = ({ className }) => {
     return (
         <div className={`networks ${className ?? ''}`}>
+            {/* <div className="networks__label-container">
+                <span className="networks__label">
+                    Find me on my Networks!
+                </span>
+                <div className="networks__line" />
+            </div> */}
             <div className="networks__netbox">
                 {
                     NETWORKS.map(({ icon: Icon, description, link }) => (
@@ -51,12 +57,6 @@ const Networks = ({ className }) => {
             </div>
             <div className="networks__tooltip">
 
-            </div>
-            <div className="networks__label-container">
-                <div className="networks__line" />
-                <span className="networks__label">
-                    Find me on my Networks!
-                </span>
             </div>
         </div>
     );

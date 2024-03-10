@@ -4,7 +4,7 @@
     --main-color: white;
     --text-color: black;
 
-    --network-icon-box-size: 42px;
+    --network-icon-box-size: 50px;
     --network-icon-size: 30px;
     --network-icons-gap: 30px;
 
@@ -15,7 +15,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    /* gap: 5px; */
 }
 
 .networks * {
