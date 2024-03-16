@@ -3,6 +3,7 @@
     /* --sidebar-width: fit-content(100%); */
     --sidebar-width: 180px;
 
+    /* --explorer-padding: 10px; */
     --explorer-item-maximum-height: 200px;
 }
 
@@ -11,8 +12,9 @@
     grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-rows: var(--topbar-height) 1fr;
     grid-column-gap: 0px;
+    /* grid-row-gap: var(--window-padding); */
     grid-row-gap: var(--window-padding);
-
+    /* padding: var(--explorer-padding); */
     overflow-y: hidden;
 }
 

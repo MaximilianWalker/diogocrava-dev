@@ -178,7 +178,7 @@ const Window = forwardRef(({
                     }
                 </div>
             </div>
-            <div className="window__body">
+            {/* <div className="window__body"> */}
                 <div
                     ref={contentRef}
                     className="window__content"
@@ -186,7 +186,7 @@ const Window = forwardRef(({
                 >
                     {children}
                 </div>
-            </div>
+            {/* </div> */}
         </div>
     );
 });
