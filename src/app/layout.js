@@ -6,6 +6,7 @@ import { TerminalProvider } from '@/contexts/TerminalContext';
 import { WindowManagerProvider } from '@/contexts/WindowManagerContext';
 import Navbar from '@/components/layout/navbar';
 import Footer from '@/components/layout/footer';
+import { Inconsolata, Source_Code_Pro } from 'next/font/google'
 // import ParticlesBackground from '@/components/layout/particlesBackground';
 import Particles from '@/components/animations/particles';
 // import Terminal from '@/components/type-it/terminal';
@@ -13,9 +14,11 @@ const Terminal = lazy(() => import('@/components/system/windows/terminal'));
 import Loading from '@/components/type-it/loading';
 import './global.css';
 
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] })
+
 export default function RootLayout({ children }) {
 	return (
-		<html lang="en">
+		<html lang="en" className={sourceCodePro.className}>
 			<head />
 			<body>
 				<WindowManagerProvider>
