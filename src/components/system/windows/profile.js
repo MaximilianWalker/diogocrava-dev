@@ -15,7 +15,7 @@ const Row = ({ className, style, name, value }) => (
     </div>
 );
 
-const Profile = forwardRef(({ className, language, code, ...props }, ref) => {
+const Profile = forwardRef(({ className, ...props }, ref) => {
     const [data, setData] = useState();
     return (
         <Window
@@ -23,20 +23,20 @@ const Profile = forwardRef(({ className, language, code, ...props }, ref) => {
             id="profile"
             className={`profile ${className}`}
             name="Profile"
+            defaultOpen
+            draggable
+            resizable
             {...props}
         >
-            <Row name="Name" value="Diogo Crava" />
-            <div className="profile__container">
-                <div className="profile__mask">
-                    <Mask />
-                </div>
-                <div className="profile__rows">
-                    <Row name="Job" value="Software Engineer - Fullstack Developer" />
-                    <Row name="Name" value="Diogo Crava" />
-                    <Row name="Name" value="Diogo Crava" />
-                    <Row name="Name" value="Diogo Crava" />
-                </div>
+            <h1>Diogo Crava</h1>
+            <h3>Software Developer</h3>
+            <div className="profile__mask">
+                <Mask />
             </div>
+            <Row name="Job" value="Software Engineer - Fullstack Developer" />
+            <Row name="Name" value="Diogo Crava" />
+            <Row name="Name" value="Diogo Crava" />
+            <Row name="Name" value="Diogo Crava" />
         </Window>
     );
 });

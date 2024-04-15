@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { MapPin, Eye, EyeOff } from 'react-feather';
-import ObjectToText from '../common/object-to-text';
-import Window from '../system/common/window';
-import Mask from '../3d-models/mask';
-import GoogleMap from '../map';
+import Profile from '../system/windows/profile';
+import Location from '../system/windows/location';
 import Explorer from '../system/windows/explorer';
+import Clients from '../system/windows/clients';
 import './about-me.css';
 
 const AboutMe = ({ active, ...props }) => {
@@ -23,6 +21,16 @@ const AboutMe = ({ active, ...props }) => {
 
     return (
         <div className="about-me__container">
+            <Profile className="profile-window" />
+            <Location className="location-window" />
+            <Clients className="clients-window" />
+            <Explorer
+                className="explorer-window"
+                id="explorer-window"
+                defaultOpen
+                draggable
+                resizable
+            />
             {/* <Window
                 className="mask-window"
                 id="mask-window"
@@ -33,7 +41,8 @@ const AboutMe = ({ active, ...props }) => {
             >
                 <Mask />
             </Window> */}
-            <Window
+
+            {/* <Window
                 className="about-me-window"
                 id="about-me-window"
                 name="About Me"
@@ -49,15 +58,7 @@ const AboutMe = ({ active, ...props }) => {
                         <Eye style={{ position: 'absolute', right: '10px', top: '10px', zIndex: 1 }} onClick={() => setShow(!show)} />
                 }
                 <ObjectToText className={`about-me-text ${show ? 'visible' : 'secure'}`} value={aboutMe} />
-            </Window>
-
-            <Explorer
-                className="explorer-window"
-                id="explorer-window"
-                defaultOpen
-                draggable
-                resizable
-            />
+            </Window> */}
 
             {/* <Window
                 className="status-window"
@@ -68,7 +69,7 @@ const AboutMe = ({ active, ...props }) => {
                 resizable
             >
             </Window> */}
-            <Window
+            {/* <Window
                 className="location-window"
                 id="location-window"
                 name="Location"
@@ -78,7 +79,7 @@ const AboutMe = ({ active, ...props }) => {
                 resizable
             >
                 <GoogleMap />
-            </Window>
+            </Window> */}
         </div>
     );
 };
