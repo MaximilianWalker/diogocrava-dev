@@ -5,11 +5,11 @@ import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
 import PropTypes from "prop-types";
 import Window from "@/components/system/common/window";
 import Code from "@/components/common/code";
-import './profile.css';
 import Mask from "@/components/3d-models/mask";
+import './profile.css';
 
 const Row = ({ className, style, name, value }) => (
-    <div className={`profile__row ${className}`} style={style}>
+    <div className={`profile__row ${className ?? ''}`} style={style}>
         <p className="profile__name">{name}</p>
         <p className="profile__value">{value}</p>
     </div>
@@ -21,7 +21,7 @@ const Profile = forwardRef(({ className, ...props }, ref) => {
         <Window
             ref={ref}
             id="profile"
-            className={`profile ${className}`}
+            className={`profile ${className ?? ''}`}
             name="Profile"
             defaultOpen
             draggable
@@ -30,13 +30,14 @@ const Profile = forwardRef(({ className, ...props }, ref) => {
         >
             <h1>Diogo Crava</h1>
             <h3>Software Developer</h3>
-            <div className="profile__mask">
+            <div className="profile__avatar">
                 <Mask />
             </div>
-            <Row name="Job" value="Software Engineer - Fullstack Developer" />
-            <Row name="Name" value="Diogo Crava" />
-            <Row name="Name" value="Diogo Crava" />
-            <Row name="Name" value="Diogo Crava" />
+            <div className="profile__data">
+                <Row name="Role:" value="Full Stack" />
+                <Row name="Experience:" value="5 Years" />
+                <Row name="Education:" value="BSc Computer Engineering" />
+            </div>
         </Window>
     );
 });

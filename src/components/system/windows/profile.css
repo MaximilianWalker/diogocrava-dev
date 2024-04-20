@@ -1,4 +1,100 @@
-.profile {
+.profile>.window__content {
     display: flex;
     flex-direction: column;
+    /* justify-content: space-around; */
+}
+
+.profile h1,
+.profile h3 {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.profile h1 {
+}
+
+.profile h3 {
+    color: #9F9F9F;
+    font-style: Akshar;
+}
+
+.profile__avatar {
+    width: 80%;
+    height: auto;
+    aspect-ratio: 1;
+    margin: 20px auto;
+    /* margin-bottom: 20px; */
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+}
+
+.profile__avatar:before,
+.profile__avatar:after {
+    content: "";
+    position: absolute;
+    border-top: 1px solid rgb(139, 139, 139);
+    width: 100%;
+    transform-origin: 0% 0%;
+    z-index: 0;
+}
+
+.profile__avatar:before {
+    transform: rotate(45deg);
+}
+
+.profile__avatar:after {
+    transform: rotate(-45deg);
+}
+
+.profile__data {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    flex-grow: 1;
+    gap: 20px;
+}
+
+.profile__row {
+    --corner-clip-size: 10px;
+    --border: 4px;
+    /* --clip: polygon(0 0,
+            calc(100% - var(--corner-clip-size)) 0,
+            100% var(--corner-clip-size),
+            100% 100%,
+            var(--corner-clip-size) 100%,
+            0 calc(100% - var(--corner-clip-size))); */
+
+    --clip: polygon(var(--corner-clip-size) 0,
+            calc(100% - var(--corner-clip-size)) 0,
+            100% var(--corner-clip-size),
+            100% calc(100% - var(--corner-clip-size)),
+            calc(100% - var(--corner-clip-size)) 100%,
+            var(--corner-clip-size) 100%,
+            0 calc(100% - var(--corner-clip-size)),
+            0 var(--corner-clip-size));
+
+    display: flex;
+    flex-direction: row;
+    clip-path: var(--clip);
+    background: #D9D9D9;
+    padding: 10px var(--corner-clip-size);
+}
+
+.profile__name,
+.profile__value {
+    font-size: 18px;
+    height: max-content;
+    margin: auto 0;
+    margin-right: 10px;
+}
+
+.profile__name {
+    color: #000;
+    font-weight: bolder;
+}
+
+.profile__value {
+    color: #4E4E4E;
 }

@@ -2,48 +2,51 @@
     --aboutme-background-color: rgba(30, 30, 30, 0.95);
 
     --window-spacing: 20px;
-    --horizontal-padding: 100px;
+    --horizontal-padding: 20px;
     --vertical-padding: 20px;
 
     --available-width: calc(100% - var(--horizontal-padding) * 2);
     --available-height: calc(100% - var(--vertical-padding) * 2);
 
-    --explorer-aspect-ratio: 1.5;
-    --explorer-reversed-aspect-ratio: calc(1 / var(--explorer-aspect-ratio));
-
-    /* --mask-window-top: 0px;
-    --mask-window-left: calc(var(--explorer-window-left) - var(--window-gap) - var(--mask-window-width));
-    --mask-window-width: var(--side-windows-width);
-    --mask-window-height: 20vh; */
-
     --profile-window-top: var(--vertical-padding);
     --profile-window-left: var(--horizontal-padding);
-    --profile-window-width: calc((0.15 * var(--available-width)) - (var(--window-spacing) / 2));
-    --profile-window-height: calc((0.7 * var(--available-height)) - (var(--window-spacing) / 2));
+    --profile-window-min-width: 350px;
+    --profile-window-width: max(var(--profile-window-min-width), calc((0.20 * var(--available-width)) - (var(--window-spacing) / 2)));
+    --profile-window-height: var(--available-height);
 
-    --location-window-top: var(--vertical-padding);
+    /* Layout 1 */
+    /* --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
     --location-window-left: calc(var(--horizontal-padding) + var(--profile-window-width) + var(--window-spacing));
-    --location-window-width: calc(100% - var(--profile-window-width) - var(--explorer-window-width) - (var(--window-spacing) * 2) - (var(--horizontal-padding) * 2));
-    --location-window-height: calc((0.7 * var(--available-height)) - (var(--window-spacing) / 2));
+    --location-window-width: calc(0.4 * (var(--available-width) - var(--profile-window-width) - (var(--window-spacing) * 1.5)));
+    --location-window-height: calc((0.3 * var(--available-height)) - (var(--window-spacing) / 2));
 
     --clients-window-top: calc(100% - var(--clients-window-height) - var(--vertical-padding));
-    --clients-window-left: var(--horizontal-padding);
-    --clients-window-width: calc((0.4 * var(--available-width)) - (var(--window-spacing) / 2));
+    --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
+    --clients-window-width: calc(var(--available-width) - var(--profile-window-width) - var(--location-window-width) - (2 * var(--window-spacing)));
     --clients-window-height: calc((0.3 * var(--available-height)) - (var(--window-spacing) / 2));
 
     --explorer-window-top: var(--vertical-padding);
     --explorer-window-left: calc(100% - var(--explorer-window-width) - var(--horizontal-padding));
-    --explorer-window-width: calc((0.6 * var(--available-width)) - (var(--window-spacing) / 2));
-    --explorer-window-height: calc(1 * var(--available-height));
-    /* --explorer-window-width: max(40vw, var(--explorer-window-min-width));
-    --explorer-window-height: max(calc(var(--explorer-window-width) * var(--explorer-reversed-aspect-ratio)), var(--explorer-window-min-height));
-    --explorer-window-min-width: 600px;
-    --explorer-window-min-height: 600px; */
+    --explorer-window-width: calc(var(--available-width) - var(--profile-window-width) - (var(--window-spacing) / 2));
+    --explorer-window-height: calc((0.7 * var(--available-height)) - (var(--window-spacing) / 2)); */
 
-    /* --status-window-top: 0px;
-    --status-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
-    --status-window-width: var(--side-windows-width);
-    --status-window-height: calc(100% - var(--window-gap) - var(--location-window-height)); */
+    /* Layout 2 */
+    --explorer-window-top: var(--vertical-padding);
+    --explorer-window-left: calc(var(--horizontal-padding) + var(--profile-window-width) + var(--window-spacing));
+    --explorer-window-width: calc(var(--available-width) - var(--profile-window-width) - var(--clients-window-width) - (2 * var(--window-spacing)));
+    --explorer-window-height: var(--available-height);
+
+    --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
+    --location-window-left: calc(100% - var(--location-window-width) - var(--horizontal-padding));
+    --location-window-min-width: 350px;
+    --location-window-width: max(var(--location-window-min-width), calc(0.20 * var(--available-width)));
+    --location-window-height: var(--location-window-width);
+
+    --clients-window-top: var(--vertical-padding);
+    --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
+    --clients-window-min-width: 350px;
+    --clients-window-width: max(var(--clients-window-min-width), calc(0.20 * var(--available-width)));
+    --clients-window-height: calc(var(--available-height) - var(--location-window-height) - var(--window-spacing));
 
     width: 100%;
     height: auto;
@@ -59,13 +62,6 @@
 .explorer-window {
     position: absolute;
 }
-
-/* .mask-window {
-    top: var(--mask-window-top);
-    left: var(--mask-window-left);
-    width: var(--mask-window-width);
-    height: var(--mask-window-height);
-} */
 
 .profile-window {
     top: var(--profile-window-top);
@@ -94,27 +90,3 @@
     width: var(--explorer-window-width);
     height: var(--explorer-window-height);
 }
-
-/* .status-window {
-    top: var(--status-window-top);
-    left: var(--status-window-left);
-    width: var(--status-window-width);
-    height: var(--status-window-height);
-} */
-
-/* .profile-window>.window__content {
-    display: flex !important;
-} */
-/* .profile-text {
-    user-select: none;
-}
-
-.profile-text.visible .object-to-text__value {
-    -webkit-text-security: none;
-    text-security: none;
-}
-
-.profile-text.secure .object-to-text__value {
-    -webkit-text-security: disc;
-    text-security: disc;
-} */
