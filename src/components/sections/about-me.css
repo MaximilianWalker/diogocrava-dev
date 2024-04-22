@@ -10,7 +10,7 @@
 
     --profile-window-top: var(--vertical-padding);
     --profile-window-left: var(--horizontal-padding);
-    --profile-window-min-width: 350px;
+    --profile-window-min-width: 300px;
     --profile-window-width: max(var(--profile-window-min-width), calc((0.20 * var(--available-width)) - (var(--window-spacing) / 2)));
     --profile-window-height: var(--available-height);
 
@@ -38,13 +38,13 @@
 
     --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
     --location-window-left: calc(100% - var(--location-window-width) - var(--horizontal-padding));
-    --location-window-min-width: 350px;
+    --location-window-min-width: 300px;
     --location-window-width: max(var(--location-window-min-width), calc(0.20 * var(--available-width)));
     --location-window-height: var(--location-window-width);
 
     --clients-window-top: var(--vertical-padding);
     --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
-    --clients-window-min-width: 350px;
+    --clients-window-min-width: 300px;
     --clients-window-width: max(var(--clients-window-min-width), calc(0.20 * var(--available-width)));
     --clients-window-height: calc(var(--available-height) - var(--location-window-height) - var(--window-spacing));
 
