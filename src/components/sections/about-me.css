@@ -4,13 +4,14 @@
     --window-spacing: 20px;
     --horizontal-padding: 20px;
     --vertical-padding: 20px;
+    --side-windows-min-width: 250px;
 
     --available-width: calc(100% - var(--horizontal-padding) * 2);
     --available-height: calc(100% - var(--vertical-padding) * 2);
 
     --profile-window-top: var(--vertical-padding);
     --profile-window-left: var(--horizontal-padding);
-    --profile-window-min-width: 300px;
+    --profile-window-min-width: var(--side-windows-min-width);
     --profile-window-width: max(var(--profile-window-min-width), calc((0.20 * var(--available-width)) - (var(--window-spacing) / 2)));
     --profile-window-height: var(--available-height);
 
@@ -38,13 +39,13 @@
 
     --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
     --location-window-left: calc(100% - var(--location-window-width) - var(--horizontal-padding));
-    --location-window-min-width: 300px;
+    --location-window-min-width: var(--side-windows-min-width);
     --location-window-width: max(var(--location-window-min-width), calc(0.20 * var(--available-width)));
     --location-window-height: var(--location-window-width);
 
     --clients-window-top: var(--vertical-padding);
     --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
-    --clients-window-min-width: 300px;
+    --clients-window-min-width: var(--side-windows-min-width);
     --clients-window-width: max(var(--clients-window-min-width), calc(0.20 * var(--available-width)));
     --clients-window-height: calc(var(--available-height) - var(--location-window-height) - var(--window-spacing));
 
