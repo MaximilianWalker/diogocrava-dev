@@ -10,11 +10,30 @@ import FadeContainer from "@/components/common/fade-container";
 
 import './profile.css';
 
-const Row = ({ className, style, icon: Icon, name, value }) => (
+const TEMP_DATA = [
+    {
+        name: 'Role:',
+        value: 'Full Stack'
+    },
+    {
+        name: 'Experience:',
+        value: '5 Years'
+    },
+    {
+        name: 'Degree:',
+        value: 'B.Sc. CoE'
+    },
+    {
+        name: 'University:',
+        value: 'ISCTE, Lisbon'
+    }
+];
+
+const Row = ({ className, style, icon: Icon, name, value, show }) => (
     <div className={`profile__row ${className ?? ''}`} style={style}>
         {Icon && <Icon />}
         <p className="profile__name">{name}</p>
-        <p className="profile__value">{value}</p>
+        <p className={`profile__value ${!show ? 'profile__hidden' : ''}`}>{value}</p>
     </div>
 );
 
@@ -39,9 +58,16 @@ const Profile = forwardRef(({ className, ...props }, ref) => {
                 <Mask />
             </div>
             <div className="profile__data">
-                <Row name="Role:" value="Full Stack" />
-                <Row name="Experience:" value="5 Years" />
-                <Row name="Education:" value="BSc Computer Engineering" />
+                {
+                    TEMP_DATA.map(({ name, value }, index) => (
+                        <Row
+                            key={index}
+                            name={name}
+                            value={value}
+                            show={show}
+                        />
+                    ))
+                }
             </div>
             <FadeContainer
                 className="profile__button-container"
