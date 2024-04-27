@@ -1,7 +1,7 @@
 .profile>.window__content {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-around; */
+    padding-bottom: 0px;
 }
 
 .profile h1,
@@ -87,4 +87,24 @@
 
 .profile__value {
     color: #4E4E4E;
+}
+
+.profile__button-container {
+    position: sticky;
+    bottom: 0;
+    left: calc(-2 * var(--window-padding));
+    width: calc(100% + (2 * var(--window-padding)));
+    height: auto;
+}
+
+.profile__button {
+    width: 100%;
+    height: 40px;
+    border: none;
+    padding: 0;
+    background: inherit;
+}
+
+.profile__button:hover {
+    background: #303030;
 }

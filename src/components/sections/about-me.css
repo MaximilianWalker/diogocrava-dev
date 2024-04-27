@@ -4,7 +4,7 @@
     --window-spacing: 20px;
     --horizontal-padding: 20px;
     --vertical-padding: 20px;
-    --side-windows-min-width: 250px;
+    --side-windows-min-width: 350px;
 
     --available-width: calc(100% - var(--horizontal-padding) * 2);
     --available-height: calc(100% - var(--vertical-padding) * 2);
