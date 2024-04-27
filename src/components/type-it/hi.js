@@ -34,7 +34,7 @@ export default ({ freeze: freezeProp }) => {
                     instance
                         .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(600).break()
                         .type("> My name is <b style=\"color:#4EC9B0;\">Diogo Crava</b>!").pause(500).break()
-                        .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`)
+                        .type(`> And I'm a <b>${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}</b>`)
                         .exec(() => setComplete(true)).pause(20000).break()
                         .type("> Scroll to continue...").pause(20000).break()
                         .type("> Knock knock... is anyone there?");
