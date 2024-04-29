@@ -54,36 +54,16 @@ export default function Home({ params: { section } }) {
     if (!scrolling) {
       if (e.deltaY < 0) previousSection();
       else if (e.deltaY > 0) nextSection(refs.length);
-      else return;
       setScrolling(true);
       setTimeout(() => {
-        if (scrolling) setScrolling(false);
-      }, 1000);
+        setScrolling(false);
+      }, 800);
     }
   };
-
-  const observe = (entries) => {
-    entries.forEach((entry) => {
-      console.log('kek')
-      console.log(entry)
-      console.log(entry.intersectionRatio)
-      if (entry.intersectionRatio === 1) setScrolling(false);
-    });
-  };
-
-  // const onScrollEnd = () => setScrolling(false);
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
     setSection(firstSection);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(observe, { threshold: 1 });
-    refs.forEach(target => observer.observe(target.current));
-    return () => {
-      refs.forEach(target => observer.unobserve(target.current));
-    };
   }, []);
 
   useEffect(() => {
@@ -95,8 +75,6 @@ export default function Home({ params: { section } }) {
     // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
     refs[currentSection].current.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }, [currentSection, size]);
-
-  console.log(scrolling)
 
   return (
     <main className={styles.main}>
