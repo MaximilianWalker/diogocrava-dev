@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useDeferredValue } from "react";
+import { useState, useEffect, useRef, useDeferredValue, useCallback } from "react";
 import { Inter } from 'next/font/google';
 import { useSection } from "@/contexts/SectionContext";
 import useWindowSize from "@/hooks/useWindowSize";
@@ -52,13 +52,26 @@ export default function Home({ params: { section } }) {
 
   const onWheel = (e) => {
     if (!scrolling) {
-      setScrolling(true);
       if (e.deltaY < 0) previousSection();
       else if (e.deltaY > 0) nextSection(refs.length);
+      else return;
+      setScrolling(true);
+      setTimeout(() => {
+        if (scrolling) setScrolling(false);
+      }, 1000);
     }
   };
 
-  const onScrollEnd = () => setScrolling(false);
+  const observe = (entries) => {
+    entries.forEach((entry) => {
+      console.log('kek')
+      console.log(entry)
+      console.log(entry.intersectionRatio)
+      if (entry.intersectionRatio === 1) setScrolling(false);
+    });
+  };
+
+  // const onScrollEnd = () => setScrolling(false);
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
@@ -66,18 +79,8 @@ export default function Home({ params: { section } }) {
   }, []);
 
   useEffect(() => {
-    const observe = (entries) => {
-      entries.forEach((entry) => {
-        console.log('kek')
-        console.log(entry)
-        if (entry.intersectionRatio === 1) setScrolling(false);
-      });
-    };
-
-    const observer = new IntersectionObserver(observe);
-
+    const observer = new IntersectionObserver(observe, { threshold: 1 });
     refs.forEach(target => observer.observe(target.current));
-
     return () => {
       refs.forEach(target => observer.unobserve(target.current));
     };
@@ -86,12 +89,14 @@ export default function Home({ params: { section } }) {
   useEffect(() => {
     window.addEventListener('wheel', onWheel);
     return () => window.removeEventListener('wheel', onWheel);
-  }, [onWheel]);
+  }, [scrolling, onWheel]);
 
   useEffect(() => {
     // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
-    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
+    refs[currentSection].current.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }, [currentSection, size]);
+
+  console.log(scrolling)
 
   return (
     <main className={styles.main}>
