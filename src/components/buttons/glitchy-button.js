@@ -1,4 +1,4 @@
-import styles from './glitchyButton.module.css';
+import styles from './glitchy-button.module.css';
 
 const GlitchyButton = ({ children, selected, ...props }) => {
     return (

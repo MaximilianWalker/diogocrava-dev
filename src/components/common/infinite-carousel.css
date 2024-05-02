@@ -24,12 +24,6 @@
     background: rgb(41, 40, 40);
 }
 
-.carousel-card>img {
-    height: 80%;
-    width: 80%;
-    border-radius: 10%;
-}
-
 .carousel-track {
     display: flex;
     position: absolute;

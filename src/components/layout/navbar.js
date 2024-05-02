@@ -1,7 +1,7 @@
 'use client';
 
 import TypeItLogo from "../type-it/logo";
-import GlitchyButton from "../buttons/glitchyButton";
+import GlitchyButton from "../buttons/glitchy-button";
 import { useSection } from "@/contexts/SectionContext";
 // import Networks from "./networks";
 import './navbar.css';
