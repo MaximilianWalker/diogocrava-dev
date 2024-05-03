@@ -5,9 +5,10 @@ import { useState, useContext, createContext } from "react";
 const SectionContext = createContext();
 
 export const SectionProvider = ({ children }) => {
+    const [size, setSize] = useState(0);
     const [section, setSection] = useState(0);
 
-    const nextSection = (size) => {
+    const nextSection = () => {
         if (section < size - 1) setSection(section + 1);
     }
 
@@ -18,7 +19,9 @@ export const SectionProvider = ({ children }) => {
     return (
         <SectionContext.Provider value={{
             section,
+            size,
             setSection,
+            setSize,
             nextSection,
             previousSection
         }}>
