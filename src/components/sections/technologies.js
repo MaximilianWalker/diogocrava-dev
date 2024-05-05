@@ -3,10 +3,15 @@ import Window from '../system/common/window';
 import AnimatedIDE from '../system/windows/animated-ide';
 import './technologies.css';
 
+const code = `
+import { useState } from 'react';
+import Window from '../system/common/window';
+`;
+
 const Technologies = ({ children, ...props }) => {
     const [technologies, setTechnologies] = useState();
     const [selectedTechnology, setSelectedTechnology] = useState();
-    const [codeSnippet, setCodeSnippet] = useState('');
+    const [codeSnippet, setCodeSnippet] = useState(code);
 
     return (
         <div className="technologies__container">
@@ -43,6 +48,8 @@ const Technologies = ({ children, ...props }) => {
                 defaultOpen
                 draggable
                 resizable
+                code={codeSnippet}
+                language="javascript"
             />
         </div>
     );
