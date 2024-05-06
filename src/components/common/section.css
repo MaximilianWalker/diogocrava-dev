@@ -1,0 +1,11 @@
+.section {
+    display: flex;
+    min-width: 100vw;
+    width: 100vw;
+    min-height: 100vh;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding-top: var(--navbar-height);
+    padding-bottom: var(--footer-height);
+}

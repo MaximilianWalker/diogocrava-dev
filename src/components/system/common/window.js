@@ -178,13 +178,15 @@ const Window = forwardRef(({
                     }
                 </div>
             </div>
-            <div
-                ref={contentRef}
-                className="window__content"
-                onMouseDown={resizable ? onResizeMouseDown : undefined}
-            >
-                {children}
-            </div>
+            {/* <div className="window__body"> */}
+                <div
+                    ref={contentRef}
+                    className="window__content"
+                    onMouseDown={resizable ? onResizeMouseDown : undefined}
+                >
+                    {children}
+                </div>
+            {/* </div> */}
         </div>
     );
 });

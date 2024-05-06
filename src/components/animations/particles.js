@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { distance } from '@/utils/mathUtils';
 import useWindowSize from '@/hooks/useWindowSize';
+import { useMemo } from 'react';
 
 class Particle {
     constructor(canvas, velocity, size, color) {
@@ -113,7 +114,7 @@ class Triangles {
 const Particles = ({
     className,
     style,
-    particleCount = 50,
+    // particleCount = 50,
     particleColor = '#fff',
     particleSize = 2,
     particleOpacity = 0.7,
@@ -126,6 +127,31 @@ const Particles = ({
     const particlesRef = useRef([]);
 
     const size = useWindowSize();
+    const particleCount = useMemo(() => 0.00002617252 * size.width * size.height, [size]);
+
+    const updateParticles = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        particlesRef.current = [];
+
+        for (let i = 0; i < particleCount; i++)
+            particlesRef.current.push(new Particle(canvas, particleVelocity, particleSize, particleColor));
+
+        requestRef.current = requestAnimationFrame(() => animate(ctx, canvas));
+    };
+
+    const updateSize = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+
+        ctx.scale(dpr, dpr);
+    };
 
     const animate = (ctx, canvas) => {
         const particles = particlesRef.current;
@@ -149,37 +175,8 @@ const Particles = ({
         particles.forEach(particle => particle.randomize());
     };
 
-    const updateSize = () => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const dpr = window.devicePixelRatio || 1;
-        const rect = canvas.getBoundingClientRect();
-
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
-
-        ctx.scale(dpr, dpr);
-    };
-
     useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const particles = particlesRef.current;
-
-        for (let i = 0; i < particleCount; i++)
-            particles.push(new Particle(canvas, particleVelocity, particleSize, particleColor));
-
-        requestRef.current = requestAnimationFrame(() => animate(ctx, canvas));
-
-        window.addEventListener('resize', updateSize);
-
-        return () => {
-            cancelAnimationFrame(requestRef.current);
-            window.removeEventListener('resize', updateSize);
-        };
-    }, []);
-
-    useEffect(() => {
+        updateParticles();
         updateSize();
         randomizePositions();
     }, [size]);

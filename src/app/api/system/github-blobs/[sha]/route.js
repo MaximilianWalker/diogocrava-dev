@@ -3,28 +3,23 @@ import { generateSystemTree } from "@/utils/systemUtils";
 
 export async function GET(request, { params: { sha } }) {
 	try {
-		const githubResponse = await fetch(`https://api.github.com/repos/username/repository/git/blobs/${sha}`, {
+		const githubResponse = await fetch(`https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/git/blobs/${sha}`, {
 			headers: {
 				// 'Authorization': `Bearer ${githubToken}`,
-				'Accept': 'application/vnd.github.v3.raw',
+				'Accept': 'application/vnd.github.raw+json',
 			},
 		});
 
 		if (!githubResponse.ok)
 			throw new Error('Failed to fetch the GitHub blob');
 
-		// Since you're in an Edge environment, directly using Buffer for Base64 decoding might not be supported.
-		// Fetch the content as an ArrayBuffer and serve it directly if it's binary.
-		// This example assumes binary content; for text, you might not need decoding.
-		const contentArrayBuffer = await githubResponse.arrayBuffer();
+		const rawData = await githubResponse.blob();
+		const contentType = githubResponse.headers.get('Content-Type');
 
-		// Determine the MIME type. You might need to adjust this based on the file type you're expecting.
-		// For more dynamic MIME type handling, you could use the file's extension or other characteristics.
-		const mimeType = 'application/octet-stream'; // Default MIME type, adjust based on your file types
-
-		return new Response(contentArrayBuffer, {
+		return new Response(rawData, {
+			status: 200,
 			headers: {
-				'Content-Type': mimeType,
+				'Content-Type': contentType,
 			},
 		});
 	} catch (error) {

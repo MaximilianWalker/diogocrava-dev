@@ -3,10 +3,16 @@
     --window-background: rgba(30, 30, 30, 0.95);
     --window-background-color: rgba(30, 30, 30, 0.95);
     --window-border-color: white;
+    --window-border-radius: 10px;
+    --window-padding: 10px;
+    --window-min-width: 500px;
+    --window-min-height: 500px;
 
-    --header-background-color: rgba(20, 20, 20, 0.95);
-    /* --tab-width: 200px; */
+    --header-padding: 10px;
+    --header-background-color: rgba(38, 38, 38, 0.95);
+    --tab-width: 200px;
     --tab-height: 35px;
+    --tab-padding: 10px;
     --tab-text-margin: 10px;
     --tab-triangle-width: 30px;
 
@@ -16,15 +22,18 @@
     position: absolute;
     display: flex;
     flex-direction: column;
+    min-width: var(--window-min-width);
+    min-height: var(--window-min-height);
     width: max-content;
     height: max-content;
-    z-index: 100;
+    /* background-color: var(--window-background-color); */
     color: var(--text-color);
+    /* border-radius: var(--window-border-radius); */
 }
 
 .window__content, .window__tab {
     background: var(--window-background);
-    background-color: var(--window-background-color);
+    /* background-color: var(--window-background-color); */
     border-style: solid;
     border-width: var(--window-border-size);
     border-color: var(--window-border-color);
@@ -33,9 +42,12 @@
 .window__header {
     width: 100%;
     height: max-content;
-    /* padding-top: 5px;
-    background-color: var(--header-background-color);
-    border-radius: 5px; */
+    /* padding-left: var(--header-padding);
+    padding-right: var(--header-padding); */
+    /* padding-top: var(--header-padding); */
+    /* background-color: var(--header-background-color); */
+    /* border-top-left-radius: var(--window-border-radius);
+    border-top-right-radius: var(--window-border-radius); */
 }
 
 .window__tab {
@@ -52,6 +64,12 @@
     border-left-width: var(--window-border-size);
     border-right-width: var(--window-border-size);
     border-bottom-width: var(--window-border-size);
+
+    /* border-top-left-radius: var(--window-border-radius);
+    border-top-right-radius: var(--window-border-radius); */
+
+    padding-left: var(--tab-padding);
+    padding-right: var(--tab-padding);
 
     transform: rotateX(1deg);
     vertical-align: middle;
@@ -147,10 +165,23 @@
     height: 14px;
 }
 
+.window__body {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding: var(--window-padding);
+    flex-grow: 1;
+    /* border-top: 0px; */
+}
+
 .window__content {
     position: relative;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    flex-grow: 1;
+    padding: var(--window-padding);
+    margin-top: -1px;;
+    /* border-radius: 5px; */
     /* display: flex; */
     /* flex-direction: column-reverse; */
     /* width: var(--window-width);

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
 
-import Prism from "prismjs";
-import "prismjs/components/prism-jsx";
+// import Prism from "prismjs";
+// import "prismjs/components/prism-jsx";
 
 import styles from './hi.module.css';
 
@@ -34,7 +34,7 @@ export default ({ freeze: freezeProp }) => {
                     instance
                         .type("> Hello, World!").pause(1000).delete(6).type("ups...").pause(500).delete(6).type("user! ヽ(´▽`)/").pause(600).break()
                         .type("> My name is <b style=\"color:#4EC9B0;\">Diogo Crava</b>!").pause(500).break()
-                        .type(`> And I'm a ${Prism.highlight("<FullStack-Developer />", Prism.languages.jsx, "jsx")}`)
+                        .type(`> And I'm a <b><span style="color:#808080;">&lt;</span><span style="color:#569CD6;">FullStack Developer</span><span style="color:#808080;">/&gt;</span></b>`)
                         .exec(() => setComplete(true)).pause(20000).break()
                         .type("> Scroll to continue...").pause(20000).break()
                         .type("> Knock knock... is anyone there?");

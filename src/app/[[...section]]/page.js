@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useEffect, useRef, useDeferredValue } from "react";
+import { useState, useEffect, useRef, useDeferredValue, useCallback } from "react";
 import { Inter } from 'next/font/google';
-import styles from './page.module.css';
-import Section from "@/components/sections/section";
-import Intro from '@/components/sections/intro';
-import AboutMe from "@/components/sections/aboutMe";
-import Technologies from '@/components/sections/technologies';
-import Projects from '@/components/sections/projects';
-import ContactForm from '@/components/sections/contactForm';
 import { useSection } from "@/contexts/SectionContext";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRouter } from 'next/navigation';
+
+import Section from "@/components/common/section";
+import Intro from '@/components/sections/intro';
+import AboutMe from "@/components/sections/about-me";
+import Technologies from '@/components/sections/technologies';
+import Projects from '@/components/sections/projects';
+import ContactForm from '@/components/sections/contact-form';
+
+import styles from './page.module.css';
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +26,7 @@ const SECTIONS = [
 ];
 
 export default function Home({ params: { section } }) {
+  const [scrolling, setScrolling] = useState(false);
   const {
     section: currentSection,
     setSection,
@@ -48,11 +51,15 @@ export default function Home({ params: { section } }) {
   ];
 
   const onWheel = (e) => {
-    if (e.deltaY < 0)
-      previousSection();
-    else if (e.deltaY > 0)
-      nextSection(refs.length);
-  }
+    if (!scrolling) {
+      if (e.deltaY < 0) previousSection();
+      else if (e.deltaY > 0) nextSection(refs.length);
+      setScrolling(true);
+      setTimeout(() => {
+        setScrolling(false);
+      }, 800);
+    }
+  };
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
@@ -62,11 +69,11 @@ export default function Home({ params: { section } }) {
   useEffect(() => {
     window.addEventListener('wheel', onWheel);
     return () => window.removeEventListener('wheel', onWheel);
-  }, [onWheel]);
+  }, [scrolling, onWheel]);
 
   useEffect(() => {
     // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);
-    refs[currentSection].current.scrollIntoView({ behavior: 'smooth' });
+    refs[currentSection].current.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }, [currentSection, size]);
 
   return (

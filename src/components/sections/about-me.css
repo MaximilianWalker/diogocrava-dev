@@ -1,0 +1,93 @@
+.about-me__container {
+    --aboutme-background-color: rgba(30, 30, 30, 0.95);
+
+    --window-spacing: 20px;
+    --horizontal-padding: 20px;
+    --vertical-padding: 20px;
+    --side-windows-min-width: 350px;
+
+    --available-width: calc(100% - var(--horizontal-padding) * 2);
+    --available-height: calc(100% - var(--vertical-padding) * 2);
+
+    --profile-window-top: var(--vertical-padding);
+    --profile-window-left: var(--horizontal-padding);
+    --profile-window-min-width: var(--side-windows-min-width);
+    --profile-window-width: max(var(--profile-window-min-width), calc((0.20 * var(--available-width)) - (var(--window-spacing) / 2)));
+    --profile-window-height: var(--available-height);
+
+    /* Layout 1 */
+    /* --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
+    --location-window-left: calc(var(--horizontal-padding) + var(--profile-window-width) + var(--window-spacing));
+    --location-window-width: calc(0.4 * (var(--available-width) - var(--profile-window-width) - (var(--window-spacing) * 1.5)));
+    --location-window-height: calc((0.3 * var(--available-height)) - (var(--window-spacing) / 2));
+
+    --clients-window-top: calc(100% - var(--clients-window-height) - var(--vertical-padding));
+    --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
+    --clients-window-width: calc(var(--available-width) - var(--profile-window-width) - var(--location-window-width) - (2 * var(--window-spacing)));
+    --clients-window-height: calc((0.3 * var(--available-height)) - (var(--window-spacing) / 2));
+
+    --explorer-window-top: var(--vertical-padding);
+    --explorer-window-left: calc(100% - var(--explorer-window-width) - var(--horizontal-padding));
+    --explorer-window-width: calc(var(--available-width) - var(--profile-window-width) - (var(--window-spacing) / 2));
+    --explorer-window-height: calc((0.7 * var(--available-height)) - (var(--window-spacing) / 2)); */
+
+    /* Layout 2 */
+    --explorer-window-top: var(--vertical-padding);
+    --explorer-window-left: calc(var(--horizontal-padding) + var(--profile-window-width) + var(--window-spacing));
+    --explorer-window-width: calc(var(--available-width) - var(--profile-window-width) - var(--clients-window-width) - (2 * var(--window-spacing)));
+    --explorer-window-height: var(--available-height);
+
+    --location-window-top: calc(100% - var(--location-window-height) - var(--vertical-padding));
+    --location-window-left: calc(100% - var(--location-window-width) - var(--horizontal-padding));
+    --location-window-min-width: var(--side-windows-min-width);
+    --location-window-width: max(var(--location-window-min-width), calc(0.20 * var(--available-width)));
+    --location-window-height: var(--location-window-width);
+
+    --clients-window-top: var(--vertical-padding);
+    --clients-window-left: calc(100% - var(--clients-window-width) - var(--horizontal-padding));
+    --clients-window-min-width: var(--side-windows-min-width);
+    --clients-window-width: max(var(--clients-window-min-width), calc(0.20 * var(--available-width)));
+    --clients-window-height: calc(var(--available-height) - var(--location-window-height) - var(--window-spacing));
+
+    width: 100%;
+    height: auto;
+    /* margin: 5%; */
+    display: flex;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.profile-window,
+.location-window,
+.clients-window,
+.explorer-window {
+    position: absolute;
+}
+
+.profile-window {
+    top: var(--profile-window-top);
+    left: var(--profile-window-left);
+    width: var(--profile-window-width);
+    height: var(--profile-window-height);
+}
+
+.location-window {
+    top: var(--location-window-top);
+    left: var(--location-window-left);
+    width: var(--location-window-width);
+    height: var(--location-window-height);
+}
+
+.clients-window {
+    top: var(--clients-window-top);
+    left: var(--clients-window-left);
+    width: var(--clients-window-width);
+    height: var(--clients-window-height);
+}
+
+.explorer-window {
+    top: var(--explorer-window-top);
+    left: var(--explorer-window-left);
+    width: var(--explorer-window-width);
+    height: var(--explorer-window-height);
+}

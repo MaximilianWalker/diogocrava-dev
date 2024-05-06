@@ -39,12 +39,12 @@ function Model(props) {
 
     // const [hovered, setHovered] = useState(false)
 
-    useFrame(({ mouse, viewport }) => {
-        const x = (mouse.x * viewport.width) / 2.5
-        const y = (mouse.y * viewport.height) / 2.5
-        ref.current.lookAt(x, y, 1)
-        // ref.current.material.color.lerp(hovered ? lime : black, 0.05)
-    })
+    // useFrame(({ mouse, viewport }) => {
+    //     const x = (mouse.x * viewport.width) / 2.5
+    //     const y = (mouse.y * viewport.height) / 2.5
+    //     ref.current.lookAt(x, y, 1)
+    //     // ref.current.material.color.lerp(hovered ? lime : black, 0.05)
+    // })
 
     // const updateMousePosition = (ev) => {
     //     setMousePosition({ x: ev.clientX, y: ev.clientY });
@@ -65,7 +65,7 @@ function Model(props) {
                 geometry={nodes.face_mask__0.geometry}
                 material={materials['Scene_-_Root']}
                 rotation={[-Math.PI / 2, 0, 0]}
-                scale={3}
+                scale={2}
             />
         </group>
     );

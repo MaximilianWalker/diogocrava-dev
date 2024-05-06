@@ -1,0 +1,34 @@
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: var(--footer-height);
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.footer__buttons {
+    display: flex;
+    height: max-content;
+    width: max-content;
+    gap: 20px;
+}
+
+/* Extra small devices (phones, up to 600px) */
+@media (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 601px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {}
+
+/* Large devices (laptops/desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {}
+
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+@media (min-width: 1201px) {}

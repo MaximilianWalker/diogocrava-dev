@@ -1,15 +1,14 @@
-@font-face {
-  font-family: Cyber;
-  src: url("https://assets.codepen.io/605876/Blender-Pro-Bold.otf");
-  font-display: swap;
-}
-
 @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
-@import url("./darkPlusPrismTheme.css");
+/* @import url('https://fonts.cdnfonts.com/css/agency-fb'); */
+
+@font-face {
+  font-family: 'Agency FB';
+  src: url(/fonts/AgencyFB/AgencyFB-Bold.ttf);
+}
 
 :root {
   --navbar-height: 82px;
-  --footbar-height: 153px;
+  --footer-height: 90px;
   --menu-button-width: 175px;
 }
 
@@ -33,7 +32,8 @@ body {
 *, *:before, *:after {
   box-sizing: inherit;
   color: white;
-  font-family: VT323, monospace;
+  /* font-family: VT323, monospace; */
+  /* font-family: Consolas, monospace; */
 }
 
 a {

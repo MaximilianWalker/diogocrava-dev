@@ -1,0 +1,84 @@
+.technologies__container {
+    --window-gap: 20px;
+    --side-windows-width: 300px;
+    --left-windows-height: calc((100% - (var(--window-gap) * 2)) / 3);
+
+    --frontend-window-top: 0px;
+    --frontend-window-left: calc(var(--ide-window-left) - var(--window-gap) - var(--frontend-window-width));
+    --frontend-window-width: var(--side-windows-width);
+    --frontend-window-height: var(--left-windows-height);
+
+    --backend-window-top: calc(var(--frontend-window-height) + var(--window-gap));
+    --backend-window-left: calc(var(--ide-window-left) - var(--window-gap) - var(--backend-window-width));
+    --backend-window-width: var(--side-windows-width);
+    --backend-window-height: var(--left-windows-height);
+
+    --databases-window-top: calc(100% - var(--databases-window-height));
+    --databases-window-left: calc(var(--ide-window-left) - var(--window-gap) - var(--databases-window-width));
+    --databases-window-width: var(--side-windows-width);
+    --databases-window-height: var(--left-windows-height);
+
+    --ide-window-top: calc(50% - (var(--ide-window-height) / 2));
+    --ide-window-left: calc(50% - (var(--ide-window-width) / 2));
+    --ide-window-width: min(40vw, var(--ide-window-min-width));
+    --ide-window-height: 100%;
+    --ide-window-min-width: 600px;
+
+    --status-window-top: 0px;
+    --status-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
+    --status-window-width: var(--side-windows-width);
+    --status-window-height: calc(100% - var(--window-gap) - var(--location-window-height));
+
+    --location-window-top: calc(100% - var(--location-window-height));
+    --location-window-left: calc(var(--explorer-window-left) + var(--explorer-window-width) + var(--window-gap));
+    --location-window-width: var(--side-windows-width);
+    --location-window-height: 20vh;
+
+    width: 100%;
+    height: auto;
+    /* margin: 5%; */
+    display: flex;
+    position: relative;
+}
+
+.frontend-window,
+.backend-window,
+.databases-window,
+.ide-window {
+    position: absolute;
+}
+
+.frontend-window {
+    top: var(--frontend-window-top);
+    left: var(--frontend-window-left);
+    width: var(--frontend-window-width);
+    height: var(--frontend-window-height);
+}
+
+.backend-window {
+    top: var(--backend-window-top);
+    left: var(--backend-window-left);
+    width: var(--backend-window-width);
+    height: var(--backend-window-height);
+}
+
+.databases-window {
+    top: var(--databases-window-top);
+    left: var(--databases-window-left);
+    width: var(--databases-window-width);
+    height: var(--databases-window-height);
+}
+
+.ide-window {
+    top: var(--ide-window-top);
+    left: var(--ide-window-left);
+    width: var(--ide-window-width);
+    height: var(--ide-window-height);
+}
+
+.location-window {
+    top: var(--location-window-top);
+    left: var(--location-window-left);
+    width: var(--location-window-width);
+    height: var(--location-window-height);
+}

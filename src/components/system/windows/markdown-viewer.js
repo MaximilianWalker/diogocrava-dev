@@ -1,21 +1,34 @@
-// https://sdk.vercel.ai/docs
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
-import { Home, ChevronLeft, ChevronRight } from 'react-feather';
-import usePrevious from "@/hooks/usePrevious";
-import './file-viewer.css';
+import Code from "@/components/common/code";
+import './markdown-viewer.css';
 
-const FileViewer = forwardRef(({ className, name, mimetype, content_url, ...props }, ref) => {
-    const [data, setData] = useState();
-
-    useEffect(() => {
-        getFile();
-    }, []);
-
+const FileViewer = forwardRef(({ className, mimetype, data, ...props }, ref) => {
     return (
-        <Window ref={ref} className={`file-viewer ${className}`} {...props}>
-        </Window>
+        <Markdown
+            ref={ref}
+            className={`markdown-viewer ${className}`}
+            children={data}
+            components={{
+                code({ children, className, node, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '')
+                    return match ? (
+                        <Code
+                            children={String(children).replace(/\n$/, '')}
+                            language={match[1]}
+                            code={node}
+                            {...props}
+                        />
+                    ) : (
+                        <code {...rest} className={className}>
+                            {children}
+                        </code>
+                    )
+                }
+            }}
+            {...props}
+        />
     );
 });
 

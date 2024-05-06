@@ -1,0 +1,24 @@
+.navbar__container {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: var(--navbar-height);
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.navbar__buttons {
+    /* position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%); */
+
+    display: flex;
+    height: max-content;
+    width: max-content;
+    /* margin-top: auto;
+    margin-bottom: auto; */
+    gap: 10px;
+}

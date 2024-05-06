@@ -44,7 +44,9 @@ import ApplicationPdf from "./files/application-pdf";
 import TextCss from "./files/text-css";
 import TextHtml from "./files/text-html";
 import TextMarkdown from "./files/text-markdown";
+import TextGeneric from "./files/text-x-generic";
 import TextJavascript from "./files/text-x-javascript";
+import ImageGeneric from "./files/image-x-generic";
 
 // Status
 import DialogError from "./status/dialog-error";
@@ -93,10 +95,14 @@ export {
     ApplicationGeneric,
     ApplicationJson,
     ApplicationPdf,
+
     TextCss,
     TextHtml,
     TextMarkdown,
+    TextGeneric,
     TextJavascript,
+
+    ImageGeneric,
 
     // Status
     DialogError

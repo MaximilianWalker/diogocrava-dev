@@ -5,7 +5,6 @@ import { useEffect, useState, useRef, useCallback, useLayoutEffect } from "react
 import TypeIt from "typeit-react";
 import { Maximize, X } from 'react-feather';
 import { useChat } from 'ai/react';
-import styles from './terminal.module.css';
 import { useTerminal } from "@/contexts/TerminalContext";
 import useDrag from "@/hooks/useDrag";
 import Window from "@/components/system/common/window";
@@ -13,6 +12,7 @@ import Window from "@/components/system/common/window";
 import { splitText } from "@/utils/stringExtensions";
 import { useWindowManager } from "@/contexts/WindowManagerContext";
 import TerminalIcon from '@/icons/custom/terminal';
+import './terminal.css';
 
 const AI_LOADING_INTERVAL = 400;
 
@@ -219,7 +219,7 @@ export default function Terminal({ }) {
 
     return (
         <Window
-            className={styles.container}
+            className="terminal__window"
             id="terminal"
             name="Terminal"
             icon={TerminalIcon}
@@ -231,7 +231,7 @@ export default function Terminal({ }) {
             onClose={() => setOpen(false)}
         >
             <TypeIt
-                className={styles.terminal}
+                className="terminal"
                 as="pre"
                 options={{
                     cursorChar: "_",
@@ -245,7 +245,7 @@ export default function Terminal({ }) {
             />
             <textarea
                 ref={textareaRef}
-                className={styles.textarea}
+                className="terminal__textarea"
                 value={input}
                 onInput={onInput}
             />

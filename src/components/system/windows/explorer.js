@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef, useMemo, Fragment } from "react";
-import { Home, ChevronLeft, ChevronRight, Folder, Search, RefreshCcw } from 'react-feather';
+import { Home, ChevronLeft, ChevronRight, ChevronDown, Folder, Search, RefreshCcw } from 'react-feather';
 import usePrevious from '@/hooks/usePrevious';
 import Window from '../common/window';
 import { default as ErrorWindow } from './error';
@@ -20,8 +20,6 @@ const ExplorerItem = forwardRef(({ icon, name, type, mimetype, selected, onClick
             :
             getIconByName('DarkFolder')
     );
-    console.log(mimetype)
-    console.log(Icon)
     return (
         <div
             ref={ref}
@@ -94,8 +92,8 @@ const Explorer = forwardRef(({
 
     const sortDirectories = (a, b) => {
         // sort by type: folder and file first and then name
-       if(a.type === b.type) return a.name.localeCompare(b.name);
-       else return a.type === 'folder' ? -1 : 1;
+        if (a.type === b.type) return a.name.localeCompare(b.name);
+        else return a.type === 'folder' ? -1 : 1;
     }
 
     const getDirectory = (path) => {
@@ -152,9 +150,9 @@ const Explorer = forwardRef(({
 
     const onFolderClick = (folder) => changeDirectory(path.length === 1 ? `/${folder.name}` : `${path}/${folder.name}`);
 
-    const onFileClick = () => {
+    const onFileClick = (file) => setOpenFiles(prevOpenFiles => [...prevOpenFiles, file]);
 
-    };
+    const closeFileWindow = (index) => setOpenFiles(prevOpenFiles => prevOpenFiles.filter((_, i) => i !== index));
 
     const onSectionClick = (index) => {
         setSections((prevSections) => (
@@ -170,7 +168,6 @@ const Explorer = forwardRef(({
 
     const onBackClick = () => {
         if (historyIndex === 0) return;
-
         const previousPath = history[historyIndex - 1];
         const directory = getDirectory(previousPath);
         setCurrentDirectory(directory.sort(sortDirectories));
@@ -269,9 +266,10 @@ const Explorer = forwardRef(({
                     {
                         sections?.map((section, i) => (
                             <Fragment key={`section-${i}`}>
-                                <span className="explorer__sidebar__section">
+                                <div className="explorer__sidebar__section">
+                                    <ChevronDown onClick={() => onSectionClick(i)} />
                                     {section.name}
-                                </span>
+                                </div>
                                 {
                                     section.links.map((link, j) => (
                                         <SidebarLink
@@ -292,20 +290,24 @@ const Explorer = forwardRef(({
                 >
                     {
                         currentDirectory ?
-                        currentDirectory.length > 0 ?
-                            currentDirectory.map((child, index) => (
-                                <ExplorerItem
-                                    key={`item-${index}`}
-                                    ref={(ref) => itemsRefs.current[index] = ref}
-                                    className="explorer__item"
-                                    selected={selectedItems.includes(index)}
-                                    onClick={(e) => onItemClick(e, index)}
-                                    onDoubleClick={() => onItemDoubleClick(child)}
-                                    {...child}
-                                />
-                            ))
-                            :
-                            <Loading className="explorer__loading" message="Empty" />
+                            currentDirectory.length > 0 ?
+                                <div className="explorer__grid">
+                                    {
+                                        currentDirectory.map((child, index) => (
+                                            <ExplorerItem
+                                                key={`item-${index}`}
+                                                ref={(ref) => itemsRefs.current[index] = ref}
+                                                className="explorer__item"
+                                                selected={selectedItems.includes(index)}
+                                                onClick={(e) => onItemClick(e, index)}
+                                                onDoubleClick={() => onItemDoubleClick(child)}
+                                                {...child}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                                :
+                                <Loading className="explorer__loading" message="Empty" />
                             :
                             <Loading className="explorer__loading" />
                     }
@@ -315,6 +317,7 @@ const Explorer = forwardRef(({
                 openFiles.map((file, index) => (
                     <FileViewer
                         key={`file-${index}`}
+                        onClose={() => closeFileWindow(index)}
                         {...file}
                     />
                 ))

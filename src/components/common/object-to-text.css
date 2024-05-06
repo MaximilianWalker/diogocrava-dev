@@ -1,0 +1,31 @@
+.object-to-text__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+}
+
+.object-to-text__line {
+    --line-padding: 40px;
+    display: flex;
+    width: 100%;
+    height: max-content;
+}
+
+.object-to-text__name, .object-to-text__value {
+    align-items: center;
+    display: inline-flex;
+    line-height: 30px;
+}
+
+.object-to-text__name {
+    min-width: max-content;
+    margin-right: 10px;
+}
+
+.object-to-text__value {
+    width: max-content;
+    color: gray;
+}

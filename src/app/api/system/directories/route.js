@@ -69,7 +69,7 @@ function mapRepositoryTree(tree, parent) {
 		parent: tree.find((child) => (
 			child.path.split('/').pop() === path.split('/').slice(0, -1).pop()
 		))?.sha ?? parent,
-		content_url: type === 'blob' ? `/api/system/github-blobs/${sha}` : undefined,
+		contentUrl: type === 'blob' ? `/api/system/github-blobs/${sha}` : undefined,
 		access: true,
 		hidden: false
 	}));
