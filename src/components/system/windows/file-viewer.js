@@ -1,7 +1,16 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, forwardRef, useMemo } from "react";
+import {
+    useEffect,
+    useState,
+    useRef,
+    useCallback,
+    useMemo,
+    useId,
+    forwardRef
+} from "react";
+import PropTypes from "prop-types";
 import Window from "../common/window";
 import Notepad from './notepad';
 import PdfViewer from './pdf-viewer';
@@ -11,9 +20,8 @@ import IDE from "./ide";
 import './file-viewer.css';
 
 const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props }, ref) => {
+    const id = useId();
     const [data, setData] = useState();
-
-    console.log('FileViewer', name, mimetype, contentUrl, props, data);
 
     const Component = useMemo(() => {
         if (mimetype.includes("application/pdf"))
@@ -39,10 +47,10 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
 
         try {
             const response = await fetch(contentUrl);
-            const responseType = response.headers.get("Content-Type");
+            // const responseType = response.headers.get("Content-Type");
 
-            if (mimetype && mimetype !== responseType)
-                throw new Error('Mimetype mismatch: ' + mimetype);
+            // if (mimetype && mimetype !== responseType)
+            //     throw new Error('Mimetype mismatch: ' + mimetype);
 
             if (mimetype.includes("application/json")) {
                 setData(await response.json());
@@ -70,7 +78,10 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
     return (
         <Window
             ref={ref}
+            id={id}
             className={`file-viewer ${className}`}
+            name={name}
+            defaultOpen
             draggable
             maximizable
             resizable
@@ -84,5 +95,11 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
         </Window>
     );
 });
+
+FileViewer.propTypes = {
+    name: PropTypes.string.isRequired,
+    mimetype: PropTypes.string.isRequired,
+    contentUrl: PropTypes.string.isRequired
+};
 
 export default FileViewer;

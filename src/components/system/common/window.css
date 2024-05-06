@@ -5,6 +5,8 @@
     --window-border-color: white;
     --window-border-radius: 10px;
     --window-padding: 10px;
+    --window-min-width: 500px;
+    --window-min-height: 500px;
 
     --header-padding: 10px;
     --header-background-color: rgba(38, 38, 38, 0.95);
@@ -20,6 +22,8 @@
     position: absolute;
     display: flex;
     flex-direction: column;
+    min-width: var(--window-min-width);
+    min-height: var(--window-min-height);
     width: max-content;
     height: max-content;
     /* background-color: var(--window-background-color); */
@@ -173,7 +177,8 @@
 .window__content {
     position: relative;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    flex-grow: 1;
     padding: var(--window-padding);
     margin-top: -1px;;
     /* border-radius: 5px; */
