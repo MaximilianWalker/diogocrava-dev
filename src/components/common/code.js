@@ -19,9 +19,7 @@ function Code({ className, code, language, showLineNumbers }) {
             className={className}
             language={language}
             style={lioshi}
-            // PreTag="div"
             showLineNumbers={showLineNumbers}
-            // useInlineStyles
         >
             {code}
         </SyntaxHighlighter>

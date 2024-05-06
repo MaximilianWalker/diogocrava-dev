@@ -1,13 +1,34 @@
-// https://sdk.vercel.ai/docs
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import Code from "@/components/common/code";
 import './markdown-viewer.css';
 
 const FileViewer = forwardRef(({ className, mimetype, data, ...props }, ref) => {
     return (
-        <MDXRemote source={data} />
+        <Markdown
+            ref={ref}
+            className={`markdown-viewer ${className}`}
+            children={data}
+            components={{
+                code({ children, className, node, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '')
+                    return match ? (
+                        <Code
+                            children={String(children).replace(/\n$/, '')}
+                            language={match[1]}
+                            code={node}
+                            {...props}
+                        />
+                    ) : (
+                        <code {...rest} className={className}>
+                            {children}
+                        </code>
+                    )
+                }
+            }}
+            {...props}
+        />
     );
 });
 

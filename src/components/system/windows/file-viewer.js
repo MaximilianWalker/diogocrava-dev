@@ -13,6 +13,8 @@ import './file-viewer.css';
 const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props }, ref) => {
     const [data, setData] = useState();
 
+    console.log('FileViewer', name, mimetype, contentUrl, props, data);
+
     const Component = useMemo(() => {
         if (mimetype.includes("application/pdf"))
             return PdfViewer;

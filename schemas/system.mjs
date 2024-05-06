@@ -55,7 +55,7 @@ async function create(db) {
                 bsonType: "string",
                 description: "'mimetype' can be a string"
             },
-            content_url: {
+            contentUrl: {
                 bsonType: "string",
                 description: "'content_url' can be a string"
             }

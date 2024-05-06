@@ -150,9 +150,9 @@ const Explorer = forwardRef(({
 
     const onFolderClick = (folder) => changeDirectory(path.length === 1 ? `/${folder.name}` : `${path}/${folder.name}`);
 
-    const onFileClick = () => {
+    const onFileClick = (file) => setOpenFiles(prevOpenFiles => [...prevOpenFiles, file]);
 
-    };
+    const closeFileWindow = (index) => setOpenFiles(prevOpenFiles => prevOpenFiles.filter((_, i) => i !== index));
 
     const onSectionClick = (index) => {
         setSections((prevSections) => (
@@ -168,7 +168,6 @@ const Explorer = forwardRef(({
 
     const onBackClick = () => {
         if (historyIndex === 0) return;
-
         const previousPath = history[historyIndex - 1];
         const directory = getDirectory(previousPath);
         setCurrentDirectory(directory.sort(sortDirectories));
@@ -318,6 +317,7 @@ const Explorer = forwardRef(({
                 openFiles.map((file, index) => (
                     <FileViewer
                         key={`file-${index}`}
+                        onClose={() => closeFileWindow(index)}
                         {...file}
                     />
                 ))
