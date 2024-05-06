@@ -22,8 +22,8 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    min-width: var(--window-min-width);
-    min-height: var(--window-min-height);
+    /* min-width: var(--window-min-width);
+    min-height: var(--window-min-height); */
     width: max-content;
     height: max-content;
     /* background-color: var(--window-background-color); */
