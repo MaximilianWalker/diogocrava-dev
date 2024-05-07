@@ -1,3 +1,4 @@
 .file-viewer {
-    z-index: 200;
+    height: 60vh;
+    aspect-ratio: 1.66;
 }

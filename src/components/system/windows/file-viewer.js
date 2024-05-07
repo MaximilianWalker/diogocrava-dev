@@ -1,4 +1,3 @@
-// https://sdk.vercel.ai/docs
 'use client';
 
 import {
@@ -9,9 +8,10 @@ import {
     useMemo,
     useId,
     forwardRef
-} from "react";
-import PropTypes from "prop-types";
-import Window from "../common/window";
+} from 'react';
+import PropTypes from 'prop-types';
+import Window from '../common/window';
+import Loading from '@/components/type-it/loading';
 import Notepad from './notepad';
 import PdfViewer from './pdf-viewer';
 import MarkdownViewer from './markdown-viewer';
@@ -46,26 +46,38 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
         //         }
 
         try {
-            const response = await fetch(contentUrl);
+            const response = await fetch(contentUrl, { cache: 'no-store' });
             // const responseType = response.headers.get("Content-Type");
 
             // if (mimetype && mimetype !== responseType)
             //     throw new Error('Mimetype mismatch: ' + mimetype);
 
-            if (mimetype.includes("application/json")) {
-                setData(await response.json());
-            } else if (mimetype.includes("application/pdf")) {
-                const blob = await response.blob();
-                const arrayBuffer = await blob.arrayBuffer();
-                setData(new Uint8Array(arrayBuffer));
-            } else if (mimetype.includes("image")) {
-                const blob = await response.blob();
-                setData(URL.createObjectURL(blob));
-            } else if (mimetype.includes("text")) {
-                setData(response.text());
-            } else {
-                setData(await response.blob());
-            }
+            console.log(mimetype);
+            console.log(response)
+            console.log(response.body)
+            const kek = response.text();
+
+            console.log(kek)
+            console.log('lmao')
+            kek.then(() => console.log('super keks maximus'))
+            const lol = await kek;
+            console.log(lol)
+            console.log('kek')
+
+            // if (mimetype.includes("application/json")) {
+            //     setData(await response.text());
+            // } else if (mimetype.includes("application/pdf")) {
+            //     const blob = await response.blob();
+            //     const arrayBuffer = await blob.arrayBuffer();
+            //     setData(new Uint8Array(arrayBuffer));
+            // } else if (mimetype.includes("image")) {
+            //     const blob = await response.blob();
+            //     setData(URL.createObjectURL(blob));
+            // } else if (mimetype.includes("text")) {
+            //     setData(await response.text());
+            // } else {
+            //     setData(await response.blob());
+            // }
         } catch (error) {
             console.error("Error fetching or parsing content:", error);
         }
@@ -74,6 +86,8 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
     useEffect(() => {
         getData();
     }, []);
+
+    console.log(data);
 
     return (
         <Window
@@ -88,10 +102,15 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
             closable
             {...props}
         >
-            <Component
-                mimetype={mimetype}
-                data={data}
-            />
+            {
+                data ?
+                    <Component
+                        mimetype={mimetype}
+                        data={data}
+                    />
+                    :
+                    <Loading />
+            }
         </Window>
     );
 });
