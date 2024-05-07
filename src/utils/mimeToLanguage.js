@@ -2,6 +2,7 @@ const mimetypeToLanguage = {
     "text/html": "HTML",
     "text/css": "CSS",
     "application/javascript": "JavaScript",
+    "text/javascript": "JavaScript",
     "application/json": "JSON",
     "text/x-python": "Python",
     "application/java-archive": "Java",

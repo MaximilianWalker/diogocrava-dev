@@ -14,9 +14,10 @@ const IDE = forwardRef(({ className, mimetype, data, ...props }, ref) => {
     return (
         <Code
             ref={ref}
-            className={`ide ${className}`}
-            language={getProgrammingLanguage(mimetype)}
+            className={`ide ${className ?? ''}`}
+            language={getProgrammingLanguage(mimetype).toLowerCase()}
             code={data}
+            showLineNumbers
         />
     );
 });
