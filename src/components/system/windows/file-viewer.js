@@ -1,4 +1,3 @@
-// https://sdk.vercel.ai/docs
 'use client';
 
 import {
@@ -9,9 +8,11 @@ import {
     useMemo,
     useId,
     forwardRef
-} from "react";
-import PropTypes from "prop-types";
-import Window from "../common/window";
+} from 'react';
+import PropTypes from 'prop-types';
+import Window from '@/components/system/common/window';
+import Loading from '@/components/type-it/loading';
+import { getProgrammingLanguage } from '@/utils/mimeToLanguage.js';
 import Notepad from './notepad';
 import PdfViewer from './pdf-viewer';
 import MarkdownViewer from './markdown-viewer';
@@ -23,10 +24,12 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
     const id = useId();
     const [data, setData] = useState();
 
+    const ProgrammingLanguage = useMemo(() => getProgrammingLanguage(mimetype), [mimetype]);
+
     const Component = useMemo(() => {
         if (mimetype.includes("application/pdf"))
             return PdfViewer;
-        else if (mimetype.includes("application/json"))
+        else if (ProgrammingLanguage)
             return IDE;
         else if (mimetype.includes("image"))
             return ImageViewer;
@@ -34,7 +37,11 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
             return MarkdownViewer;
         else
             return Notepad;
-    })
+    }, [mimetype]);
+
+    console.log(mimetype);
+    console.log(ProgrammingLanguage);
+    console.log(Component);
 
     const getData = async () => {
         //         if (jsonData.encoding && jsonData.content) {
@@ -52,8 +59,20 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
             // if (mimetype && mimetype !== responseType)
             //     throw new Error('Mimetype mismatch: ' + mimetype);
 
-            if (mimetype.includes("application/json")) {
-                setData(await response.json());
+            // console.log(mimetype);
+            // console.log(response)
+            // console.log(response.body)
+            // const kek = response.text();
+
+            // console.log(kek)
+            // console.log('lmao')
+            // kek.then(() => console.log('super keks maximus'))
+            // const lol = await kek;
+            // console.log(lol)
+            // console.log('kek')
+
+            if (getProgrammingLanguage(mimetype)) {
+                setData(await response.text());
             } else if (mimetype.includes("application/pdf")) {
                 const blob = await response.blob();
                 const arrayBuffer = await blob.arrayBuffer();
@@ -62,7 +81,7 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
                 const blob = await response.blob();
                 setData(URL.createObjectURL(blob));
             } else if (mimetype.includes("text")) {
-                setData(response.text());
+                setData(await response.text());
             } else {
                 setData(await response.blob());
             }
@@ -74,6 +93,8 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
     useEffect(() => {
         getData();
     }, []);
+
+    console.log(data);
 
     return (
         <Window
@@ -88,10 +109,15 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
             closable
             {...props}
         >
-            <Component
-                mimetype={mimetype}
-                data={data}
-            />
+            {
+                data ?
+                    <Component
+                        mimetype={mimetype}
+                        data={data}
+                    />
+                    :
+                    <Loading />
+            }
         </Window>
     );
 });

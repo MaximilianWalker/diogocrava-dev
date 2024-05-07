@@ -16,7 +16,7 @@ import "./code.css";
 function Code({ className, code, language, showLineNumbers }) {
     return (
         <SyntaxHighlighter
-            className={className}
+            className={`code ${className ?? ''}`}
             language={language}
             style={lioshi}
             showLineNumbers={showLineNumbers}

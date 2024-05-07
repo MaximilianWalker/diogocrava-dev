@@ -1,41 +1,29 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
+import { forwardRef } from "react";
 import PropTypes from "prop-types";
-import { Home, ChevronLeft, ChevronRight } from 'react-feather';
-import usePrevious from "@/hooks/usePrevious";
+import Code from "@/components/common/code";
+import { getProgrammingLanguage } from "@/utils/mimeToLanguage";
 import './ide.css';
 
-const IDE = forwardRef(({
-    className,
-    mode,
-    name,
-    icon: Icon,
-    selected,
-    onSelect,
-    onOpen,
-    ...props
-}, ref) => {
+const IDE = forwardRef(({ className, mimetype, data, ...props }, ref) => {
+    console.log(mimetype);
+    console.log(data);
+    console.log(getProgrammingLanguage(mimetype))
     return (
-        <div 
-            ref={ref} 
-            className={`file ${className}`} 
-            {...props}
-        >
-            {Icon ? <Icon /> : null}
-            <span className="file__text">{name}</span>
-        </div>
+        <Code
+            ref={ref}
+            className={`ide ${className ?? ''}`}
+            language={getProgrammingLanguage(mimetype).toLowerCase()}
+            code={data}
+            showLineNumbers
+        />
     );
 });
 
-File.propTypes = {
-    mode: PropTypes.oneOf(["grid", "list"]).isRequired,
-    name: PropTypes.string.isRequired,
-    icon: PropTypes.elementType,
-    selected: PropTypes.bool,
-    onSelect: PropTypes.func,
-    onOpen: PropTypes.func
+IDE.propTypes = {
+
 };
 
 export default IDE;
