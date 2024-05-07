@@ -25,6 +25,7 @@
     /* background-color: var(--window-background-color); */
     color: var(--text-color);
     /* border-radius: var(--window-border-radius); */
+    font-size: 14px;
 }
 
 .window__content, .window__tab {
@@ -38,6 +39,7 @@
 .window__header {
     width: 100%;
     height: max-content;
+    /* font-size: 14px; */
     /* padding-left: var(--header-padding);
     padding-right: var(--header-padding); */
     /* padding-top: var(--header-padding); */

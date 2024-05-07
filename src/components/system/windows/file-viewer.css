@@ -1,4 +1,10 @@
 .file-viewer {
+    --file-viewer-aspect-ratio: 1.66;
+
+    width: calc(var(--file-viewer-aspect-ratio) * 60vh);
     height: 60vh;
-    aspect-ratio: 1.66;
+}
+
+.file-viewer > .window__content {
+    overflow-x: scroll;
 }
