@@ -1,8 +1,8 @@
 .terminal__window {
     top: calc(50% - (510px / 2));
     left: calc(50% - (885px / 2));
-    width: 885px;
-    height: 510px;
+    width: 885px !important;
+    height: 510px !important;
 }
 
 .terminal__window .window__content {
