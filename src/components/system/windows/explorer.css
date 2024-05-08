@@ -58,7 +58,7 @@
 .explorer__sidebar__section,
 .explorer__sidebar__link {
     height: 30px;
-    font-size: 15px;
+    /* font-size: 15px; */
     display: flex;
     align-items: center;
     background: none;

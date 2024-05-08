@@ -100,7 +100,7 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
         <Window
             ref={ref}
             id={id}
-            className={`file-viewer ${className}`}
+            className={`file-viewer ${className ?? ''}`}
             name={name}
             defaultOpen
             draggable
