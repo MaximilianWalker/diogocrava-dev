@@ -1,35 +1,43 @@
-import { createElement, forwardRef, useState } from 'react';
+import { useState, useRef, useMemo, useImperativeHandle, forwardRef, isValidElement, cloneElement, Children } from 'react';
+import PropTypes from 'prop-types';
 import './typewriter.css';
+
+const instruction = {
+	action: 'type',
+	value: 'hello',
+	options: {
+		speed: 50
+	},
+	remove: true
+}
 
 const ACTIONS = [
 	'type',
 	'delete',
 ];
 
-const Item = ({ type, children }) => createElement(
-	type,
-	{}, // props
-	children.map(child => createElement(Item, child))
-);
-
-export default forwardRef(({
-	component,
-	children,
+const Typewriter = forwardRef(({
+	events,
+	component: Component = 'div',
 	showCursor,
 	cursorCharacter,
-
+	...props
 }, ref) => {
-	const [queue, setQueue] = useState([]);
-	const [queueIndex, setQueueIndex] = useState(0);
+	const intervalRef = useRef();
 
-	const [instantQueue, setInstantQueue] = useState([]);
-	const [instantQueueIndex, setInstantQueueIndex] = useState(0);
+	const [queue, setQueue] = useState(events ?? []);
+	const [queueIndex, setQueueIndex] = useState(0);
+	const currentEvent = useMemo(() => queue[queueIndex], [queue, queueIndex]);
+	const currentEventNodes = useMemo(() => Children.toArray(currentEvent?.value), [currentEvent]);
+
+	const [play, setPlay] = useState(false);
+	const [content, setContent] = useState([]);
+	const [cursorIndex, setCursorIndex] = useState(0);
 
 	const [options, setOptions] = useState({
 
 	});
 
-	const [play, setPlay] = useState(false);
 	const [iteration, setIteration] = useState(0);
 
 	// const [repeat, setRepeat] = useState(false);
@@ -65,37 +73,85 @@ export default forwardRef(({
 		setTimeout(start, time);
 	};
 
-	// pensar em como fazer o cursor
-	return <Item type={component} />;
+	const changeOptions = (options) => setOptions(options);
+
+	const getEventNodes = (nodes) => {
+		const extractText = (child) => {
+			if (typeof child === 'string') {
+				return [...child];
+			} else if (isValidElement(child) && child.props.children) {
+				const nestedChars = Children.toArray(child.props.children).flatMap(extractText);
+				return cloneElement(child, { ...child.props, key: chars.length }, nestedChars);
+			}
+			return child;
+		};
+
+		Children.forEach(children, child => {
+			chars.push(...extractText(child));
+		});
+
+		const nodes = [];
+		Children.forEach(nodes, (child) => {
+			if (typeof child === 'string') {
+				return [...child];
+			} else if (isValidElement(child) && child.props.children) {
+				const nestedNodes = getEventNodes(child.props.children);
+				return cloneElement(child, { ...child.props, key: chars.length }, nestedNodes);
+			}
+			return child;
+		});
+		return nodes;
+	};
+
+	useImperativeHandle(ref, () => ({
+		start,
+		stop,
+		type,
+		newLine,
+		move,
+		remove,
+		pause,
+		changeOptions
+	}));
+
+	useEffect(() => {
+		const chars = [];
+
+	}, [typingSpeed]);
+
+	useEffect(() => {
+		if (play) {
+			intervalRef.current = setInterval(() => {
+				setContent(current => [...current, chars[index]]);
+				if (index === chars.length) {
+					clearInterval(interval);
+				}
+			}, typingSpeed);
+		} else {
+			clearInterval(intervalRef.current);
+		}
+		return () => clearInterval(intervalRef.current);
+	}, [play]);
+
+	return (
+		<Component {...props}>
+			{
+				content.slice(0, cursorIndex).map((node, index) => (
+					typeof node === 'string' ? <span key={index}>{node}</span> : node
+				))
+			}
+			{showCursor && <span className="typewriter__cursor">{cursorCharacter}</span>}
+			{
+				content.slice(cursorIndex).map((node, index) => (
+					typeof node === 'string' ? <span key={index}>{node}</span> : node
+				))
+			}
+		</Component>
+	);
 });
 
-// posso aceitar children e depois manipular os filhos
-// problema: passar refs a esses mesmos filhos e detectar alterações vai ser complicado
-// aceitar html e fazer eu a transformação
-// aceitar texto normal
+Typewriter.propTypes = {
 
-// Example on how to manipulate children in React
+};
 
-function manipulateChildren(children) {
-	return React.Children.map(children, (child) => {
-		if (React.isValidElement(child)) {
-			// If the child is a React element, clone it with modified props or content
-			return React.cloneElement(child, {
-				children: manipulateChildren(child.props.children), // Recursively process children
-			});
-		} else if (typeof child === 'string') {
-			// If the child is a string, manipulate its content
-			return child.replace(/your-regexp-pattern/g, 'new-text');
-		} else {
-			return child;
-		}
-	});
-}
-
-function YourComponent({ children }) {
-	const manipulatedChildren = manipulateChildren(children);
-
-	return <div>{manipulatedChildren}</div>;
-}
-
-//   export default YourComponent;
+export default Typewriter;
