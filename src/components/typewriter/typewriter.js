@@ -11,10 +11,10 @@ const instruction = {
 	remove: true
 }
 
-const ACTIONS = [
-	'type',
-	'delete',
-];
+const ACTIONS = {
+	TYPE: 'type',
+	DELETE: 'delete'
+};
 
 const Typewriter = forwardRef(({
 	events,
@@ -25,14 +25,13 @@ const Typewriter = forwardRef(({
 }, ref) => {
 	const intervalRef = useRef();
 
-	const [queue, setQueue] = useState(events ?? []);
+	const [play, setPlay] = useState(true);
+
+	const [eventQueue, setEventQueue] = useState(events ?? []);
 	const [queueIndex, setQueueIndex] = useState(0);
 	const currentEvent = useMemo(() => queue[queueIndex], [queue, queueIndex]);
-	const currentEventNodes = useMemo(() => Children.toArray(currentEvent?.value), [currentEvent]);
-
-	const [play, setPlay] = useState(false);
-	const [content, setContent] = useState([]);
-	const [cursorIndex, setCursorIndex] = useState(0);
+	const eventNodes = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
+	const [nodeIndex, setNodeIndex] = useState(0);
 
 	const [options, setOptions] = useState({
 
@@ -103,6 +102,26 @@ const Typewriter = forwardRef(({
 		return nodes;
 	};
 
+	const onAnimation = () => {
+		switch (currentEvent.type) {
+			case 'type':
+				setContent(current => [...current, eventNodes[nodeIndex]]);
+				if (nodeIndex === eventNodes.length)
+					setQueueIndex(prevIndex => ++prevIndex);
+				break;
+			case 'delete':
+				setContent(current => [...current, eventNodes[nodeIndex]]);
+				if (nodeIndex === eventNodes.length)
+					setQueueIndex(prevIndex => ++prevIndex);
+				break;
+			case 'pause':
+				setContent(current => [...current, eventNodes[nodeIndex]]);
+				if (nodeIndex === eventNodes.length)
+					setQueueIndex(prevIndex => ++prevIndex);
+				break;
+		}
+	};
+
 	useImperativeHandle(ref, () => ({
 		start,
 		stop,
@@ -115,21 +134,10 @@ const Typewriter = forwardRef(({
 	}));
 
 	useEffect(() => {
-		const chars = [];
-
-	}, [typingSpeed]);
-
-	useEffect(() => {
-		if (play) {
-			intervalRef.current = setInterval(() => {
-				setContent(current => [...current, chars[index]]);
-				if (index === chars.length) {
-					clearInterval(interval);
-				}
-			}, typingSpeed);
-		} else {
+		if (play)
+			onAnimation();
+		else
 			clearInterval(intervalRef.current);
-		}
 		return () => clearInterval(intervalRef.current);
 	}, [play]);
 
