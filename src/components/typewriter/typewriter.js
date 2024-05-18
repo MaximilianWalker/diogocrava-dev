@@ -30,14 +30,14 @@ const Typewriter = forwardRef(({
 	const [eventQueue, setEventQueue] = useState(events ?? []);
 	const [queueIndex, setQueueIndex] = useState(0);
 	const currentEvent = useMemo(() => queue[queueIndex], [queue, queueIndex]);
-	const eventNodes = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
-	const [nodeIndex, setNodeIndex] = useState(0);
 
-	const [options, setOptions] = useState({
+	const nodes = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
 
-	});
+	// const [options, setOptions] = useState({
 
-	const [iteration, setIteration] = useState(0);
+	// });
+
+	// const [iteration, setIteration] = useState(0);
 
 	// const [repeat, setRepeat] = useState(false);
 
@@ -52,15 +52,29 @@ const Typewriter = forwardRef(({
 		value: text
 	});
 
-	const newLine = (text, options) => addToQueue({
-		action: 'type',
-		value: text
-	});
+	const onType = () => {
+		setContent(current => [
+			...current.slice(0, nodeIndex),
+			eventNodes[nodeIndex],
+			...current.slice(nodeIndex)
+		]);
+
+		if (nodeIndex < eventNodes.length - 1) {
+			setNodeIndex(nodeIndex => ++nodeIndex);
+		} else {
+			setNodeIndex(0);
+			setEventQueue(prevIndex => ++prevIndex);
+		}
+	};
 
 	const move = (delta, options) => addToQueue({
 		action: 'move',
 		value: delta
 	});
+
+	const onMove = () => {
+		setNodeIndex(prevIndex => prevIndex + currentEvent.value);
+	};
 
 	const remove = (n, options) => addToQueue({
 		action: 'delete',
@@ -72,53 +86,48 @@ const Typewriter = forwardRef(({
 		setTimeout(start, time);
 	};
 
-	const changeOptions = (options) => setOptions(options);
-
-	const getEventNodes = (nodes) => {
-		const extractText = (child) => {
-			if (typeof child === 'string') {
-				return [...child];
-			} else if (isValidElement(child) && child.props.children) {
-				const nestedChars = Children.toArray(child.props.children).flatMap(extractText);
-				return cloneElement(child, { ...child.props, key: chars.length }, nestedChars);
-			}
-			return child;
-		};
-
-		Children.forEach(children, child => {
-			chars.push(...extractText(child));
-		});
-
-		const nodes = [];
-		Children.forEach(nodes, (child) => {
-			if (typeof child === 'string') {
-				return [...child];
-			} else if (isValidElement(child) && child.props.children) {
-				const nestedNodes = getEventNodes(child.props.children);
-				return cloneElement(child, { ...child.props, key: chars.length }, nestedNodes);
-			}
-			return child;
-		});
-		return nodes;
+	const onPause = () => {
+		if (currentEvent.value)
+			setTimeout(onAnimation, currentEvent.value);
+		else
+			setPlay(false);
 	};
 
+	const loop = () => {
+		setNodeIndex(currentEvent.value ?? 0);
+		setEventQueue(currentEvent.value ?? 0);
+	};
+
+	const changeOptions = (options) => setOptions(options);
+
+	// desenhar o flow de animação
 	const onAnimation = () => {
-		switch (currentEvent.type) {
-			case 'type':
-				setContent(current => [...current, eventNodes[nodeIndex]]);
-				if (nodeIndex === eventNodes.length)
-					setQueueIndex(prevIndex => ++prevIndex);
-				break;
-			case 'delete':
-				setContent(current => [...current, eventNodes[nodeIndex]]);
-				if (nodeIndex === eventNodes.length)
-					setQueueIndex(prevIndex => ++prevIndex);
-				break;
-			case 'pause':
-				setContent(current => [...current, eventNodes[nodeIndex]]);
-				if (nodeIndex === eventNodes.length)
-					setQueueIndex(prevIndex => ++prevIndex);
-				break;
+		if (play) {
+			let animationFunction;
+			let animationSpeed;
+			switch (currentEvent.type) {
+				case 'type':
+					animationFunction = onType;
+					animationSpeed = currentEvent.options.speed;
+					break;
+				case 'move':
+					animationFunction = onMove;
+					animationSpeed = currentEvent.value;
+					break;
+				case 'delete':
+					animationFunction = onPause;
+					animationSpeed = currentEvent.value;
+					break;
+				case 'pause':
+					animationFunction = onPause;
+					animationSpeed = currentEvent.value;
+					break;
+				case 'loop':
+					animationFunction = onPause;
+					animationSpeed = currentEvent.value;
+					break;
+			}
+			intervalRef.current = setInterval(animationFunction, animationSpeed);
 		}
 	};
 
@@ -126,7 +135,6 @@ const Typewriter = forwardRef(({
 		start,
 		stop,
 		type,
-		newLine,
 		move,
 		remove,
 		pause,
@@ -136,10 +144,10 @@ const Typewriter = forwardRef(({
 	useEffect(() => {
 		if (play)
 			onAnimation();
-		else
+		else {}
 			clearInterval(intervalRef.current);
 		return () => clearInterval(intervalRef.current);
-	}, [play]);
+	}, [play, currentEvent, nodeIndex]);
 
 	return (
 		<Component {...props}>
