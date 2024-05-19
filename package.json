@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
     "database": "node ./scripts/mongodb.mjs",
     "blobs": "node ./scripts/blobs.mjs",
     "rename-files": "node ./scripts/file-convention-renamer.mjs"
@@ -45,6 +46,10 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^14.1.4",
     "@svgr/webpack": "^8.1.0",
-    "dotenv": "^16.3.1"
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "dotenv": "^16.3.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }

@@ -29,7 +29,8 @@ const Typewriter = forwardRef(({
 
 	const [eventQueue, setEventQueue] = useState(events ?? []);
 	const [queueIndex, setQueueIndex] = useState(0);
-	const currentEvent = useMemo(() => queue[queueIndex], [queue, queueIndex]);
+	const currentEvent = useMemo(() => queue[queueIndex], [eventQueue, queueIndex]);
+	const [eventIndex, setEventIndex] = useState(0);
 
 	const nodes = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
 

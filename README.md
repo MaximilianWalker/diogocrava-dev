@@ -60,7 +60,7 @@ This software uses the following open source packages:
 
 <p>Or</p> 
 
-<a href="https://www.patreon.com/amitmerchant">
+<a href="">
 	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
 </a>
 
@@ -68,7 +68,3 @@ This software uses the following open source packages:
 
 - []() - 
 - []() -
-
-## License
-
-MIT

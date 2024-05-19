@@ -17,96 +17,111 @@ export function generateLineBreaks(text) {
 export function countCharacters(nodes) {
     let _count = 0;
 
-    const _countCharacters = (nodes) => {
-        Children.forEach(nodes, (child) => {
-            if (typeof child === 'string')
+    const _countCharacters = (nodes) => Children.forEach(nodes, (child) => {
+        if (typeof child === 'string')
             _count += child.length;
-            else if (isValidElement(child) && child.props.children)
-                _countCharacters(child.props.children);
-        });
-    };
+        else if (isValidElement(child) && child.props.children)
+            _countCharacters(child.props.children);
+    });
 
     _countCharacters(nodes);
     return _count;
 }
 
-export function findElementAtIndex(element, targetIndex) {
-    let currentIndex = 0;  // Tracks the current index in text
+// export function findElementAtIndex(parentNode, index) {
+//     if (!parentNode || typeof parentNode !== 'object' || !isValidElement(parentNode)) {
+//         throw new Error('Parent node is not a valid React element');
+//     }
 
-    // Recursive function to traverse React children
-    function traverseChildren(children) {
-        for (const child of Children.toArray(children)) {
-            if (typeof child === 'string') {
-                // Calculate the new index if we add this text's length
-                if (currentIndex + child.length > targetIndex) {
-                    // If the target index is within this text, return this text
-                    return child;
-                }
-                currentIndex += child.length;  // Update current index
-            } else if (isValidElement(child) && child.props.children) {
-                // Recurse into the child's children if it is a valid React element with children
-                const result = traverseChildren(child.props.children);
-                if (result) return result;  // If the result is found, bubble it up
-            }
+//     let currentIndex = 0;
+
+//     function traverse(children, parent) {
+//         const childArray = Children.toArray(children);
+//         for (let i = 0; i < childArray.length; i++) {
+//             const child = childArray[i];
+//             if (typeof child === 'string') {
+//                 if (currentIndex <= index && index < currentIndex + child.length) {
+//                     return parent; // Return the parent component containing the text
+//                 }
+//                 currentIndex += child.length;
+//             } else if (isValidElement(child)) {
+//                 const result = traverse(child.props.children, child);
+//                 if (result) return result; // Return early if the node is found
+//             }
+//         }
+//         return null;
+//     }
+
+//     return traverse(parentNode.props.children, parentNode);
+// }
+
+export function findElementAtIndex(parentNode, index) {
+    if (!parentNode || typeof parentNode !== 'object' || !isValidElement(parentNode))
+        throw new Error('Parent node is not a valid React element');
+
+    let _currentIndex = 0;
+    let _node = null;
+
+    const _findElementAtIndex = (node) => Children.forEach(node.props.children, (child) => {
+        if (typeof child === 'string') {
+            if (_currentIndex <= index && index < _currentIndex + child.length)
+                _node = node;
+            _currentIndex += child.length;
+        } else if (isValidElement(child)) {
+            const result = _findElementAtIndex(child);
+            if (result)
+                _node = result;
         }
-        return null;  // Return null if we don't find anything
-    }
+    });
 
-    // Start the traversal from the root element's children
-    return traverseChildren(element.props.children);
+    _findElementAtIndex(parentNode);
+    return _node;
 }
 
 export function addCharacters(nodes, chars, index = 0) {
     let _currentIndex = 0;
 
-    const _addCharacters = (nodes) => {
-        return Children.map(nodes, (child) => {
-            if (typeof child === 'string') {
-                if (_currentIndex <= index && index < _currentIndex + child.length)
-                    return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
-                _currentIndex += child.length;
-                return child;
-            } else if (isValidElement(child) && child.props.children) {
-                return cloneElement(child, { ...child.props, children: _addCharacters(child.props.children) });
-            } else {
-                return child;
-            }
-        });
-    }
+    const _addCharacters = (nodes) => Children.map(nodes, (child) => {
+        if (typeof child === 'string') {
+            if (_currentIndex <= index && index < _currentIndex + child.length)
+                return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
+            _currentIndex += child.length;
+            return child;
+        } else if (isValidElement(child) && child.props.children) {
+            return cloneElement(child, { ...child.props, children: _addCharacters(child.props.children) });
+        }
+        return child;
+    });
 
-    return _addCharacters(nodes);
+    const result = _addCharacters(nodes);
+    return result.length === 1 ? result[0] : result;
 }
 
 export function removeCharacters(nodes, startIndex, endIndex) {
-    let _currentIndex = 0;  // Tracks the current index across recursive calls
+    let _currentIndex = 0;
 
-    const _removeCharacters = (nodes) => {
-        return Children.map(nodes, (child) => {
-            if (typeof child === 'string') {
-                if (_currentIndex + child.length <= startIndex) {
-                    _currentIndex += child.length;
-                    return child;
-                } else if (_currentIndex >= endIndex) {
-                    _currentIndex += child.length;
-                    return child;
-                } else {
-                    // Current string overlaps with the start and end indices
-                    const startSlice = Math.max(startIndex - _currentIndex, 0);
-                    const endSlice = Math.max(endIndex - _currentIndex, 0);
-                    const firstPart = child.slice(0, startSlice);
-                    const secondPart = child.slice(endSlice);
-                    _currentIndex += child.length;
-                    return firstPart + secondPart;
-                }
-            } else if (isValidElement(child) && child.props.children) {
-                // Recursively remove characters from child components
-                const updatedChildren = _removeCharacters(child.props.children);
-                return cloneElement(child, { ...child.props, children: updatedChildren });
-            } else {
+    const _removeCharacters = (nodes) => Children.map(nodes, (child) => {
+        if (typeof child === 'string') {
+            if (_currentIndex + child.length <= startIndex) {
+                _currentIndex += child.length;
                 return child;
+            } else if (_currentIndex >= endIndex) {
+                _currentIndex += child.length;
+                return child;
+            } else {
+                const startSlice = Math.max(startIndex - _currentIndex, 0);
+                const endSlice = Math.min(endIndex - _currentIndex, child.length);
+                _currentIndex += child.length;
+                return `${child.slice(0, startSlice)}${child.slice(endSlice)}`;
             }
-        });
-    };
+        } else if (isValidElement(child) && child.props.children) {
+            const updatedChildren = _removeCharacters(child.props.children);
+            return cloneElement(child, { ...child.props, children: updatedChildren });
+        } else {
+            return child;
+        }
+    });
 
-    return _removeCharacters(nodes);
+    const result = _removeCharacters(nodes);
+    return result.length === 1 ? result[0] : result;
 }
