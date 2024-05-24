@@ -4,7 +4,9 @@ import './typewriter.css';
 
 const ACTIONS = [
 	'type',
+	'move',
 	'delete',
+	
 ];
 
 const Typewriter = forwardRef(({

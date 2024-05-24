@@ -2,10 +2,6 @@
 
 import { useState, useEffect } from "react";
 import TypeIt from "typeit-react";
-
-// import Prism from "prismjs";
-// import "prismjs/components/prism-jsx";
-
 import styles from './hi.module.css';
 
 export default ({ freeze: freezeProp }) => {

@@ -121,7 +121,11 @@ describe('addCharacters', () => {
     it('handles nested structures correctly', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(addCharacters(nodes, ", test", 5));
+        const spans = container.getElementsByTagName('span');
         expect(container.textContent).toBe("Hello, test world!");
+        expect(container.getElementsByTagName('span').length).toBe(2);
+        expect(spans[0].textContent).toBe("Hello, test");
+        expect(spans[1].textContent).toBe(" world!");
     });
 });
 
