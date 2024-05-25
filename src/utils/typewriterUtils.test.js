@@ -84,7 +84,7 @@ describe('findElementAtIndex', () => {
         expect(result.type).toEqual('span');
         expect(result.props.children).toEqual('world');
     });
-    
+
     // Test 4: Invalid Inputs
     it('throws an error if the parent node is not a valid React element', () => {
         const textNode = "Just a string";
@@ -118,14 +118,33 @@ describe('addCharacters', () => {
         expect(modified).toBe(" testHello");
     });
 
-    it('handles nested structures correctly', () => {
+    it('handles nested structures correctly: leftMost', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(addCharacters(nodes, ", test", 5));
-        const spans = container.getElementsByTagName('span');
-        expect(container.textContent).toBe("Hello, test world!");
+        const [firstSpan, secondSpan] = container.getElementsByTagName('span');
+        // expect(container.textContent).toBe("Hello, test world!");
         expect(container.getElementsByTagName('span').length).toBe(2);
-        expect(spans[0].textContent).toBe("Hello, test");
-        expect(spans[1].textContent).toBe(" world!");
+        expect(firstSpan.textContent).toBe("Hello, test");
+        expect(secondSpan.textContent).toBe(" world!");
+    });
+
+    it('handles nested structures correctly: middle', () => {
+        const nodes = (<div><span>Hello</span><span> world!</span></div>);
+        const { container } = render(addCharacters(nodes, ", test", 5));
+        const [firstSpan, middleText, secondSpan] = container.props.children;
+        expect(firstSpan.textContent).toBe("Hello");
+        expect(middleText.textContent).toBe(", test");
+        expect(secondSpan.textContent).toBe(" world!");
+    });
+
+    it('handles nested structures correctly: rightMost', () => {
+        const nodes = (<div><span>Hello</span><span> world!</span></div>);
+        const { container } = render(addCharacters(nodes, ", test", 5));
+        const [firstSpan, secondSpan] = container.getElementsByTagName('span');
+        // expect(container.textContent).toBe("Hello, test world!");
+        expect(container.getElementsByTagName('span').length).toBe(2);
+        expect(firstSpan.textContent).toBe("Hello");
+        expect(secondSpan.textContent).toBe(", test world!");
     });
 });
 

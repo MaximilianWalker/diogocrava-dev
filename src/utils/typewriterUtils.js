@@ -1,7 +1,5 @@
 import { cloneElement, isValidElement, Children, Fragment } from 'react';
 
-import { Children, isValidElement } from 'react';
-
 export function* iterateElements(elements, method = 'depth') {
     if (method !== 'depth' && method !== 'breadth')
         throw new Error('Method must be depth or breadth');
@@ -119,10 +117,10 @@ export function addCharacters(nodes, chars, index = 0, insertionPreference = 'mi
     const _addCharacters = (nodes) => Children.map(nodes, (child) => {
         const isStartIndex = _currentIndex === index;
         const isEndIndex = _currentIndex + child.length === index;
-        
+
         if (typeof child === 'string') {
-            if (_currentIndex <= index && index < _currentIndex + child.length)
-                return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
+            if (_currentIndex <= index && index <= _currentIndex + child.length)
+                child = `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
             _currentIndex += child.length;
             return child;
         } else if (isValidElement(child) && child.props.children) {
