@@ -120,7 +120,7 @@ describe('addCharacters', () => {
 
     it('handles nested structures correctly: leftMost', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharacters(nodes, ", test", 5));
+        const { container } = render(addCharacters(nodes, ", test", 5, "leftMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         // expect(container.textContent).toBe("Hello, test world!");
         expect(container.getElementsByTagName('span').length).toBe(2);
@@ -130,7 +130,7 @@ describe('addCharacters', () => {
 
     it('handles nested structures correctly: middle', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharacters(nodes, ", test", 5));
+        const { container } = render(addCharacters(nodes, ", test", 5, "middle"));
         const [firstSpan, middleText, secondSpan] = container.props.children;
         expect(firstSpan.textContent).toBe("Hello");
         expect(middleText.textContent).toBe(", test");
@@ -139,7 +139,7 @@ describe('addCharacters', () => {
 
     it('handles nested structures correctly: rightMost', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharacters(nodes, ", test", 5));
+        const { container } = render(addCharacters(nodes, ", test", 5, "rightMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         // expect(container.textContent).toBe("Hello, test world!");
         expect(container.getElementsByTagName('span').length).toBe(2);
