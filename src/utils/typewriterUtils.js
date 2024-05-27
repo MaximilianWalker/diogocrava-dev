@@ -10,17 +10,21 @@ export function* iterateElements(elements, method = 'depth') {
     const toProcess = typeof elements === 'string' ? [elements] : Children.map(elements, child => ({ element: child, depth: 0 }));
 
     while (toProcess.length > 0) {
-        const { element: current, depth } = method === 'depth' ? toProcess.pop() : toProcess.shift();
+        const { element, parent, depth } = method === 'depth' ? toProcess.pop() : toProcess.shift();
 
-        if (!current) continue;
-        yield [current, index, depth];
+        if (!element) continue;
+        yield { element, parent, index, depth };
 
         index++;
 
-        if (isValidElement(current) && current.props.children) {
+        if (isValidElement(element) && element.props.children) {
             const entries = Children.map(
-                current.props.children,
-                child => ({ element: child, depth: depth + 1 })
+                element.props.children,
+                child => ({
+                    element: child,
+                    parent: element,
+                    depth: depth + 1
+                })
             );
 
             if (method === 'depth')
@@ -223,9 +227,8 @@ export function removeCharacters(nodes, startIndex, endIndex = null, removeEmpty
                     })
                 :
                 null;
-        } else {
-            return child;
         }
+        return child;
     });
 
     const result = _removeCharacters(nodes);
