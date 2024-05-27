@@ -1,6 +1,21 @@
 import { cloneElement, isValidElement, Children, Fragment } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+export function addIdsToElements(elements) {
+    const _addIdsToElements = (element) => {
+        if (!isValidElement(element)) return element;
+
+        const id = uuidv4();
+        return cloneElement(element, {
+            id,
+            key: id,
+            children: Children.map(element.props.children, _addIdsToElements)
+        });
+    };
+
+    return Array.isArray(elements) ? Children.map(elements, _addIdsToElements) : _addIdsToElements(elements);
+}
+
 export function* iterateElements(elements, method = 'depth') {
     if (method !== 'depth' && method !== 'breadth')
         throw new Error('Method must be depth or breadth');
@@ -42,6 +57,14 @@ export function* iterateElementsText(elements) {
         else if (isValidElement(element) && element.props.children)
             yield* iterateElementsText(element.props.children);
     }
+}
+
+export function getElementsList(elements, method = 'depth') {
+    const elementsList = [];
+    for (const [element, index, depth] of iterateElements(elements, method)) {
+        elementsList.push({ element, index, depth });
+    }
+    return elementsList;
 }
 
 export function generateLineBreaks(text) {
@@ -106,7 +129,6 @@ export function addCharacters(nodes, chars, index = 0) {
             return child;
         } else if (isValidElement(child) && child.props.children) {
             return cloneElement(child, {
-                ...child.props,
                 key: uuidv4(),
                 children: _addCharacters(child.props.children)
             });
@@ -162,7 +184,6 @@ export function addCharactersAdvanced(elements, chars, insertionIndex = 0, inser
                 _inserted = true;
             } else if (isValidElement(child) && child.props.children) {
                 child = cloneElement(child, {
-                    ...child.props,
                     key: uuidv4(),
                     children: _addCharacters(child.props.children, depth + 1)
                 });
@@ -185,7 +206,6 @@ export function addCharactersAdvanced(elements, chars, insertionIndex = 0, inser
                 [...elements, chars]
                 :
                 cloneElement(elements, {
-                    ...elements.props,
                     key: uuidv4(),
                     children: [
                         ...Children.toArray(elements.props.children),
@@ -221,7 +241,6 @@ export function removeCharacters(nodes, startIndex, endIndex = null, removeEmpty
             return !removeEmptyNodes || updatedChildren ?
                 cloneElement(child,
                     {
-                        ...child.props,
                         key: uuidv4(),
                         children: updatedChildren
                     })

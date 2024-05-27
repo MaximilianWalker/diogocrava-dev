@@ -1,5 +1,7 @@
 import { render, prettyDOM } from '@testing-library/react';
+import { v4 as uuidv4 } from 'uuid';
 import {
+    addIdsToElements,
     generateLineBreaks,
     countCharacters,
     findElementAtIndex,
@@ -7,6 +9,88 @@ import {
     addCharactersAdvanced,
     removeCharacters
 } from './typewriterUtils';
+
+
+jest.mock('uuid', () => ({
+    v4: jest.fn(() => 'unique-id'),
+}));
+
+describe('addIdsToElements', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test('adds ids to a single valid element', () => {
+        const element = <div />;
+        const result = addIdsToElements(element);
+        
+        expect(result.props.id).toBe('unique-id');
+        expect(result.key).toBe('unique-id');
+    });
+
+    test('adds ids to all elements in an array', () => {
+        const elements = [<div key="1" />, <span key="2" />];
+        const result = addIdsToElements(elements);
+
+        result.forEach((element) => {
+            expect(element.props.id).toBe('unique-id');
+            expect(element.key).toBe('unique-id');
+        });
+    });
+
+    test('adds ids recursively to child elements', () => {
+        const element = (
+            <div>
+                <span />
+            </div>
+        );
+        const result = addIdsToElements(element);
+
+        expect(result.props.id).toBe('unique-id');
+        expect(result.key).toBe('unique-id');
+        expect(result.props.children.props.id).toBe('unique-id');
+        expect(result.props.children.key).toBe('unique-id');
+    });
+
+    test('returns the element unchanged if it is not a valid element', () => {
+        const element = 'string';
+        const result = addIdsToElements(element);
+
+        expect(result).toBe(element);
+    });
+
+    test('handles nested arrays of elements', () => {
+        const elements = [
+            <div key="1">
+                <span key="1-1" />
+                <p key="1-2" />
+            </div>,
+            <ul key="2">
+                <li key="2-1" />
+            </ul>,
+        ];
+
+        const result = addIdsToElements(elements);
+
+        const [firstElement, secondElement] = result;
+
+        // First element assertions
+        expect(firstElement.props.id).toBe('unique-id');
+        expect(firstElement.key).toBe('unique-id');
+        firstElement.props.children.forEach((child) => {
+            expect(child.props.id).toBe('unique-id');
+            expect(child.key).toBe('unique-id');
+        });
+
+        // Second element assertions
+        expect(secondElement.props.id).toBe('unique-id');
+        expect(secondElement.key).toBe('unique-id');
+        secondElement.props.children.forEach((child) => {
+            expect(child.props.id).toBe('unique-id');
+            expect(child.key).toBe('unique-id');
+        });
+    });
+});
 
 describe('generateLineBreaks', () => {
     it('should handle input without line breaks correctly', () => {
