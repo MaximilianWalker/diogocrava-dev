@@ -1,16 +1,21 @@
 import { cloneElement, isValidElement, Children, Fragment } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export function* iterateElements(elements, method = 'depth') {
     if (method !== 'depth' && method !== 'breadth')
         throw new Error('Method must be depth or breadth');
 
-    const toProcess = Children.map(elements, child => ({ element: child, depth: 0 }));
+    let index = 0;
+
+    const toProcess = typeof elements === 'string' ? [elements] : Children.map(elements, child => ({ element: child, depth: 0 }));
 
     while (toProcess.length > 0) {
         const { element: current, depth } = method === 'depth' ? toProcess.pop() : toProcess.shift();
 
         if (!current) continue;
-        yield { element: current, depth };
+        yield [current, index, depth];
+
+        index++;
 
         if (isValidElement(current) && current.props.children) {
             const entries = Children.map(
@@ -86,50 +91,106 @@ export function findElementAtIndex(parentNode, index) {
     return _node;
 }
 
-// ações: left, right, top / outside
-// se prioritizar outside: se for o elemento de um dos extremos, vai para o nivel superior, repete o processo, se continua a ser um dos extremos, vai para o outro
-// se o deph for 0, é colocado ai
-// cuidado com o caso em que o input é só um elemento, o texto tem de ser colocado num nivel que já tenha texto (talvez)
-
-// export function addCharacters(nodes, chars, index = 0) {
-//     let _currentIndex = 0;
-
-//     const _addCharacters = (nodes) => Children.map(nodes, (child) => {
-//         if (typeof child === 'string') {
-//             if (_currentIndex <= index && index < _currentIndex + child.length)
-//                 return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
-//             _currentIndex += child.length;
-//             return child;
-//         } else if (isValidElement(child) && child.props.children) {
-//             return cloneElement(child, { ...child.props, children: _addCharacters(child.props.children) });
-//         }
-//         return child;
-//     });
-
-//     const result = _addCharacters(nodes);
-//     return result.length === 1 ? result[0] : result;
-// }
-
-// insertionPreference: 'middle', 'leftMost', 'rightMost'
-export function addCharacters(nodes, chars, index = 0, insertionPreference = 'middle') {
+export function addCharacters(nodes, chars, index = 0) {
     let _currentIndex = 0;
 
     const _addCharacters = (nodes) => Children.map(nodes, (child) => {
-        const isStartIndex = _currentIndex === index;
-        const isEndIndex = _currentIndex + child.length === index;
-
         if (typeof child === 'string') {
-            if (_currentIndex <= index && index <= _currentIndex + child.length)
-                child = `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
+            if (_currentIndex <= index && index < _currentIndex + child.length)
+                return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
             _currentIndex += child.length;
             return child;
         } else if (isValidElement(child) && child.props.children) {
-            return cloneElement(child, { ...child.props, children: _addCharacters(child.props.children) });
+            return cloneElement(child, {
+                ...child.props,
+                key: uuidv4(),
+                children: _addCharacters(child.props.children)
+            });
         }
         return child;
     });
 
     const result = _addCharacters(nodes);
+    return result.length === 1 ? result[0] : result;
+}
+
+export function addCharactersAdvanced(elements, chars, insertionIndex = 0, insertionPreference = 'middle') {
+    const _totalCount = insertionPreference === 'rightMost' ? countCharacters(elements) : 0;
+    let _currentIndex = 0;
+    let _inserted = false;
+
+    const _addCharacters = (elements, depth = 0) => {
+        if (typeof elements === 'string')
+            elements = [elements];
+
+        const newChildren = [];
+
+        Children.forEach(elements, (child, childIndex) => {
+            if (_inserted) {
+                newChildren.push(child);
+                return;
+            }
+
+            if (typeof child === 'string') {
+                const startValidation = insertionPreference === 'leftMost' && insertionIndex !== 0 ? _currentIndex < insertionIndex : _currentIndex <= insertionIndex;
+                const endValidation = insertionPreference === 'rightMost' && insertionIndex !== _totalCount ? insertionIndex < _currentIndex + child.length : insertionIndex <= _currentIndex + child.length;
+                const edgeCase = insertionPreference !== 'middle' || insertionIndex !== _currentIndex + child.length || depth === 0 || elements[childIndex + 1] != null;
+
+                if (startValidation && endValidation && edgeCase) {
+
+                    const firstSlice = child.slice(0, insertionIndex - _currentIndex);
+                    const lastSlice = child.slice(insertionIndex - _currentIndex);
+
+                    if (typeof chars === 'string') {
+                        child = `${firstSlice}${chars}${lastSlice}`;
+                    } else if (isValidElement(chars)) {
+                        child = [];
+                        if (firstSlice) child.push(firstSlice);
+                        child.push(chars);
+                        if (lastSlice) child.push(lastSlice);
+                    }
+                    _inserted = true;
+                } else {
+                    _currentIndex += child.length;
+                }
+            } else if (insertionPreference === 'middle' && _currentIndex === insertionIndex) {
+                child = [chars, child];
+                _inserted = true;
+            } else if (isValidElement(child) && child.props.children) {
+                child = cloneElement(child, {
+                    ...child.props,
+                    key: uuidv4(),
+                    children: _addCharacters(child.props.children, depth + 1)
+                });
+            }
+
+            if (Array.isArray(child))
+                newChildren.push(...child);
+            else
+                newChildren.push(child);
+        });
+
+        return newChildren.length === 1 ? newChildren[0] : newChildren;
+    };
+
+    let result = _addCharacters(elements);
+
+    if (!_inserted) {
+        result = (
+            Array.isArray(elements) ?
+                [...elements, chars]
+                :
+                cloneElement(elements, {
+                    ...elements.props,
+                    key: uuidv4(),
+                    children: [
+                        ...Children.toArray(elements.props.children),
+                        chars
+                    ]
+                })
+        );
+    }
+
     return result.length === 1 ? result[0] : result;
 }
 
@@ -153,12 +214,20 @@ export function removeCharacters(nodes, startIndex, endIndex = null, removeEmpty
             }
         } else if (isValidElement(child) && child.props.children) {
             const updatedChildren = _removeCharacters(child.props.children);
-            return !removeEmptyNodes || updatedChildren ? cloneElement(child, { ...child.props, children: updatedChildren }) : null;
+            return !removeEmptyNodes || updatedChildren ?
+                cloneElement(child,
+                    {
+                        ...child.props,
+                        key: uuidv4(),
+                        children: updatedChildren
+                    })
+                :
+                null;
         } else {
             return child;
         }
     });
 
     const result = _removeCharacters(nodes);
-    return result.length === 1 ? result[0] : result;
+    return result.length !== 0 ? result.length === 1 ? result[0] : result : null;
 }

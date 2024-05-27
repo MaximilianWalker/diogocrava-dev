@@ -25,14 +25,20 @@ const Typewriter = forwardRef(({
 }, ref) => {
 	const intervalRef = useRef();
 
+	const cursor = useMemo(() => (
+		<span className="typewriter__cursor">
+			{cursorCharacter}
+		</span>
+	), [cursorCharacter]);
+
 	const [play, setPlay] = useState(true);
+	const [elements, setElements] = useState([cursor]);
 
 	const [eventQueue, setEventQueue] = useState(events ?? []);
 	const [queueIndex, setQueueIndex] = useState(0);
 	const currentEvent = useMemo(() => queue[queueIndex], [eventQueue, queueIndex]);
 	const [eventIndex, setEventIndex] = useState(0);
-
-	const nodes = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
+	const eventElements = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
 
 	// const [options, setOptions] = useState({
 
@@ -145,24 +151,14 @@ const Typewriter = forwardRef(({
 	useEffect(() => {
 		if (play)
 			onAnimation();
-		else {}
-			clearInterval(intervalRef.current);
+		else { }
+		clearInterval(intervalRef.current);
 		return () => clearInterval(intervalRef.current);
 	}, [play, currentEvent, nodeIndex]);
 
 	return (
 		<Component {...props}>
-			{
-				content.slice(0, cursorIndex).map((node, index) => (
-					typeof node === 'string' ? <span key={index}>{node}</span> : node
-				))
-			}
-			{showCursor && <span className="typewriter__cursor">{cursorCharacter}</span>}
-			{
-				content.slice(cursorIndex).map((node, index) => (
-					typeof node === 'string' ? <span key={index}>{node}</span> : node
-				))
-			}
+			{elements}
 		</Component>
 	);
 });
