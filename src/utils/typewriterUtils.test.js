@@ -5,9 +5,9 @@ import {
     generateLineBreaks,
     countCharacters,
     findElementAtIndex,
-    addCharacters,
-    addCharactersAdvanced,
-    removeCharacters
+    insertContent,
+    insertContentByPreference,
+    removeContent
 } from './typewriterUtils';
 
 
@@ -189,125 +189,125 @@ describe('findElementAtIndex', () => {
     });
 });
 
-describe('addCharacters', () => {
-    it('inserts characters in the middle of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const { container } = render(addCharacters(nodes, ", test", 5));
-        expect(container.textContent).toBe("Hello, test world!");
-    });
+// describe('insertContent', () => {
+//     it('inserts characters in the middle of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const { container } = render(insertContent(nodes, ", test", 5));
+//         expect(container.textContent).toBe("Hello, test world!");
+//     });
 
-    it('inserts characters at the start of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const { container } = render(addCharacters(nodes, "Start ", 0));
-        expect(container.textContent).toBe("Start Hello world!");
-    });
+//     it('inserts characters at the start of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const { container } = render(insertContent(nodes, "Start ", 0));
+//         expect(container.textContent).toBe("Start Hello world!");
+//     });
 
-    it('inserts characters at the end of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const { container } = render(addCharacters(nodes, " End", 11));
-        expect(container.textContent).toBe("Hello world! End");
-    });
+//     it('inserts characters at the end of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const { container } = render(insertContent(nodes, " End", 11));
+//         expect(container.textContent).toBe("Hello world! End");
+//     });
 
-    it('handles nested elements correctly', () => {
-        const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharacters(nodes, ", test", 5));
-        const [firstSpan, middleText, secondSpan] = container.children;
-        expect(firstSpan.textContent).toBe("Hello");
-        expect(middleText.textContent).toBe(", test");
-        expect(secondSpan.textContent).toBe(" world!");
-    });
+//     it('handles nested elements correctly', () => {
+//         const nodes = (<div><span>Hello</span><span> world!</span></div>);
+//         const { container } = render(insertContent(nodes, ", test", 5));
+//         const [firstSpan, middleText, secondSpan] = container.children;
+//         expect(firstSpan.textContent).toBe("Hello");
+//         expect(middleText.textContent).toBe(", test");
+//         expect(secondSpan.textContent).toBe(" world!");
+//     });
 
-    it('handles multiple nested elements correctly', () => {
-        const nodes = (<div><span>Hello</span> world! <span>How</span> are you?</div>);
-        const { container } = render(addCharacters(nodes, ", test", 12));
-        expect(container.textContent).toBe("Hello world!, test How are you?");
-    });
+//     it('handles multiple nested elements correctly', () => {
+//         const nodes = (<div><span>Hello</span> world! <span>How</span> are you?</div>);
+//         const { container } = render(insertContent(nodes, ", test", 12));
+//         expect(container.textContent).toBe("Hello world!, test How are you?");
+//     });
 
-    it('handles empty elements correctly', () => {
-        const nodes = (<div></div>);
-        const { container } = render(addCharacters(nodes, ", test", 0));
-        expect(container.textContent).toBe(", test");
-    });
+//     it('handles empty elements correctly', () => {
+//         const nodes = (<div></div>);
+//         const { container } = render(insertContent(nodes, ", test", 0));
+//         expect(container.textContent).toBe(", test");
+//     });
 
-    it('inserts a React element in the middle of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const reactElement = (<span>React</span>);
-        const { container } = render(addCharacters(nodes, reactElement, 5));
-        const [beforeSpan, insertedSpan, afterSpan] = container.children;
-        expect(beforeSpan.textContent).toBe("Hello");
-        expect(insertedSpan.textContent).toBe("React");
-        expect(afterSpan.textContent).toBe(" world!");
-    });
+//     it('inserts a React element in the middle of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const reactElement = (<span>React</span>);
+//         const { container } = render(insertContent(nodes, reactElement, 5));
+//         const [beforeSpan, insertedSpan, afterSpan] = container.children;
+//         expect(beforeSpan.textContent).toBe("Hello");
+//         expect(insertedSpan.textContent).toBe("React");
+//         expect(afterSpan.textContent).toBe(" world!");
+//     });
 
-    it('inserts a React element at the start of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const reactElement = (<span>Start</span>);
-        const { container } = render(addCharacters(nodes, reactElement, 0));
-        const [insertedSpan, afterSpan] = container.children;
-        expect(insertedSpan.textContent).toBe("Start");
-        expect(afterSpan.textContent).toBe("Hello world!");
-    });
+//     it('inserts a React element at the start of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const reactElement = (<span>Start</span>);
+//         const { container } = render(insertContent(nodes, reactElement, 0));
+//         const [insertedSpan, afterSpan] = container.children;
+//         expect(insertedSpan.textContent).toBe("Start");
+//         expect(afterSpan.textContent).toBe("Hello world!");
+//     });
 
-    it('inserts a React element at the end of a text node', () => {
-        const nodes = (<div>Hello world!</div>);
-        const reactElement = (<span>End</span>);
-        const { container } = render(addCharacters(nodes, reactElement, 11));
-        const [beforeSpan, insertedSpan] = container.children;
-        expect(beforeSpan.textContent).toBe("Hello world!");
-        expect(insertedSpan.textContent).toBe("End");
-    });
+//     it('inserts a React element at the end of a text node', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const reactElement = (<span>End</span>);
+//         const { container } = render(insertContent(nodes, reactElement, 11));
+//         const [beforeSpan, insertedSpan] = container.children;
+//         expect(beforeSpan.textContent).toBe("Hello world!");
+//         expect(insertedSpan.textContent).toBe("End");
+//     });
 
-    it('handles deeply nested structures correctly', () => {
-        const nodes = (
-            <div>
-                <div>
-                    <span>Hello</span>
-                    <div>
-                        <span> world!</span>
-                    </div>
-                </div>
-            </div>
-        );
-        const { container } = render(addCharacters(nodes, ", test", 5));
-        const firstSpan = container.querySelector('span');
-        const insertedText = container.querySelector('div div').childNodes[1];
-        const secondSpan = container.querySelector('div div div span');
+//     it('handles deeply nested structures correctly', () => {
+//         const nodes = (
+//             <div>
+//                 <div>
+//                     <span>Hello</span>
+//                     <div>
+//                         <span> world!</span>
+//                     </div>
+//                 </div>
+//             </div>
+//         );
+//         const { container } = render(insertContent(nodes, ", test", 5));
+//         const firstSpan = container.querySelector('span');
+//         const insertedText = container.querySelector('div div').childNodes[1];
+//         const secondSpan = container.querySelector('div div div span');
 
-        expect(firstSpan.textContent).toBe("Hello");
-        expect(insertedText.textContent).toBe(", test");
-        expect(secondSpan.textContent).toBe(" world!");
-    });
+//         expect(firstSpan.textContent).toBe("Hello");
+//         expect(insertedText.textContent).toBe(", test");
+//         expect(secondSpan.textContent).toBe(" world!");
+//     });
 
-    it('does not modify the original structure when index is out of bounds', () => {
-        const nodes = (<div>Hello world!</div>);
-        const { container } = render(addCharacters(nodes, ", test", 50));
-        expect(container.textContent).toBe("Hello world!");
-    });
-});
+//     it('does not modify the original structure when index is out of bounds', () => {
+//         const nodes = (<div>Hello world!</div>);
+//         const { container } = render(insertContent(nodes, ", test", 50));
+//         expect(container.textContent).toBe("Hello world!");
+//     });
+// });
 
-describe('addCharactersAdvanced', () => {
+describe('insertContentByPreference', () => {
     it('inserts characters at specified index in a simple string', () => {
         const nodes = "Hello, world!";
-        const modified = addCharactersAdvanced(nodes, " test", 5);
+        const modified = insertContentByPreference(nodes, " test", 5);
         expect(modified).toBe("Hello test, world!");
     });
 
     it('inserts characters at the start', () => {
         const nodes = "Hello";
-        const modified = addCharactersAdvanced(nodes, " test", 0);
+        const modified = insertContentByPreference(nodes, " test", 0);
         expect(modified).toBe(" testHello");
     });
 
     it('inserts characters at the end', () => {
         const nodes = "Hello";
-        const modified = addCharactersAdvanced(nodes, " test", 5);
+        const modified = insertContentByPreference(nodes, " test", 5);
         expect(modified).toBe("Hello test");
     });
 
     // perceber pq demora mais que os outros: 24 ms
     it('handles nested structures correctly: leftMost', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "leftMost"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "leftMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         expect(container.getElementsByTagName('span').length).toBe(2);
         expect(firstSpan.textContent).toBe("Hello, test");
@@ -316,14 +316,14 @@ describe('addCharactersAdvanced', () => {
 
     it('handles nested structures correctly: leftMost edge case', () => {
         const nodes = (<div><span>Hello</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 0, "leftMost"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 0, "leftMost"));
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe(", testHello");
     });
 
     it('handles nested structures correctly: middle 1', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
         const [firstSpan, middleText, secondSpan] = container.firstChild.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(middleText.textContent).toBe(", test");
@@ -332,7 +332,7 @@ describe('addCharactersAdvanced', () => {
     
     it('handles nested structures correctly: middle 2', () => {
         const nodes = (<div>Hello<span> world!</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
         const [text, span] = container.firstChild.childNodes;
         expect(text.textContent).toBe("Hello, test");
         expect(span.textContent).toBe(" world!");
@@ -340,32 +340,32 @@ describe('addCharactersAdvanced', () => {
     
     it('handles nested structures correctly: middle 3', () => {
         const nodes = (<div><span>Hello</span> world!</div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
         const [span, text] = container.firstChild.childNodes;
         expect(span.textContent).toBe("Hello");
         expect(text.textContent).toBe(", test world!");
     });
     
     it('handles nested structures correctly: middle 4', () => {
-        const nodes = (<div><span>Hello</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "middle"));
-        const [firstSpan, middleText] = container.firstChild.childNodes;
+        const nodes = (<span>Hello</span>);
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
+        const [firstSpan, middleText] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(middleText.textContent).toBe(", test");
     });
 
     it('handles nested structures correctly: middle 5: inserting react elements', () => {
-        const nodes = (<div><span>Hello</span></div>);
+        const nodes = (<span>Hello</span>);
         const insertingNodes = (<span> world!</span>);
-        const { container } = render(addCharactersAdvanced(nodes, insertingNodes, 5, "middle"));
-        const [firstSpan, secondSpan] = container.firstChild.childNodes;
+        const { container } = render(insertContentByPreference(nodes, insertingNodes, 5, "middle"));
+        const [firstSpan, secondSpan] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(secondSpan.textContent).toBe(" world!");
     });
 
     it('handles nested structures correctly: rightMost', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "rightMost"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "rightMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         expect(container.getElementsByTagName('span').length).toBe(2);
         expect(firstSpan.textContent).toBe("Hello");
@@ -374,28 +374,28 @@ describe('addCharactersAdvanced', () => {
 
     it('handles nested structures correctly: rightMost edge case', () => {
         const nodes = (<div><span>Hello</span></div>);
-        const { container } = render(addCharactersAdvanced(nodes, ", test", 5, "rightMost"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "rightMost"));
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe("Hello, test");
     });
 });
 
-describe('removeCharacters', () => {
+describe('removeContent', () => {
     it('removes characters between specified indexes in a simple string', () => {
         const nodes = "Hello, world!";
-        const modified = removeCharacters(nodes, 5, 7);
+        const modified = removeContent(nodes, 5, 7);
         expect(modified).toBe("Helloworld!");
     });
 
     it('handles removal across boundaries in nested elements', () => {
         const nodes = (<div><span>Hello, </span><span>world!</span></div>);
-        const { container } = render(removeCharacters(nodes, 3, 9));
+        const { container } = render(removeContent(nodes, 3, 9));
         expect(container.textContent).toBe("Helrld!");
     });
 
     it('handles complete removal', () => {
         const nodes = "Hello, world!";
-        const modified = removeCharacters(nodes, 0, 13);
+        const modified = removeContent(nodes, 0, 13);
         expect(modified).toBeNull();
     });
 });

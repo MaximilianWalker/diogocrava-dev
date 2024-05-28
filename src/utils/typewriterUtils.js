@@ -118,110 +118,103 @@ export function findElementAtIndex(parentNode, index) {
     return _node;
 }
 
-export function addCharacters(nodes, chars, index = 0) {
+const shouldInsertLeftMost = (elements, index, currentIndex, contentLength) => (
+    typeof elements[currentIndex] === 'string' &&
+    (index === 0 || currentIndex < index) &&
+    index <= currentIndex + elements[currentIndex].length
+);
+
+const shouldInsertRightMost = (elements, index, currentIndex, contentLength) => (
+    typeof elements[currentIndex] === 'string' &&
+    currentIndex <= index &&
+    (index === contentLength || index < currentIndex + elements[currentIndex].length)
+);
+
+const shouldInsertOuterMost = (elements, index, currentIndex, contentLength) => (
+    (typeof elements[currentIndex] === 'string' && index >= currentIndex && index <= currentIndex + child.length) ||
+    (isValidElement(elements[currentIndex]) && index === currentIndex)
+);
+
+const shouldInsertById = (elements, id, index, currentIndex, contentLength) => (
+    elements[currentIndex].props.id === id &&
+    (
+        (typeof elements[currentIndex] === 'string' && index >= currentIndex && index <= currentIndex + child.length) ||
+        (isValidElement(elements[currentIndex]) && index === currentIndex)
+    )
+);
+
+export function insertContent(elements, content, index = 0, shouldInsert = shouldInsertLeftMost) {
+    const contentLength = countCharacters(content);
     let _currentIndex = 0;
 
-    const _addCharacters = (nodes) => Children.map(nodes, (child) => {
-        if (typeof child === 'string') {
-            if (_currentIndex <= index && index < _currentIndex + child.length)
-                return `${child.slice(0, index - _currentIndex)}${chars}${child.slice(index - _currentIndex)}`;
-            _currentIndex += child.length;
-            return child;
-        } else if (isValidElement(child) && child.props.children) {
-            return cloneElement(child, {
-                key: uuidv4(),
-                children: _addCharacters(child.props.children)
-            });
-        }
-        return child;
-    });
-
-    const result = _addCharacters(nodes);
-    return result.length === 1 ? result[0] : result;
-}
-
-export function addCharactersAdvanced(elements, chars, insertionIndex = 0, insertionPreference = 'middle') {
-    const _totalCount = insertionPreference === 'rightMost' ? countCharacters(elements) : 0;
-    let _currentIndex = 0;
-    let _inserted = false;
-
-    const _addCharacters = (elements, depth = 0) => {
-        if (typeof elements === 'string')
-            elements = [elements];
-
+    const _insertContent = (elements) => {
         const newChildren = [];
 
-        Children.forEach(elements, (child, childIndex) => {
-            if (_inserted) {
-                newChildren.push(child);
-                return;
-            }
+        Children.forEach(elements, (child) => {
 
             if (typeof child === 'string') {
-                const startValidation = insertionPreference === 'leftMost' && insertionIndex !== 0 ? _currentIndex < insertionIndex : _currentIndex <= insertionIndex;
-                const endValidation = insertionPreference === 'rightMost' && insertionIndex !== _totalCount ? insertionIndex < _currentIndex + child.length : insertionIndex <= _currentIndex + child.length;
-                const edgeCase = insertionPreference !== 'middle' || insertionIndex !== _currentIndex + child.length || depth === 0 || elements[childIndex + 1] != null;
 
-                if (startValidation && endValidation && edgeCase) {
+                if (shouldInsert(elements, index, _currentIndex, contentLength)) {
+                    const firstSlice = child.slice(0, index - _currentIndex);
+                    const lastSlice = child.slice(index - _currentIndex);
 
-                    const firstSlice = child.slice(0, insertionIndex - _currentIndex);
-                    const lastSlice = child.slice(insertionIndex - _currentIndex);
-
-                    if (typeof chars === 'string') {
-                        child = `${firstSlice}${chars}${lastSlice}`;
-                    } else if (isValidElement(chars)) {
-                        child = [];
-                        if (firstSlice) child.push(firstSlice);
-                        child.push(chars);
-                        if (lastSlice) child.push(lastSlice);
+                    if (typeof content === 'string') {
+                        newChildren.push(`${firstSlice}${content}${lastSlice}`);
+                    } else if (isValidElement(content)) {
+                        if (firstSlice) newChildren.push(firstSlice);
+                        newChildren.push(content);
+                        if (lastSlice) newChildren.push(lastSlice);
                     }
-                    _inserted = true;
-                } else {
-                    _currentIndex += child.length;
                 }
-            } else if (insertionPreference === 'middle' && _currentIndex === insertionIndex) {
-                child = [chars, child];
-                _inserted = true;
-            } else if (isValidElement(child) && child.props.children) {
-                child = cloneElement(child, {
-                    key: uuidv4(),
-                    children: _addCharacters(child.props.children, depth + 1)
-                });
-            }
 
-            if (Array.isArray(child))
-                newChildren.push(...child);
-            else
+                _currentIndex += child.length;
+            } else if (isValidElement(child) && child.props.children) {
+                if (shouldInsert(elements, index, _currentIndex, contentLength)) {
+                    newChildren.push(content);
+                    _currentIndex += _contentCount;
+                }
+
+                newChildren.push(
+                    cloneElement(child, {
+                        key: uuidv4(),
+                        children: _insertContent(child.props.children)
+                    })
+                );
+
+                if (shouldInsert(elements, index, _currentIndex, contentLength)) {
+                    newChildren.push(content);
+                    _currentIndex += _contentCount;
+                }
+            } else {
                 newChildren.push(child);
+            }
         });
 
         return newChildren.length === 1 ? newChildren[0] : newChildren;
     };
 
-    let result = _addCharacters(elements);
-
-    if (!_inserted) {
-        result = (
-            Array.isArray(elements) ?
-                [...elements, chars]
-                :
-                cloneElement(elements, {
-                    key: uuidv4(),
-                    children: [
-                        ...Children.toArray(elements.props.children),
-                        chars
-                    ]
-                })
-        );
-    }
-
+    const result = _insertContent(elements);
     return result.length === 1 ? result[0] : result;
 }
 
-export function removeCharacters(nodes, startIndex, endIndex = null, removeEmptyNodes = true) {
+export function insertContentById(elements, id, content, index = 0) {
+    return insertContent(elements, content, index, shouldInsertById);
+}
+
+export function insertContentByPreference(elements, content, index = 0, insertionPreference = 'outerMost') {
+    let shouldInsert;
+    if (insertionPreference = 'leftMost') shouldInsert = shouldInsertLeftMost;
+    else if (insertionPreference = 'rightMost') shouldInsert = shouldInsertRightMost;
+    else if (insertionPreference = 'outerMost') shouldInsert = shouldInsertOuterMost;
+    else throw new Error('Ivalid option!');
+
+    return insertContent(elements, content, index, shouldInsert);
+}
+
+export function removeContent(nodes, startIndex, endIndex = null, removeEmptyNodes = true) {
     let _currentIndex = 0;
 
-    const _removeCharacters = (nodes) => Children.map(nodes, (child) => {
+    const _removeContent = (nodes) => Children.map(nodes, (child) => {
         if (typeof child === 'string') {
             if (_currentIndex + child.length <= startIndex) {
                 _currentIndex += child.length;
@@ -237,7 +230,7 @@ export function removeCharacters(nodes, startIndex, endIndex = null, removeEmpty
                 return !removeEmptyNodes || newChild ? newChild : null;
             }
         } else if (isValidElement(child) && child.props.children) {
-            const updatedChildren = _removeCharacters(child.props.children);
+            const updatedChildren = _removeContent(child.props.children);
             return !removeEmptyNodes || updatedChildren ?
                 cloneElement(child,
                     {
@@ -250,6 +243,6 @@ export function removeCharacters(nodes, startIndex, endIndex = null, removeEmpty
         return child;
     });
 
-    const result = _removeCharacters(nodes);
+    const result = _removeContent(nodes);
     return result.length !== 0 ? result.length === 1 ? result[0] : result : null;
 }
