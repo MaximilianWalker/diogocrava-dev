@@ -154,8 +154,7 @@ const shouldInsertOuterMost = ({ elements, currentElement, currentElementIndex, 
                 )
             )
         )
-    )
-    ||
+    ) ||
     (
         isValidElement(currentElement) &&
         index === currentIndex &&
@@ -173,13 +172,82 @@ const shouldInsertById = ({ currentElement, parent, id, index, currentIndex, dep
     (
         (parent != null && parent.props.id === id) ||
         (parent == null && depth === 0)
-    )
-    &&
+    ) &&
     (
-        (typeof currentElement === 'string' && index >= currentIndex && index <= currentIndex + currentElement.length) ||
+        (typeof currentElement === 'string' && index >= currentIndex && index <= currentIndex + child.length) ||
         (isValidElement(currentElement) && index === currentIndex)
     )
 );
+
+// export function insertContent(elements, content, index = 0, shouldInsert = shouldInsertLeftMost) {
+//     const totalLength = countCharacters(elements);
+//     const contentLength = countCharacters(content);
+
+//     let currentIndex = 0;
+
+//     const _insertContent = (elements, parent = null, depth = 0) => {
+//         const newElements = [];
+
+//         Children.forEach(elements, (currentElement, currentElementIndex) => {
+//             const _shouldInsert = () => shouldInsert({
+//                 elements,
+//                 parent,
+//                 currentElement,
+//                 currentElementIndex,
+//                 index,
+//                 currentIndex,
+//                 depth,
+//                 totalLength,
+//                 contentLength
+//             });
+
+//             if (typeof currentElement === 'string') {
+//                 if (_shouldInsert()) {
+//                     const firstSlice = currentElement.slice(0, index - currentIndex);
+//                     const lastSlice = currentElement.slice(index - currentIndex);
+
+//                     if (typeof content === 'string') {
+//                         newElements.push(`${firstSlice}${content}${lastSlice}`);
+//                     } else if (isValidElement(content)) {
+//                         if (firstSlice) newElements.push(firstSlice);
+//                         newElements.push(content);
+//                         if (lastSlice) newElements.push(lastSlice);
+//                     }
+
+//                     currentIndex += contentLength;
+//                 } else {
+//                     newElements.push(currentElement);
+//                 }
+
+//                 currentIndex += currentElement.length;
+//             } else if (isValidElement(currentElement) && currentElement.props.children) {
+//                 if (_shouldInsert()) {
+//                     newElements.push(content);
+//                     currentIndex += contentLength;
+//                 }
+
+//                 const id = currentElement.props.id ?? uuidv4();
+//                 newElements.push(cloneElement(
+//                     currentElement,
+//                     { id, key: id },
+//                     _insertContent(currentElement.props.children, currentElement, depth + 1)
+//                 ));
+
+//                 if (_shouldInsert()) {
+//                     newElements.push(content);
+//                     currentIndex += contentLength;
+//                 }
+//             } else {
+//                 newElements.push(currentElement);
+//             }
+//         });
+
+//         return newElements.length === 1 ? newElements[0] : newElements;
+//     };
+
+//     const result = _insertContent(elements);
+//     return result.length === 1 ? result[0] : result;
+// }
 
 export function insertContent(elements, content, index = 0, shouldInsert = shouldInsertLeftMost) {
     const totalLength = countCharacters(elements);
@@ -187,72 +255,70 @@ export function insertContent(elements, content, index = 0, shouldInsert = shoul
 
     let currentIndex = 0;
 
-    const _insertContent = (elements, parent = null, depth = 0) => {
+    const result = mapElements(elements, ({ element, parent, depth }) => {
+
+        const _shouldInsert = () => shouldInsert({
+            elements,
+            parent,
+            currentElement,
+            currentElementIndex,
+            index,
+            currentIndex,
+            depth,
+            totalLength,
+            contentLength
+        });
+
         const newElements = [];
 
-        Children.forEach(elements, (currentElement, currentElementIndex) => {
-            const _shouldInsert = () => shouldInsert({
-                elements,
-                parent,
-                currentElement,
-                currentElementIndex,
-                index,
-                currentIndex,
-                depth,
-                totalLength,
-                contentLength
-            });
+        if (typeof currentElement === 'string') {
+            if (_shouldInsert()) {
+                const firstSlice = currentElement.slice(0, index - currentIndex);
+                const lastSlice = currentElement.slice(index - currentIndex);
 
-            if (typeof currentElement === 'string') {
-                if (_shouldInsert()) {
-                    const firstSlice = currentElement.slice(0, index - currentIndex);
-                    const lastSlice = currentElement.slice(index - currentIndex);
-
-                    if (typeof content === 'string') {
-                        newElements.push(`${firstSlice}${content}${lastSlice}`);
-                    } else if (isValidElement(content)) {
-                        if (firstSlice) newElements.push(firstSlice);
-                        newElements.push(content);
-                        if (lastSlice) newElements.push(lastSlice);
-                    }
-
-                    currentIndex += contentLength;
-                } else {
-                    newElements.push(currentElement);
-                }
-
-                currentIndex += currentElement.length;
-            } else if (isValidElement(currentElement) && currentElement.props.children) {
-                if (_shouldInsert()) {
+                if (typeof content === 'string') {
+                    newElements.push(`${firstSlice}${content}${lastSlice}`);
+                } else if (isValidElement(content)) {
+                    if (firstSlice) newElements.push(firstSlice);
                     newElements.push(content);
-                    currentIndex += contentLength;
+                    if (lastSlice) newElements.push(lastSlice);
                 }
 
-                const id = currentElement.props.id ?? uuidv4();
-                newElements.push(cloneElement(
-                    currentElement,
-                    { id, key: id },
-                    _insertContent(currentElement.props.children, currentElement, depth + 1)
-                ));
-
-                if (_shouldInsert()) {
-                    newElements.push(content);
-                    currentIndex += contentLength;
-                }
+                currentIndex += contentLength;
             } else {
                 newElements.push(currentElement);
             }
-        });
 
-        return newElements.length === 1 ? newElements[0] : newElements;
-    };
+            currentIndex += currentElement.length;
+        } else if (isValidElement(currentElement) && currentElement.props.children) {
+            if (_shouldInsert()) {
+                newElements.push(content);
+                currentIndex += contentLength;
+            }
 
-    const result = _insertContent(elements);
+            const id = currentElement.props.id ?? uuidv4();
+            newElements.push(cloneElement(
+                currentElement,
+                { id, key: id },
+                _insertContent(currentElement.props.children, currentElement, depth + 1)
+            ));
+
+            if (_shouldInsert()) {
+                newElements.push(content);
+                currentIndex += contentLength;
+            }
+        } else {
+            newElements.push(currentElement);
+        }
+
+        return newElements;
+    });
+
     return result.length === 1 ? result[0] : result;
 }
 
 export function insertContentById(elements, id, content, index = 0) {
-    return insertContent(elements, content, index, (entry) => shouldInsertById({ ...entry, id }));
+    return insertContent(elements, content, index, shouldInsertById);
 }
 
 export function insertContentByPreference(elements, content, index = 0, insertionPreference = 'outerMost') {

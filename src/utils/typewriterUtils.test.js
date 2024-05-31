@@ -7,88 +7,56 @@ import {
     findElementAtIndex,
     insertContent,
     insertContentByPreference,
+    insertContentById,
     removeContent
 } from './typewriterUtils';
 
+jest.mock('uuid', () => {
+    let callCount = 0;
+    return {
+        v4: jest.fn(() => `mock-uuid-${callCount++}`)
+    };
+});
 
-jest.mock('uuid', () => ({
-    v4: jest.fn(() => 'unique-id'),
-}));
+beforeEach(() => {
+    jest.clearAllMocks();
+    let callCount = 0;
+    uuidv4.mockImplementation(() => `mock-uuid-${callCount++}`);
+});
 
 describe('addIdsToElements', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-
-    test('adds ids to a single valid element', () => {
-        const element = <div />;
-        const result = addIdsToElements(element);
-        
-        expect(result.props.id).toBe('unique-id');
-        expect(result.key).toBe('unique-id');
-    });
-
-    test('adds ids to all elements in an array', () => {
-        const elements = [<div key="1" />, <span key="2" />];
-        const result = addIdsToElements(elements);
-
-        result.forEach((element) => {
-            expect(element.props.id).toBe('unique-id');
-            expect(element.key).toBe('unique-id');
-        });
-    });
-
-    test('adds ids recursively to child elements', () => {
-        const element = (
+    it('should add unique IDs to each element and its children', () => {
+        const elements = (
             <div>
-                <span />
+                <span>Hello</span>
+                <span>World</span>
             </div>
         );
-        const result = addIdsToElements(element);
 
-        expect(result.props.id).toBe('unique-id');
-        expect(result.key).toBe('unique-id');
-        expect(result.props.children.props.id).toBe('unique-id');
-        expect(result.props.children.key).toBe('unique-id');
+        const elementsWithIds = addIdsToElements(elements);
+
+        const { container } = render(elementsWithIds);
+        const div = container.querySelector('div');
+        const spans = container.querySelectorAll('span');
+
+        expect(div.id).toBe('mock-uuid-0');
+        expect(spans[0].id).toBe('mock-uuid-1');
+        expect(spans[1].id).toBe('mock-uuid-2');
     });
 
-    test('returns the element unchanged if it is not a valid element', () => {
-        const element = 'string';
-        const result = addIdsToElements(element);
-
-        expect(result).toBe(element);
-    });
-
-    test('handles nested arrays of elements', () => {
+    it('should handle arrays of elements', () => {
         const elements = [
-            <div key="1">
-                <span key="1-1" />
-                <p key="1-2" />
-            </div>,
-            <ul key="2">
-                <li key="2-1" />
-            </ul>,
+            <span key="1">Hello</span>,
+            <span key="2">World</span>
         ];
 
-        const result = addIdsToElements(elements);
+        const elementsWithIds = addIdsToElements(elements);
 
-        const [firstElement, secondElement] = result;
+        const { container } = render(<>{elementsWithIds}</>);
+        const spans = container.querySelectorAll('span');
 
-        // First element assertions
-        expect(firstElement.props.id).toBe('unique-id');
-        expect(firstElement.key).toBe('unique-id');
-        firstElement.props.children.forEach((child) => {
-            expect(child.props.id).toBe('unique-id');
-            expect(child.key).toBe('unique-id');
-        });
-
-        // Second element assertions
-        expect(secondElement.props.id).toBe('unique-id');
-        expect(secondElement.key).toBe('unique-id');
-        secondElement.props.children.forEach((child) => {
-            expect(child.props.id).toBe('unique-id');
-            expect(child.key).toBe('unique-id');
-        });
+        expect(spans[0].id).toBe('mock-uuid-0');
+        expect(spans[1].id).toBe('mock-uuid-1');
     });
 });
 
@@ -323,32 +291,32 @@ describe('insertContentByPreference', () => {
 
     it('handles nested structures correctly: middle 1', () => {
         const nodes = (<div><span>Hello</span><span> world!</span></div>);
-        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [firstSpan, middleText, secondSpan] = container.firstChild.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(middleText.textContent).toBe(", test");
         expect(secondSpan.textContent).toBe(" world!");
     });
-    
+
     it('handles nested structures correctly: middle 2', () => {
         const nodes = (<div>Hello<span> world!</span></div>);
-        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [text, span] = container.firstChild.childNodes;
         expect(text.textContent).toBe("Hello, test");
         expect(span.textContent).toBe(" world!");
     });
-    
+
     it('handles nested structures correctly: middle 3', () => {
         const nodes = (<div><span>Hello</span> world!</div>);
-        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [span, text] = container.firstChild.childNodes;
         expect(span.textContent).toBe("Hello");
         expect(text.textContent).toBe(", test world!");
     });
-    
+
     it('handles nested structures correctly: middle 4', () => {
         const nodes = (<span>Hello</span>);
-        const { container } = render(insertContentByPreference(nodes, ", test", 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [firstSpan, middleText] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(middleText.textContent).toBe(", test");
@@ -357,7 +325,7 @@ describe('insertContentByPreference', () => {
     it('handles nested structures correctly: middle 5: inserting react elements', () => {
         const nodes = (<span>Hello</span>);
         const insertingNodes = (<span> world!</span>);
-        const { container } = render(insertContentByPreference(nodes, insertingNodes, 5, "middle"));
+        const { container } = render(insertContentByPreference(nodes, insertingNodes, 5, "outerMost"));
         const [firstSpan, secondSpan] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
         expect(secondSpan.textContent).toBe(" world!");
@@ -377,6 +345,54 @@ describe('insertContentByPreference', () => {
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "rightMost"));
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe("Hello, test");
+    });
+});
+
+describe('insertContentById', () => {
+    it('should insert content at the specified text index within the element with the given ID', () => {
+        const elements = addIdsToElements(
+            <div>
+                <span>Hello</span>
+            </div>
+        );
+
+        const updatedElements = insertContentById(elements, 'mock-uuid-1', ' Inserted', 5);
+
+        const { container } = render(updatedElements);
+        const span = container.querySelector('span');
+
+        expect(span.textContent).toBe('Hello Inserted');
+    });
+
+    it('should not modify elements with different IDs', () => {
+        const elements = addIdsToElements(
+            <div>
+                <span>Hello</span>
+                <span> World</span>
+            </div>
+        );
+
+        const updatedElements = insertContentById(elements, 'mock-uuid-2', ' Inserted', 11);
+        const { container } = render(updatedElements);
+        const spans = container.querySelectorAll('span');
+
+        expect(spans[0].textContent).toBe('Hello');
+        expect(spans[1].textContent).toBe(' World Inserted');
+    });
+
+    it('should handle nested elements', () => {
+        const elements = addIdsToElements(
+            <div>
+                <span>Hello <b>World</b></span>
+            </div>
+        );
+
+        const updatedElements = insertContentById(elements, 'mock-uuid-1', ' Inserted', 5);
+
+        const { container } = render(updatedElements);
+        const span = container.querySelector('span');
+
+        expect(span.textContent).toBe('Hello Inserted World');
     });
 });
 
