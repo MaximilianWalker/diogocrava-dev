@@ -61,6 +61,44 @@ describe('addIdsToElements', () => {
         expect(spans[0].id).toBe('mock-uuid-0');
         expect(spans[1].id).toBe('mock-uuid-1');
     });
+
+    it('addIdsToElements: stress test', () => {
+        // Creating a large complex HTML structure with many nested and sibling elements
+        const complexStructure = (
+            <div>
+                <div>
+                    <span>First level - span</span>
+                    <div>Second level - div containing more spans</div>
+                    <div>
+                        <span>Nested span within second-level div</span>
+                        {Array.from({ length: 500 }, (_, index) => (
+                            <span key={index}>Span {index + 1}</span>
+                        ))}
+                    </div>
+                </div>
+                <ul>
+                    {Array.from({ length: 1000 }, (_, index) => (
+                        <li key={index}>List Item {index + 1}</li>
+                    ))}
+                </ul>
+                <p>A paragraph with <b>bold</b> and <i>italic</i> elements nested within.</p>
+            </div>
+        );
+
+        const elementsWithIds = addIdsToElements(complexStructure);
+
+        const { container } = render(<>{elementsWithIds}</>);
+        const allElements = container.querySelectorAll('*');
+
+        const ids = new Set();
+
+        for (let element of allElements) {
+            expect(element.id).toMatch(/mock-uuid-\d+/);
+            ids.add(element.id);
+        }
+
+        expect(ids.size).toBe(allElements.length);
+    });
 });
 
 describe('iterateAnimation', () => {
@@ -446,7 +484,6 @@ describe('insertContentByPreference', () => {
         expect(modified).toBe("Hello test");
     });
 
-    // perceber pq demora mais que os outros: 24 ms
     it('handles nested structures correctly: leftMost', () => {
         const nodes = addIdsToElements(<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "leftMost"));
@@ -520,6 +557,26 @@ describe('insertContentByPreference', () => {
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe("Hello, test");
     });
+
+    test('insertContentByPreference: stress test', () => {
+        const complexStructure = addIdsToElements(
+            <div>
+                <p>This is a paragraph with some text, and more text follows.</p>
+                <div>
+                    <span>Nested span element</span>
+                    <p>Another paragraph</p>
+                </div>
+                <ul>
+                    {Array.from({ length: 10000 }, (_, i) => (
+                        <li key={i}>Item {i + 1} in a very long list to increase complexity and text length</li>
+                    ))}
+                </ul>
+            </div>
+        );
+
+        const modifiedStructure = insertContentByPreference(complexStructure, 'X', 5000, 'leftMost'); // Assuming the 500th position is the target
+        expect(modifiedStructure).not.toBeNull();
+    });
 });
 
 describe('insertContentById', () => {
@@ -591,6 +648,35 @@ describe('insertContentById', () => {
 
         expect(span.textContent).toBe('Hello Inserted World');
     });
+
+    it('insertContentById: stress test', () => {
+        const complexStructure = addIdsToElements(
+            <div>
+                <div>
+                    <span>First level - span</span>
+                    <div>Second level - div</div>
+                    <span> on span</span>
+                </div>
+                <ul>
+                    {Array.from({ length: 1000 }, (_, i) => (
+                        <li key={i}>Item {i + 1}</li>
+                    ))}
+                </ul>
+                <p>Another paragraph here with more content to increase complexity.</p>
+            </div>
+        );
+
+        const specificId = 'mock-uuid-4';
+        const insertPosition = 36;
+
+        const modifiedStructure = insertContentById(complexStructure, specificId, 'Inserted content here', insertPosition);
+
+        const { container } = render(modifiedStructure);
+
+        const elementWithInsertedContent = container.querySelector(`#${specificId}`);
+
+        expect(elementWithInsertedContent.textContent).toEqual('Inserted content here on span');
+    });
 });
 
 describe('removeContent', () => {
@@ -610,5 +696,45 @@ describe('removeContent', () => {
         const nodes = "Hello, world!";
         const modified = removeContent(nodes, 0, 13);
         expect(modified).toBeNull();
+    });
+
+    test('removeContent: stress test', () => {
+        const complexStructure = addIdsToElements(
+            <div>
+                <p>This is a paragraph with some text, and more text follows.</p>
+                <div>
+                    <span>Nested span element</span>
+                    <p>Another paragraph</p>
+                </div>
+                <ul>
+                    {Array.from({ length: 10000 }, (_, i) => (
+                        <li key={i}>Item {i + 1} in a very long list to increase complexity and text length</li>
+                    ))}
+                </ul>
+            </div>
+        );
+
+        const modifiedStructure = removeContent(complexStructure, 500, 1000);
+        expect(modifiedStructure).not.toBeNull();
+    });
+
+    test('removeContent: stress test 2', () => {
+        const complexStructure = addIdsToElements(
+            <div>
+                <p>This is a paragraph with some text, and more text follows.</p>
+                <div>
+                    <span>Nested span element</span>
+                    <p>Another paragraph</p>
+                </div>
+                <ul>
+                    {Array.from({ length: 10000 }, (_, i) => (
+                        <li key={i}>Item {i + 1} in a very long list to increase complexity and text length</li>
+                    ))}
+                </ul>
+            </div>
+        );
+
+        const modifiedStructure = removeContent(complexStructure, 5);
+        expect(modifiedStructure).not.toBeNull();
     });
 });
