@@ -1,7 +1,37 @@
 import { cloneElement, isValidElement, Children, Fragment } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * Transforms a React element into a JSON representation.
+ * @param {React.ReactElement} element - The React element to transform.
+ * @returns {object} The JSON representation of the React element.
+ */
+export function elementToJson(element) {
+    if (typeof element !== 'object' || element === null) {
+        return element;
+    }
+
+    const type = element.type;
+    const props = element.props;
+
+    const elementType = typeof type === 'function'
+        ? type.name || 'Anonymous'
+        : type;
+
+    const children = Children
+        .map(props.children, child => elementToJson(child))
+        .filter(child => child !== undefined);
+
+    return {
+        type: elementType,
+        props: { ...props, children: children.length === 0 ? undefined : children },
+    };
+}
+
 export function addIdsToElements(elements) {
+    if (typeof elements === 'string')
+        return elements;
+
     const _addIdsToElements = (element) => {
         if (!isValidElement(element)) return element;
 
@@ -20,9 +50,14 @@ export function* iterateElements(elements, method = 'depth') {
     if (method !== 'depth' && method !== 'breadth')
         throw new Error('Method must be depth or breadth');
 
+    if (elements == null) return elements;
+
     let index = 0;
 
-    const toProcess = typeof elements === 'string' ? [elements] : Children.map(elements, child => ({ element: child, depth: 0 }));
+    const toProcess = typeof elements === 'string' ?
+        [{ element: elements, depth: 0 }]
+        :
+        Children.map(elements, child => ({ element: child, depth: 0 }));
 
     while (toProcess.length > 0) {
         const { element, parent, depth } = method === 'depth' ? toProcess.pop() : toProcess.shift();
@@ -50,28 +85,72 @@ export function* iterateElements(elements, method = 'depth') {
     }
 }
 
-export function* iterateElementsText(elements) {
+export function getElementsList(elements, method = 'depth') {
+    return Array.from(iterateElements(elements, method));
+}
+
+export function generateElements(entries) {
+    const recreate = (element) => {
+        if (!isValidElement(element)) {
+            return element;
+        }
+
+        const newChildren = Children.map(element.props.children, child => recreate(child));
+
+        return cloneElement(
+            element,
+            { ...element.props },
+            newChildrenGenerator(element, newChildren)
+        );
+    };
+
+    return Children.map(elements, element => recreate(element));
+}
+
+export function* iterateText(elements) {
     for (const { element } of iterateElements(elements)) {
         if (typeof element === 'string')
             yield element;
         else if (isValidElement(element) && element.props.children)
-            yield* iterateElementsText(element.props.children);
+            yield* iterateText(element.props.children);
     }
 }
 
-export function mapElements(elements, transform) {
-    const result = [];
-    for (const entry of iterateElements(elements))
-        result.push(transform(entry));
-    return result;
+export function* iterateAnimation(elements) {
+    let index = 0;
+    let entries = [];
+
+    for (let entry of iterateElements(elements)) {
+        if (typeof entry.element === 'string') {
+            let newElement = entry.element[0];
+            for (const e of entries)
+                newElement = cloneElement(e.element, null, newElement);
+
+            yield {
+                index,
+                element: newElement,
+                parentId: entries.length > 0 ? entries.at(-1)?.parent?.props.id : entry.parent?.props.id
+            };
+
+            entries = [];
+            index++;
+
+            for (let i = 1; i < entry.element.length; i++) {
+                yield {
+                    index,
+                    element: entry.element[i],
+                    parentId: entry.parent?.props.id
+                };
+                index++;
+            }
+        } else if (isValidElement(entry.element)) {
+            entries.unshift(entry);
+        }
+    }
 }
 
-export function getElementsList(elements, method = 'depth') {
-    const elementsList = [];
-    for (const [element, index, depth] of iterateElements(elements, method)) {
-        elementsList.push({ element, index, depth });
-    }
-    return elementsList;
+export function getAnimationList(elements) {
+    return Array.from(iterateAnimation(elements));
 }
 
 export function generateLineBreaks(text) {
@@ -137,7 +216,7 @@ const shouldInsertRightMost = ({ currentElement, index, currentIndex, totalLengt
     ((index === totalLength && currentIndex + currentElement.length === totalLength) || index < currentIndex + currentElement.length)
 );
 
-const shouldInsertOuterMost = ({ elements, currentElement, currentElementIndex, index, currentIndex, depth, totalLength, contentLength }) => (
+const shouldInsertOuterMost = ({ elements, currentElement, currentElementIndex, index, currentIndex, depth }) => (
     (
         typeof currentElement === 'string' &&
         index >= currentIndex &&
@@ -148,7 +227,7 @@ const shouldInsertOuterMost = ({ elements, currentElement, currentElementIndex, 
                 (
                     depth === 0 ||
                     (
-                        Array.isArray(elements) && typeof
+                        Array.isArray(elements) &&
                         elements[currentElementIndex + 1] != null
                     )
                 )
@@ -171,8 +250,7 @@ const shouldInsertOuterMost = ({ elements, currentElement, currentElementIndex, 
 
 const shouldInsertById = ({ currentElement, parent, id, index, currentIndex, depth }) => (
     (
-        (parent != null && parent.props.id === id) ||
-        (parent == null && depth === 0)
+        id == null || (parent != null && parent.props.id === id)
     )
     &&
     (
@@ -300,4 +378,19 @@ export function removeContent(nodes, startIndex, endIndex = null, removeEmptyNod
 
     const result = _removeContent(nodes);
     return result.length !== 0 ? result.length === 1 ? result[0] : result : null;
+}
+
+export function processEvent(event) {
+    if (event.type === 'type') {
+        event = {
+            ...event,
+            length: countCharacters(elements),
+            value: addIdsToElements(elements)
+        };
+    }
+    return event;
+}
+
+export function processEvents(events) {
+    return events.map(processEvent);
 }

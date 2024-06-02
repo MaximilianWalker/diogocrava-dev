@@ -1,7 +1,10 @@
 import { render, prettyDOM } from '@testing-library/react';
 import { v4 as uuidv4 } from 'uuid';
 import {
+    elementToJson,
     addIdsToElements,
+    getAnimationList,
+    iterateAnimation,
     generateLineBreaks,
     countCharacters,
     findElementAtIndex,
@@ -57,6 +60,177 @@ describe('addIdsToElements', () => {
 
         expect(spans[0].id).toBe('mock-uuid-0');
         expect(spans[1].id).toBe('mock-uuid-1');
+    });
+});
+
+describe('iterateAnimation', () => {
+    const animationToJson = (list) => list.map((el) => ({
+        ...el,
+        element: elementToJson(el.element)
+    }));
+
+    it('should handle nested React elements correctly', () => {
+        const elements = addIdsToElements(
+            <div>
+                <span>
+                    kek
+                </span>
+                lol
+            </div>
+        );
+
+        const expectedOutput = [
+            {
+                index: 0,
+                element: (
+                    <div id="mock-uuid-0">
+                        <span id="mock-uuid-1">k</span>
+                    </div>
+                ),
+                parentId: undefined
+            },
+            {
+                index: 1,
+                element: 'e',
+                parentId: "mock-uuid-1"
+            },
+            {
+                index: 2,
+                element: 'k',
+                parentId: "mock-uuid-1"
+            },
+            {
+                index: 3,
+                element: 'l',
+                parentId: "mock-uuid-0"
+            },
+            {
+                index: 4,
+                element: 'o',
+                parentId: "mock-uuid-0"
+            },
+            {
+                index: 5,
+                element: 'l',
+                parentId: "mock-uuid-0"
+            },
+        ];
+
+        const result = getAnimationList(elements);
+        expect(animationToJson(result)).toMatchObject(animationToJson(expectedOutput));
+    });
+
+    it('should handle single string element', () => {
+        const elements = 'hello';
+        const expectedOutput = [
+            {
+                index: 0,
+                element: 'h',
+                parentId: undefined
+            },
+            {
+                index: 1,
+                element: 'e',
+                parentId: undefined
+            },
+            {
+                index: 2,
+                element: 'l',
+                parentId: undefined
+            },
+            {
+                index: 3,
+                element: 'l',
+                parentId: undefined
+            },
+            {
+                index: 4,
+                element: 'o',
+                parentId: undefined
+            }
+        ];
+
+        const result = getAnimationList(elements);
+        expect(animationToJson(result)).toEqual(animationToJson(expectedOutput));
+    });
+
+    it('should handle empty element', () => {
+        const elements = null;
+        const expectedOutput = [];
+
+        const result = getAnimationList(elements);
+        expect(result).toEqual(expectedOutput);
+    });
+
+    it('should handle deeply nested React elements', () => {
+        const elements = addIdsToElements(
+            <div>
+                <div>
+                    <span>
+                        abc
+                    </span>
+                    xyz
+                </div>
+                123
+            </div>
+        );
+
+        const expectedOutput = [
+            {
+                index: 0,
+                element: (
+                    <div id="mock-uuid-0">
+                        <div id="mock-uuid-1">
+                            <span id="mock-uuid-2">a</span>
+                        </div>
+                    </div>
+                ),
+                parentId: undefined
+            },
+            {
+                index: 1,
+                element: 'b',
+                parentId: "mock-uuid-2"
+            },
+            {
+                index: 2,
+                element: 'c',
+                parentId: "mock-uuid-2"
+            },
+            {
+                index: 3,
+                element: 'x',
+                parentId: "mock-uuid-1"
+            },
+            {
+                index: 4,
+                element: 'y',
+                parentId: "mock-uuid-1"
+            },
+            {
+                index: 5,
+                element: 'z',
+                parentId: "mock-uuid-1"
+            },
+            {
+                index: 6,
+                element: '1',
+                parentId: "mock-uuid-0"
+            },
+            {
+                index: 7,
+                element: '2',
+                parentId: "mock-uuid-0"
+            },
+            {
+                index: 8,
+                element: '3',
+                parentId: "mock-uuid-0"
+            }
+        ];
+
+        const result = getAnimationList(elements);
+        expect(animationToJson(result)).toEqual(animationToJson(expectedOutput));
     });
 });
 
@@ -274,7 +448,7 @@ describe('insertContentByPreference', () => {
 
     // perceber pq demora mais que os outros: 24 ms
     it('handles nested structures correctly: leftMost', () => {
-        const nodes = (<div><span>Hello</span><span> world!</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "leftMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         expect(container.getElementsByTagName('span').length).toBe(2);
@@ -283,14 +457,14 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: leftMost edge case', () => {
-        const nodes = (<div><span>Hello</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 0, "leftMost"));
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe(", testHello");
     });
 
     it('handles nested structures correctly: middle 1', () => {
-        const nodes = (<div><span>Hello</span><span> world!</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [firstSpan, middleText, secondSpan] = container.firstChild.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
@@ -299,7 +473,7 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: middle 2', () => {
-        const nodes = (<div>Hello<span> world!</span></div>);
+        const nodes = addIdsToElements(<div>Hello<span> world!</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [text, span] = container.firstChild.childNodes;
         expect(text.textContent).toBe("Hello, test");
@@ -307,7 +481,7 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: middle 3', () => {
-        const nodes = (<div><span>Hello</span> world!</div>);
+        const nodes = addIdsToElements(<div><span>Hello</span> world!</div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [span, text] = container.firstChild.childNodes;
         expect(span.textContent).toBe("Hello");
@@ -315,7 +489,7 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: middle 4', () => {
-        const nodes = (<span>Hello</span>);
+        const nodes = addIdsToElements(<span>Hello</span>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "outerMost"));
         const [firstSpan, middleText] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
@@ -323,8 +497,8 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: middle 5: inserting react elements', () => {
-        const nodes = (<span>Hello</span>);
-        const insertingNodes = (<span> world!</span>);
+        const nodes = addIdsToElements(<span>Hello</span>);
+        const insertingNodes = addIdsToElements(<span> world!</span>);
         const { container } = render(insertContentByPreference(nodes, insertingNodes, 5, "outerMost"));
         const [firstSpan, secondSpan] = container.childNodes;
         expect(firstSpan.textContent).toBe("Hello");
@@ -332,7 +506,7 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: rightMost', () => {
-        const nodes = (<div><span>Hello</span><span> world!</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello</span><span> world!</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "rightMost"));
         const [firstSpan, secondSpan] = container.getElementsByTagName('span');
         expect(container.getElementsByTagName('span').length).toBe(2);
@@ -341,7 +515,7 @@ describe('insertContentByPreference', () => {
     });
 
     it('handles nested structures correctly: rightMost edge case', () => {
-        const nodes = (<div><span>Hello</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello</span></div>);
         const { container } = render(insertContentByPreference(nodes, ", test", 5, "rightMost"));
         const [span] = container.getElementsByTagName('span');
         expect(span.textContent).toBe("Hello, test");
@@ -349,6 +523,29 @@ describe('insertContentByPreference', () => {
 });
 
 describe('insertContentById', () => {
+    it('should insert content into a string when input is a string and id is null', () => {
+        const element = "Hello World";
+        const updatedElement = insertContentById(element, null, ' Inserted', 5);
+        expect(updatedElement).toBe('Hello Inserted World');
+    });
+
+    it('should insert content at the first text index when ID is null', () => {
+        const elements = addIdsToElements(
+            <div>
+                <span>Hello</span>
+                <span>World</span>
+            </div>
+        );
+
+        const updatedElements = insertContentById(elements, null, ' Inserted', 5);
+
+        const { container } = render(updatedElements);
+        const spans = container.querySelectorAll('span');
+
+        expect(spans[0].textContent).toBe('Hello Inserted');
+        expect(spans[1].textContent).toBe('World');
+    });
+
     it('should insert content at the specified text index within the element with the given ID', () => {
         const elements = addIdsToElements(
             <div>
@@ -404,7 +601,7 @@ describe('removeContent', () => {
     });
 
     it('handles removal across boundaries in nested elements', () => {
-        const nodes = (<div><span>Hello, </span><span>world!</span></div>);
+        const nodes = addIdsToElements(<div><span>Hello, </span><span>world!</span></div>);
         const { container } = render(removeContent(nodes, 3, 9));
         expect(container.textContent).toBe("Helrld!");
     });

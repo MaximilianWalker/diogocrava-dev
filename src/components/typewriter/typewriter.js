@@ -1,6 +1,7 @@
-import { useState, useRef, useMemo, useImperativeHandle, forwardRef, isValidElement, cloneElement, Children } from 'react';
+import { useState, useRef, useMemo, useImperativeHandle, forwardRef, isValidElement, cloneElement, Children, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './typewriter.css';
+import { addIdsToElements, countCharacters, processEvent } from '@/utils/typewriterUtils';
 
 const instruction = {
 	action: 'type',
@@ -17,28 +18,30 @@ const ACTIONS = {
 };
 
 const Typewriter = forwardRef(({
-	events,
+	play = true,
+	events: eventsProp,
 	component: Component = 'div',
 	showCursor,
 	cursorCharacter,
 	...props
 }, ref) => {
 	const intervalRef = useRef();
+	const eventIteratorRef = useRef();
 
 	const cursor = useMemo(() => (
-		<span className="typewriter__cursor">
+		<span id="cursor" key="cursor" className="typewriter__cursor">
 			{cursorCharacter}
 		</span>
 	), [cursorCharacter]);
 
-	const [play, setPlay] = useState(true);
+	// const [play, setPlay] = useState(true);
 	const [elements, setElements] = useState([cursor]);
 
-	const [eventQueue, setEventQueue] = useState(events ?? []);
-	const [queueIndex, setQueueIndex] = useState(0);
-	const currentEvent = useMemo(() => queue[queueIndex], [eventQueue, queueIndex]);
-	const [eventIndex, setEventIndex] = useState(0);
-	const eventElements = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
+	const [events, setEvents] = useState(events ?? []);
+	const [eventsIndex, setEventsIndex] = useState(0);
+	const currentEvent = useMemo(() => queue[eventsIndex], [events, eventsIndex]);
+	// const [eventIndex, setEventIndex] = useState(0);
+	// const eventElements = useMemo(() => getEventNodes(currentEvent.content), [currentEvent]);
 
 	// const [options, setOptions] = useState({
 
@@ -48,16 +51,18 @@ const Typewriter = forwardRef(({
 
 	// const [repeat, setRepeat] = useState(false);
 
-	const addToQueue = (action) => setQueue([...queue, action]);
+	const addEvent = (event) => setEvents(prevEvents => [
+		...prevEvents,
+		processEvent(event)
+	]);
 
-	const start = () => setPlay(true);
-
-	const stop = () => setPlay(false);
-
-	const type = (text, options) => addToQueue({
-		action: 'type',
-		value: text
-	});
+	const addImmediateEvent = (event) => {
+		
+		setEvents(prevEvents => {
+			const newEvents = [...prevEvents];
+			newEvents.splice(eventsIndex, event);
+		});
+	};
 
 	const onType = () => {
 		setContent(current => [
@@ -74,23 +79,8 @@ const Typewriter = forwardRef(({
 		}
 	};
 
-	const move = (delta, options) => addToQueue({
-		action: 'move',
-		value: delta
-	});
-
 	const onMove = () => {
 		setNodeIndex(prevIndex => prevIndex + currentEvent.value);
-	};
-
-	const remove = (n, options) => addToQueue({
-		action: 'delete',
-		value: n
-	});
-
-	const pause = (time) => {
-		stop();
-		setTimeout(start, time);
 	};
 
 	const onPause = () => {
@@ -100,7 +90,7 @@ const Typewriter = forwardRef(({
 			setPlay(false);
 	};
 
-	const loop = () => {
+	const onLoop = () => {
 		setNodeIndex(currentEvent.value ?? 0);
 		setEventQueue(currentEvent.value ?? 0);
 	};
@@ -138,16 +128,6 @@ const Typewriter = forwardRef(({
 		}
 	};
 
-	useImperativeHandle(ref, () => ({
-		start,
-		stop,
-		type,
-		move,
-		remove,
-		pause,
-		changeOptions
-	}));
-
 	useEffect(() => {
 		if (play)
 			onAnimation();
@@ -155,6 +135,10 @@ const Typewriter = forwardRef(({
 		clearInterval(intervalRef.current);
 		return () => clearInterval(intervalRef.current);
 	}, [play, currentEvent, nodeIndex]);
+
+	useEffect(() => {
+		
+	}, [currentEvent]);
 
 	return (
 		<Component {...props}>
