@@ -167,17 +167,17 @@ export function generateLineBreaks(text) {
     );
 }
 
-export function countCharacters(nodes) {
+export function countCharacters(elements) {
     let _count = 0;
 
-    const _countCharacters = (nodes) => Children.forEach(nodes, (child) => {
+    const _countCharacters = (elements) => Children.forEach(elements, (child) => {
         if (typeof child === 'string')
             _count += child.length;
         else if (isValidElement(child) && child.props.children)
             _countCharacters(child.props.children);
     });
 
-    _countCharacters(nodes);
+    _countCharacters(elements);
     return _count;
 }
 
@@ -344,10 +344,10 @@ export function insertContentByPreference(elements, content, index = 0, insertio
     return insertContent(elements, content, index, shouldInsert);
 }
 
-export function removeContent(nodes, startIndex, endIndex = null, removeEmptyNodes = true) {
+export function removeContent(elements, startIndex, endIndex = null, removeEmptyElements = true) {
     let _currentIndex = 0;
 
-    const _removeContent = (nodes) => Children.map(nodes, (child) => {
+    const _removeContent = (elements) => Children.map(elements, (child) => {
         if (typeof child === 'string') {
             if (_currentIndex + child.length <= startIndex) {
                 _currentIndex += child.length;
@@ -360,11 +360,11 @@ export function removeContent(nodes, startIndex, endIndex = null, removeEmptyNod
                 const endSlice = endIndex ? Math.min(endIndex - _currentIndex, child.length) : null;
                 _currentIndex += child.length;
                 const newChild = child.slice(0, startSlice) + child.slice(endSlice);
-                return !removeEmptyNodes || newChild ? newChild : null;
+                return !removeEmptyElements || newChild ? newChild : null;
             }
         } else if (isValidElement(child) && child.props.children) {
             const updatedChildren = _removeContent(child.props.children);
-            return !removeEmptyNodes || updatedChildren ?
+            return !removeEmptyElements || updatedChildren ?
                 cloneElement(child,
                     {
                         key: uuidv4(),
@@ -376,21 +376,68 @@ export function removeContent(nodes, startIndex, endIndex = null, removeEmptyNod
         return child;
     });
 
-    const result = _removeContent(nodes);
+    const result = _removeContent(elements);
     return result.length !== 0 ? result.length === 1 ? result[0] : result : null;
 }
 
+// review
+export function removeElement(element, targetId) {
+    const _removeElement = (currentElement) => {
+        if (!isValidElement(currentElement) || !currentElement.props)
+            return currentElement;
+
+        if (currentElement.props.id === targetId)
+            return null;
+
+        if (currentElement.props.children) {
+            const newChildren = Children.map(currentElement.props.children, child => {
+                return _removeElement(child);
+            }).filter(child => child !== null);
+
+            if (newChildren.length !== Children.count(currentElement.props.children)) {
+                return cloneElement(currentElement, {}, ...newChildren);
+            }
+        }
+
+        return currentElement;
+    }
+
+    return _removeElement(element);
+}
+
 export function processEvent(event) {
-    if (event.type === 'type') {
+    const { type, value } = event;
+    if (type === 'type') {
+        const newElements = addIdsToElements(value);
         event = {
             ...event,
-            length: countCharacters(elements),
-            value: addIdsToElements(elements)
+            value: newElements,
+            animation: getAnimationList(newElements),
+            animationSize: countCharacters(value)
+        };
+    } else if (['delete', 'move'].includes(event.type)) {
+        event = {
+            ...event,
+            animationSize: value
+        };
+    }
+    return resetEvent(event);
+}
+
+export function processEvents(events) {
+    return events.map(processEvent);
+}
+
+export function resetEvent(event) {
+    if (['type', 'delete', 'move'].includes(event.type)) {
+        event = {
+            ...event,
+            animationIndex: 0
         };
     }
     return event;
 }
 
-export function processEvents(events) {
-    return events.map(processEvent);
+export function resetEvents(events) {
+    return events.map(resetEvent);
 }

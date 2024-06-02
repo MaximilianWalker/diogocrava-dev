@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo, useImperativeHandle, forwardRef, isValidElement, cloneElement, Children, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './typewriter.css';
-import { addIdsToElements, countCharacters, processEvent } from '@/utils/typewriterUtils';
+import { addIdsToElements, countCharacters, iterateElementsText, processEvent, processEvents, resetEvents } from '@/utils/typewriterUtils';
 
 const instruction = {
 	action: 'type',
@@ -26,7 +26,6 @@ const Typewriter = forwardRef(({
 	...props
 }, ref) => {
 	const intervalRef = useRef();
-	const eventIteratorRef = useRef();
 
 	const cursor = useMemo(() => (
 		<span id="cursor" key="cursor" className="typewriter__cursor">
@@ -34,10 +33,12 @@ const Typewriter = forwardRef(({
 		</span>
 	), [cursorCharacter]);
 
+	onPreiv
+
 	// const [play, setPlay] = useState(true);
 	const [elements, setElements] = useState([cursor]);
 
-	const [events, setEvents] = useState(events ?? []);
+	const [events, setEvents] = useState(processEvents(events) ?? []);
 	const [eventsIndex, setEventsIndex] = useState(0);
 	const currentEvent = useMemo(() => queue[eventsIndex], [events, eventsIndex]);
 	// const [eventIndex, setEventIndex] = useState(0);
@@ -57,10 +58,11 @@ const Typewriter = forwardRef(({
 	]);
 
 	const addImmediateEvent = (event) => {
-		
+
 		setEvents(prevEvents => {
 			const newEvents = [...prevEvents];
 			newEvents.splice(eventsIndex, event);
+			return newEvents;
 		});
 	};
 
@@ -83,6 +85,10 @@ const Typewriter = forwardRef(({
 		setNodeIndex(prevIndex => prevIndex + currentEvent.value);
 	};
 
+	const onDelete = () => {
+
+	};
+
 	const onPause = () => {
 		if (currentEvent.value)
 			setTimeout(onAnimation, currentEvent.value);
@@ -91,54 +97,64 @@ const Typewriter = forwardRef(({
 	};
 
 	const onLoop = () => {
-		setNodeIndex(currentEvent.value ?? 0);
-		setEventQueue(currentEvent.value ?? 0);
+		setEvents(prevEvents => resetEvents(prevEvents));
+		setEventsIndex(currentEvent.value ?? 0);
 	};
 
-	const changeOptions = (options) => setOptions(options);
+	const onOptions = () => setOptions(options);
 
 	// desenhar o flow de animação
 	const onAnimation = () => {
-		if (play) {
-			let animationFunction;
-			let animationSpeed;
-			switch (currentEvent.type) {
-				case 'type':
-					animationFunction = onType;
-					animationSpeed = currentEvent.options.speed;
-					break;
-				case 'move':
-					animationFunction = onMove;
-					animationSpeed = currentEvent.value;
-					break;
-				case 'delete':
-					animationFunction = onPause;
-					animationSpeed = currentEvent.value;
-					break;
-				case 'pause':
-					animationFunction = onPause;
-					animationSpeed = currentEvent.value;
-					break;
-				case 'loop':
-					animationFunction = onPause;
-					animationSpeed = currentEvent.value;
-					break;
-			}
-			intervalRef.current = setInterval(animationFunction, animationSpeed);
+		// if (!play) return;
+
+		let animationFunction;
+		let animationSpeed;
+		switch (currentEvent.type) {
+			case 'type':
+				animationFunction = onType;
+				animationSpeed = currentEvent.options.speed;
+				break;
+			case 'move':
+				animationFunction = onMove;
+				animationSpeed = currentEvent.value;
+				break;
+			case 'delete':
+				animationFunction = onDelete;
+				animationSpeed = currentEvent.value;
+				break;
+			case 'pause':
+				animationFunction = onPause;
+				animationSpeed = currentEvent.value;
+				break;
+			case 'loop':
+				animationFunction = onLoop;
+				animationSpeed = currentEvent.value;
+				break;
+			case 'options':
+				animationFunction = onOptions;
+				animationSpeed = 0;
+				break;
 		}
+		
+		intervalRef.current = setInterval(() => {
+			animationFunction();
+			const { animetionSize: size, animationIndex: index } = currentEvent;
+			if (index < size) {
+				setEvents(prevEvents => );
+			} else {
+				setEventsIndex(prevIndex => prevIndex + 1);
+			}
+
+		}, animationSpeed);
 	};
 
 	useEffect(() => {
 		if (play)
 			onAnimation();
-		else { }
-		clearInterval(intervalRef.current);
+		else
+			clearInterval(intervalRef.current);
 		return () => clearInterval(intervalRef.current);
-	}, [play, currentEvent, nodeIndex]);
-
-	useEffect(() => {
-		
-	}, [currentEvent]);
+	}, [play, currentEvent]);
 
 	return (
 		<Component {...props}>
