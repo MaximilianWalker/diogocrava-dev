@@ -313,6 +313,21 @@ describe('countCharacters', () => {
         const nodes = (<div>{123}{true}{null}</div>);
         expect(countCharacters(nodes)).toBe(0);
     });
+
+    test('countCharacters: stress test', () => {
+        const complexStructure = addIdsToElements(
+            <div>
+                <ul>
+                    {Array.from({ length: 10000 }, (_, i) => (
+                        <li key={i}>0123456789</li>
+                    ))}
+                </ul>
+            </div>
+        );
+
+        const counter = countCharacters(complexStructure);
+        expect(counter).toEqual(10000 * 10);
+    });
 });
 
 describe('findElementAtIndex', () => {
@@ -558,7 +573,7 @@ describe('insertContentByPreference', () => {
         expect(span.textContent).toBe("Hello, test");
     });
 
-    test('insertContentByPreference: stress test', () => {
+    it('insertContentByPreference: stress test', () => {
         const complexStructure = addIdsToElements(
             <div>
                 <p>This is a paragraph with some text, and more text follows.</p>
@@ -698,7 +713,7 @@ describe('removeContent', () => {
         expect(modified).toBeNull();
     });
 
-    test('removeContent: stress test', () => {
+    it('removeContent: stress test', () => {
         const complexStructure = addIdsToElements(
             <div>
                 <p>This is a paragraph with some text, and more text follows.</p>
@@ -718,7 +733,7 @@ describe('removeContent', () => {
         expect(modifiedStructure).not.toBeNull();
     });
 
-    test('removeContent: stress test 2', () => {
+    it('removeContent: stress test 2', () => {
         const complexStructure = addIdsToElements(
             <div>
                 <p>This is a paragraph with some text, and more text follows.</p>

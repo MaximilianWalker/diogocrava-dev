@@ -263,6 +263,11 @@ export function insertContent(elements, content, index = 0, shouldInsert = shoul
     const totalLength = countCharacters(elements);
     const contentLength = countCharacters(content);
 
+    if (index < 0)
+        index = contentLength + index;
+    else if (index == null)
+        index = contentLength;
+
     let currentIndex = 0;
 
     const _insertContent = (elements, parent = null, depth = 0) => {
