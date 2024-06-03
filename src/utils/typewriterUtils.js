@@ -434,7 +434,7 @@ export function processEvents(events) {
 }
 
 export function resetEvent(event) {
-    if (['type', 'delete', 'move'].includes(event.type)) {
+    if (['type', 'move', 'delete'].includes(event.type)) {
         event = {
             ...event,
             animationIndex: 0
