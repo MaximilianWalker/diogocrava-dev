@@ -411,22 +411,25 @@ export function removeElement(element, targetId) {
 }
 
 export function processEvent(event) {
-    const { type, value } = event;
+    const { type, value, instant } = event;
     if (type === 'type') {
         const newElements = addIdsToElements(value);
         event = {
             ...event,
             value: newElements,
-            animation: getAnimationList(newElements),
-            animationSize: countCharacters(value)
+            animation: !instant ? {
+                elements: getAnimationList(newElements),
+                index: 0,
+                size: countCharacters(newElements)
+            } : null,
         };
     } else if (['delete', 'move'].includes(event.type)) {
         event = {
             ...event,
-            animationSize: value
+            animationSize: !instant ? value : null
         };
     }
-    return resetEvent(event);
+    return event;
 }
 
 export function processEvents(events) {
@@ -434,10 +437,14 @@ export function processEvents(events) {
 }
 
 export function resetEvent(event) {
-    if (['type', 'move', 'delete'].includes(event.type)) {
+    const { type, animation } = event;
+    if (animation && ['type', 'move', 'delete'].includes(type)) {
         event = {
             ...event,
-            animationIndex: 0
+            animation: {
+                ...animation,
+                index: 0
+            }
         };
     }
     return event;

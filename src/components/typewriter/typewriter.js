@@ -1,22 +1,38 @@
-import { useState, useRef, useMemo, useImperativeHandle, forwardRef, isValidElement, cloneElement, Children, useEffect } from 'react';
+import {
+	useState,
+	useEffect,
+	useRef,
+	useMemo,
+	useImperativeHandle,
+	forwardRef
+} from 'react';
 import PropTypes from 'prop-types';
-import './typewriter.css';
-import { addIdsToElements, countCharacters, insertContentById, insertContentByPreference, iterateElementsText, processEvent, processEvents, removeElement, resetEvents } from '@/utils/typewriterUtils';
 import usePrevious from '@/hooks/usePrevious';
+import {
+	addIdsToElements,
+	insertContentById,
+	insertContentByPreference,
+	processEvent,
+	processEvents,
+	removeContent,
+	removeElement,
+	resetEvents
+} from '@/utils/typewriterUtils';
+import './typewriter.css';
 
-const instruction = {
-	action: 'type',
-	value: 'hello',
-	options: {
-		speed: 50
-	},
-	remove: true
-}
+// const instruction = {
+// 	action: 'type',
+// 	value: 'hello',
+// 	options: {
+// 		speed: 50
+// 	},
+// 	remove: true
+// }
 
-const ACTIONS = {
-	TYPE: 'type',
-	DELETE: 'delete'
-};
+// const ACTIONS = {
+// 	TYPE: 'type',
+// 	DELETE: 'delete'
+// };
 
 const Typewriter = forwardRef(({
 	play = true,
@@ -85,12 +101,18 @@ const Typewriter = forwardRef(({
 	};
 
 	const onType = () => setElements((prevElements) => {
-		const { animation, animationIndex } = currentEvent;
-		const { element, parentId } = animation[animationIndex];
-		return parent ?
-			insertContentById(prevElements, parentId, element, cursorIndex)
-			:
-			insertContentByPreference(prevElements, element, cursorIndex);
+		const { value, instant, animation, animationIndex } = currentEvent;
+		let content;
+
+		if(instant){
+			return insertContentByPreference(prevElements, value, cursorIndex, 'outerMost');
+		} else {
+			const { element, parentId } = animation[animationIndex];
+			if(parentId)
+				return insertContentById(prevElements, parentId, element, cursorIndex);
+			else
+				return insertContentByPreference(prevElements, element, cursorIndex);
+		}
 	});
 
 	const onMove = () => setElements((prevElements) => {
@@ -98,9 +120,9 @@ const Typewriter = forwardRef(({
 		return insertContentByPreference();
 	});
 
-	const onDelete = () => {
-
-	};
+	const onDelete = () => setElements((prevElements) => (
+		cursorIndex > 0 ? removeContent(prevElements, cursorIndex - 1, cursorIndex) : prevElements
+	));
 
 	// const onPause = () => {
 
@@ -151,6 +173,7 @@ const Typewriter = forwardRef(({
 
 		intervalRef.current = setInterval(() => {
 			if (animationFunction) animationFunction();
+			if (onEvent) onEvent(currentEvent, eventIndex);
 
 			const { animetionSize: size, animationIndex: index, remove } = currentEvent;
 			if (!size || !index || index === size) {
@@ -185,7 +208,32 @@ const Typewriter = forwardRef(({
 });
 
 Typewriter.propTypes = {
-
+	play: PropTypes.bool,
+	events: PropTypes.arrayOf(
+		PropTypes.shape({
+			action: PropTypes.oneOfType([
+				'type',
+				'move',
+				'delete',
+				'pause',
+				'loop',
+				'options'
+			]),
+			value: PropTypes.any,
+			typeSpeed: PropTypes.number,
+			moveSpeed: PropTypes.number,
+			deleteSpeed: PropTypes.number,
+			instant: PropTypes.bool,
+			remove: PropTypes.bool
+		})
+	),
+	component: PropTypes.elementType,
+	showCursor: PropTypes.bool,
+	cursorCharacter: PropTypes.string,
+	typeSpeed: PropTypes.number,
+	moveSpeed: PropTypes.number,
+	deleteSpeed: PropTypes.number,
+	onEvent: PropTypes.func
 };
 
 export default Typewriter;
