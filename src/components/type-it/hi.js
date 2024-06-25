@@ -45,7 +45,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import TypeWave from '@typewavejs/react';
+import { TypeWave } from '@typewavejs/react';
 import styles from './hi.module.css';
 
 const events = [
