@@ -11,7 +11,7 @@ import { Inconsolata, Source_Code_Pro } from 'next/font/google'
 import Particles from '@/components/animations/particles';
 // import Terminal from '@/components/type-it/terminal';
 const Terminal = lazy(() => import('@/components/system/windows/terminal'));
-import Loading from '@/components/type-it/loading';
+import Loading from '@/components/typing-animations/loading';
 import './global.css';
 
 const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] })

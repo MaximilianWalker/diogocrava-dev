@@ -26,7 +26,7 @@ const SECTIONS = [
 ];
 
 export default function Home({ params: { section } }) {
-  const [scrolling, setScrolling] = useState(false);
+  // const [scrolling, setScrolling] = useState(false);
   const {
     section: currentSection,
     setSection,
@@ -51,14 +51,15 @@ export default function Home({ params: { section } }) {
   ];
 
   const onWheel = (e) => {
-    if (!scrolling) {
+    // if (!scrolling) {
+    e.preventDefault();
       if (e.deltaY < 0) previousSection();
       else if (e.deltaY > 0) nextSection(refs.length);
-      setScrolling(true);
-      setTimeout(() => {
-        setScrolling(false);
-      }, 800);
-    }
+      // setScrolling(true);
+      // setTimeout(() => {
+      //   setScrolling(false);
+      // }, 800);
+    // }
   };
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export default function Home({ params: { section } }) {
   useEffect(() => {
     window.addEventListener('wheel', onWheel);
     return () => window.removeEventListener('wheel', onWheel);
-  }, [scrolling, onWheel]);
+  }, [/*scrolling, */onWheel]);
 
   useEffect(() => {
     // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);

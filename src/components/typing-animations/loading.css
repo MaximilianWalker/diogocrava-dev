@@ -1,11 +1,11 @@
-.container {
+.loading__container {
     width: 100%;
     height: 100%;
     user-select: none;
     display: flex;
 }
 
-.text {
+.loading__text {
     margin: auto;
     font-weight: 100;
 }

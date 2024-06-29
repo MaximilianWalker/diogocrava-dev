@@ -8,7 +8,7 @@ import Window from '../common/window';
 import { default as ErrorWindow } from './error';
 import FileViewer from './file-viewer';
 import Input from "../common/input";
-import Loading from "@/components/type-it/loading";
+import Loading from "@/components/typing-animations/loading";
 import { getIconByName, getIconByMimetype } from '@/utils/iconUtils';
 import { DarkFileManager } from "@/icons/system";
 import './explorer.css';

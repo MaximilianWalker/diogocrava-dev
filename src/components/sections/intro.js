@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Section from '../common/section';
-import Hi from '../type-it/hi';
+import Hi from '../typing-animations/hi';
 
 import './intro.css';
 

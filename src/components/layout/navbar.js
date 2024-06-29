@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
-import TypeItLogo from "../type-it/logo";
+import TypeItLogo from "../typing-animations/logo";
 import GlitchyButton from "../buttons/glitchy-button";
 import { useSection } from "@/contexts/SectionContext";
 // import Networks from "./networks";

@@ -1,4 +1,4 @@
-import Loading from '../type-it/loading';
+import Loading from '../typing-animations/loading';
 import './projects.css';
 
 const AboutMe = ({ children, ...props }) => {

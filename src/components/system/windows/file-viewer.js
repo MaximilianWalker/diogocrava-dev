@@ -11,7 +11,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import Window from '@/components/system/common/window';
-import Loading from '@/components/type-it/loading';
+import Loading from '@/components/typing-animations/loading';
 import { getProgrammingLanguage } from '@/utils/mimeToLanguage.js';
 import Notepad from './notepad';
 import PdfViewer from './pdf-viewer';
