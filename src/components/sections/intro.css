@@ -20,6 +20,18 @@
 
 }
 
+.hi {
+    height: max-content;
+    margin-top: auto;
+    margin-bottom: auto;
+    user-select: none;
+    flex-shrink: 0;
+    min-width: 640px;
+    min-height: 200px;
+    font-weight: 600;
+    font-size: 2rem;
+}
+
 @media (max-width: 600px) {
     .intro__container {
         padding-left: 5vw;
@@ -30,6 +42,16 @@
 
     .intro__portrait {
         object-position: center bottom;
+    }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        font-size: 1.5rem;
     }
 }
 
@@ -44,6 +66,16 @@
     .intro__portrait {
         object-position: center bottom;
     }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        font-size: 1.5rem;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
@@ -56,6 +88,16 @@
 
     .intro__portrait {
         object-position: center bottom;
+    }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        font-size: 1.5rem;
     }
 }
 
@@ -70,6 +112,16 @@
     .intro__portrait {
         object-position: center bottom;
     }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+        font-size: 1.5rem;
+    }
 }
 
 @media (min-width: 1201px) and (max-width: 1500px) {
@@ -77,11 +129,29 @@
         padding-left: 5vw;
         padding-right: 5vw;
     }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
+    }
 }
 
 @media (min-width: 1501px) and (max-width: 2000px) {
     .intro__container {
         padding-left: 10vw;
         padding-right: 10vw;
+    }
+
+    .hi {
+        height: max-content;
+        margin-top: auto;
+        margin-bottom: auto;
+        /* transform: translateY(-50%); */
+        user-select: none;
+        flex-shrink: 0;
     }
 }

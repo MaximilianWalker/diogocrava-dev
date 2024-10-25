@@ -1,26 +1,16 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useEffect, useState, useRef, useCallback, useLayoutEffect } from "react";
-import TypeIt from "typeit-react";
-import { Maximize, X } from 'react-feather';
+import { useEffect, useState, useLayoutEffect, useMemo } from "react";
+import { TypeWave } from '@typewavejs/react';
 import { useChat } from 'ai/react';
-import { useTerminal } from "@/contexts/TerminalContext";
-import useDrag from "@/hooks/useDrag";
 import Window from "@/components/system/common/window";
 // import useGPT from "@/hooks/useGPT";
 import { splitText } from "@/utils/stringExtensions";
 import { useWindowManager } from "@/contexts/WindowManagerContext";
 import TerminalIcon from '@/icons/custom/terminal';
+import TerminalInput from "./terminal-input";
 import './terminal.css';
-
-const AI_LOADING_INTERVAL = 400;
-
-const BOOT_STATES = {
-    OFF: 'off',
-    BOOTING: 'booting',
-    READY: 'ready'
-};
 
 const INPUTS = [
     'linux_startup',
@@ -28,6 +18,8 @@ const INPUTS = [
     'primary_user',
     'ai_user'
 ];
+
+const CURSOR_CHARACTER = '_';
 
 function convertToCamelCase(name) {
     return name
@@ -37,27 +29,35 @@ function convertToCamelCase(name) {
 }
 
 export default function Terminal({ }) {
-    const textareaRef = useRef();
-    const cursorRef = useRef(0);
+    const { bringToFront, } = useWindowManager();
 
-    const intervalRef = useRef();
-    const dotCounterRef = useRef(0);
-    const isIncrementingRef = useRef(true);
-
-    const { bringToFront } = useWindowManager();
-
-    const {
-        messages,
-        input,
-        handleInputChange,
-        handleSubmit,
-        isLoading: isLoadingResponse,
-    } = useChat();
+    const { messages, isLoading: isLoadingResponse } = useChat();
 
     const [open, setOpen] = useState(false);
-    const [instance, setInstance] = useState();
     const [inputs, setInputs] = useState();
-    const [bootState, setBootState] = useState(BOOT_STATES.OFF);
+    const [booting, setBooting] = useState(true);
+
+    const bootEvents = useMemo(() => {
+        if (!inputs) return null;
+
+        const events = [];
+
+        for (const line of splitText(inputs.linuxStartup)) {
+            events.push({
+                type: 'type',
+                value: `${line}\n`,
+                instant: true
+            });
+            events.push({
+                type: 'pause',
+                value: Math.random() * 400
+            });
+        }
+
+        events.push({ type: 'type', value: inputs.osLogo, instant: true });
+
+        return events;
+    }, [inputs]);
 
     const getInputs = async () => {
         const searchParams = new URLSearchParams();
@@ -73,182 +73,73 @@ export default function Terminal({ }) {
         setInputs(newInputs);
     };
 
-    const writeInputs = () => {
-        setBootState(BOOT_STATES.BOOTING);
-        splitText(inputs.linuxStartup).forEach((line) => {
-            if (line.trim().length > 0)
-                instance.type(line, { instant: true }).pause(Math.random() * 600).break();
-            else
-                instance.type(line, { instant: true }).break();
-        });
-        splitText(inputs.osLogo).forEach((line) => {
-            instance.type(line, { instant: true }).break();
-        });
-
-        instance.break();
-        instance.type(inputs.primaryUser, { instant: true });
-        instance.exec(() => setBootState(BOOT_STATES.READY));
-        instance.flush();
-    };
-
     const writeReply = () => {
         const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-        if (instance && lastMessage && lastMessage.role === 'assistant') {
+        if (lastMessage && lastMessage.role === 'assistant') {
             const response = lastMessage.content;
             splitText(response).forEach((line) => {
-                instance.type(line, { instant: true }).break();
+                // instance.type(line, { instant: true }).break();
             });
-            instance.type(inputs.primaryUser, { instant: true });
-            instance.flush();
+            // instance.type(inputs.primaryUser, { instant: true });
+            // instance.flush();
         }
     };
-
-    const startLoading = () => {
-        instance
-            .break()
-            .type(inputs.aiUser, { instant: true })
-            .type('Loading', { instant: true })
-            .flush();
-
-        intervalRef.current = setInterval(() => {
-            if (isIncrementingRef.current) {
-                instance.type('.').flush();
-                dotCounterRef.current += 1;
-            } else {
-                instance.delete(1).flush();
-                dotCounterRef.current -= 1;
-            }
-
-            if (dotCounterRef.current === 3)
-                isIncrementingRef.current = false;
-            else if (dotCounterRef.current === 0)
-                isIncrementingRef.current = true;
-        }, AI_LOADING_INTERVAL);
-    };
-
-    const stopLoading = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            instance.delete('Loading'.length + dotCounterRef.current, { instant: true });
-            intervalRef.current = null;
-            dotCounterRef.current = 0;
-            isIncrementingRef.current = true;
-        }
-    };
-
-    const setInput = (value) => handleInputChange({ target: { value } });
-
-    const onKeyDown = useCallback((e) => {
-        if (open && bootState == BOOT_STATES.READY && !isLoadingResponse) {
-            textareaRef.current.focus();
-            if (e.key === 'Enter' && !e.shiftKey) {
-                // e.preventDefault();
-                handleSubmit(e);
-                // handleInputChange('');
-            } else if (e.key === 'ArrowLeft') {
-                if (cursorRef.current < input.length) {
-                    cursorRef.current += 1;
-                    instance.move(-1).flush();
-                }
-            } else if (e.key === 'ArrowRight') {
-                if (cursorRef.current > 0) {
-                    cursorRef.current -= 1;
-                    instance.move(1).flush();
-                }
-            }
-        }
-    }, [open, bootState, instance, input, isLoadingResponse]);
-
-    const onInput = useCallback((e) => {
-        if (open && bootState == BOOT_STATES.READY && !isLoadingResponse) {
-            const value = e.target.value;
-            const delta = value.length - input.length;
-            const typed = value.substring(
-                input.length - cursorRef.current,
-                input.length - cursorRef.current + delta
-            );
-
-            if (cursorRef.current > 0) instance.move(1).move(-1);
-
-            if (delta === 0) return;
-            else if (delta > 0) instance.type(typed, { instant: true });
-            else instance.delete(Math.abs(delta), { instant: true });
-
-            console.log(delta)
-
-            instance.flush();
-            setInput(value);
-        }
-    }, [open, bootState, instance, input, isLoadingResponse]);
 
     useLayoutEffect(() => {
         getInputs();
-        return () => {
-            if (instance) instance.flush();
-        };
     }, []);
 
     useEffect(() => {
-        bringToFront('terminal');
-        if (open) textareaRef.current.focus();
-        else textareaRef.current.blur();
+        bringToFront('terminal')
     }, [open]);
 
     useEffect(() => {
-        if (instance && open && inputs && bootState == BOOT_STATES.OFF)
-            writeInputs();
-    }, [instance, inputs, open]);
-
-    useEffect(() => {
-        window.addEventListener('keydown', onKeyDown);
-        return () => {
-            window.removeEventListener('keydown', onKeyDown);
-        }
-    }, [onKeyDown]);
-
-    useEffect(() => {
-        if (!instance) return;
-
-        if (!isLoadingResponse) {
-            stopLoading();
+        if (!isLoadingResponse)
             writeReply();
-        } else if (!intervalRef.current) {
-            startLoading();
-        }
-    }, [instance, isLoadingResponse, messages]);
+    }, [isLoadingResponse, messages]);
 
     return (
         <Window
-            className="terminal__window"
+            className="terminal"
             id="terminal"
             name="Terminal"
             icon={TerminalIcon}
-            // open={open}
             draggable
             maximizable
             closable
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
         >
-            <TypeIt
-                className="terminal"
-                as="pre"
-                options={{
-                    cursorChar: "_",
-                    speed: 1,
-                    nextStringDelay: 0
-                }}
-                getBeforeInit={(instance) => {
-                    setInstance(instance);
-                    return instance;
-                }}
-            />
-            <textarea
-                ref={textareaRef}
-                className="terminal__textarea"
-                value={input}
-                onInput={onInput}
-            />
+            <div>
+                {
+                    bootEvents &&
+                    <TypeWave
+                        events={bootEvents}
+                        component="pre"
+                        play={open}
+                        showCursor={booting}
+                        cursorCharacter={CURSOR_CHARACTER}
+                        onEnd={() => setBooting(false)}
+                    />
+                }
+                {
+                    !booting && messages.map((message, index) => (
+                        <TerminalMessage
+                            key={`message-${index}`}
+                            cursorCharacter={CURSOR_CHARACTER}
+                            message={message}
+                        />
+                    ))
+                }
+                {
+                    !booting && !isLoadingResponse &&
+                    <TerminalInput
+                        prefix={inputs.primaryUser}
+                        isPrefixHtml
+                        cursorCharacter={CURSOR_CHARACTER}
+                    />
+                }
+            </div>
         </Window>
     );
 }

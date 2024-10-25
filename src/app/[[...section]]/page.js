@@ -26,7 +26,7 @@ const SECTIONS = [
 ];
 
 export default function Home({ params: { section } }) {
-  // const [scrolling, setScrolling] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
   const {
     section: currentSection,
     setSection,
@@ -50,27 +50,29 @@ export default function Home({ params: { section } }) {
     contactFormRef
   ];
 
-  const onWheel = (e) => {
-    // if (!scrolling) {
-    e.preventDefault();
-      if (e.deltaY < 0) previousSection();
-      else if (e.deltaY > 0) nextSection(refs.length);
-      // setScrolling(true);
-      // setTimeout(() => {
-      //   setScrolling(false);
-      // }, 800);
-    // }
-  };
+  // DEPRECATED
+  // const onWheel = (e) => {
+  //   if (!scrolling) {
+  //     e.preventDefault();
+  //     if (e.deltaY < 0) previousSection();
+  //     else if (e.deltaY > 0) nextSection(refs.length);
+  //     setScrolling(true);
+  //     setTimeout(() => {
+  //       setScrolling(false);
+  //     }, 200);
+  //   }
+  // };
 
   useEffect(() => {
     const firstSection = section && SECTIONS.indexOf(section[0]) >= 0 ? SECTIONS.indexOf(section[0]) : 0;
     setSection(firstSection);
   }, []);
 
-  useEffect(() => {
-    window.addEventListener('wheel', onWheel);
-    return () => window.removeEventListener('wheel', onWheel);
-  }, [/*scrolling, */onWheel]);
+  // DEPRECATED
+  // useEffect(() => {
+  //   window.addEventListener('wheel', onWheel);
+  //   return () => window.removeEventListener('wheel', onWheel);
+  // }, [/*scrolling, */onWheel]);
 
   useEffect(() => {
     // window.history.pushState(null, null, `/${SECTIONS[currentSection]}`);

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { TypeWave } from '@typewavejs/react';
 import './hi.css';
 
-const events = [
+const getEvents = (onComplete) => [
     {
         type: "type",
         value: "> Hello World!"
@@ -75,8 +75,12 @@ const events = [
         value: 20000
     },
     {
+        type: "execute",
+        value: onComplete
+    },
+    {
         type: "type",
-        value: "\n> Scroll to continue..."
+        value: "\n> Use the menu to continue..."
     },
     {
         type: "pause",
@@ -88,23 +92,26 @@ const events = [
     }
 ];
 
-export default ({ freeze: freezeProp }) => {
-    const [instance, setInstance] = useState();
-    const [freeze, setFreeze] = useState(freezeProp);
-    const [isComplete, setComplete] = useState(false);
+export default ({ active }) => {
+    const [complete, setComplete] = useState(false);
+    const [afk, setAfk] = useState(true);
+
+    const events = useMemo(() => getEvents(() => setComplete(true)), []);
 
     useEffect(() => {
-        if (instance && isComplete && freeze) instance.destroy(false);
-    }, [instance, isComplete, freeze]);
+        if (!complete && !active)
+            setAfk(false);
+    }, [complete, active]);
 
-    useEffect(() => {
-        if (freezeProp) setFreeze(true);
-    }, [freezeProp]);
+    console.log('active', active);
+    console.log('complete', complete);
+    console.log('afk', afk);
 
     return (
         <TypeWave
             className="hi"
             component="h1"
+            play={!complete || afk}
             typeSpeed={50}
             deleteSpeed={50}
             cursorCharacter="_"

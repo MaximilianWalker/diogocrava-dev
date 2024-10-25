@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { TypeWave } from '@typewavejs/react';
 import './loading.css';
 
@@ -24,7 +24,7 @@ const getEvents = (text) => [
     }
 ];
 
-export default ({ className, message = "LOADING" }) => (
+const Loading = ({ className, message = "LOADING" }) => (
     <h1 className={`loading__container ${className}`}>
         <TypeWave
             className="loading__text"
@@ -35,3 +35,5 @@ export default ({ className, message = "LOADING" }) => (
         />
     </h1>
 );
+
+export default memo(Loading);

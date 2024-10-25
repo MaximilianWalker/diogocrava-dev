@@ -2,7 +2,6 @@
 'use client';
 
 import { forwardRef } from "react";
-import PropTypes from "prop-types";
 import Code from "@/components/common/code";
 import { getProgrammingLanguage } from "@/utils/mimeToLanguage";
 import './ide.css';
@@ -21,9 +20,5 @@ const IDE = forwardRef(({ className, mimetype, data, ...props }, ref) => {
         />
     );
 });
-
-IDE.propTypes = {
-
-};
 
 export default IDE;

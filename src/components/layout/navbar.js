@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
-import TypeItLogo from "../typing-animations/logo";
+import Logo from "../typing-animations/logo";
 import GlitchyButton from "../buttons/glitchy-button";
 import { useSection } from "@/contexts/SectionContext";
 // import Networks from "./networks";
@@ -22,7 +22,7 @@ export default () => {
 
     return (
         <nav className="navbar__container">
-            <TypeItLogo />
+            <Logo />
             <div className="navbar__buttons">
                 {
                     sections.map((sectionName, index) => (

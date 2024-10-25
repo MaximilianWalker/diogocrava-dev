@@ -1,5 +1,4 @@
 import { Children } from 'react';
-import PropTypes from 'prop-types';
 
 // https://medium.com/@divyakoneti0001/how-to-create-an-autoplay-or-infinite-carousel-in-react-d9f9bff11048
 // https://codepen.io/jh3y/pen/LYaLBVX

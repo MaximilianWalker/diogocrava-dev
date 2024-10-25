@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
-import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
 import Window from "@/components/system/common/window";
 import './animated-ide.css';
@@ -26,9 +25,5 @@ const AnimatedIDE = forwardRef(({ className, language, code, ...props }, ref) =>
         </Window>
     );
 });
-
-AnimatedIDE.propTypes = {
-
-};
 
 export default AnimatedIDE;

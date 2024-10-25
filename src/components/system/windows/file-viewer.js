@@ -9,7 +9,6 @@ import {
     useId,
     forwardRef
 } from 'react';
-import PropTypes from 'prop-types';
 import Window from '@/components/system/common/window';
 import Loading from '@/components/typing-animations/loading';
 import { getProgrammingLanguage } from '@/utils/mimeToLanguage.js';
@@ -121,11 +120,5 @@ const FileViewer = forwardRef(({ className, name, mimetype, contentUrl, ...props
         </Window>
     );
 });
-
-FileViewer.propTypes = {
-    name: PropTypes.string.isRequired,
-    mimetype: PropTypes.string.isRequired,
-    contentUrl: PropTypes.string.isRequired
-};
 
 export default FileViewer;

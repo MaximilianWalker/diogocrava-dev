@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState, forwardRef } from "react";
-import PropTypes from "prop-types";
 import { Eye, EyeOff } from "react-feather";
 import Window from "@/components/system/common/window";
 import Mask from "@/components/3d-models/mask";
@@ -82,9 +81,5 @@ const Profile = forwardRef(({ className, ...props }, ref) => {
         </Window>
     );
 });
-
-Profile.propTypes = {
-
-};
 
 export default Profile;

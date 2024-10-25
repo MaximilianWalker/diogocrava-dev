@@ -19,7 +19,7 @@
     "@react-three/fiber": "^8.16.8",
     "@types/mdx": "^2.0.11",
     "@types/three": "^0.155.1",
-    "@typewavejs/react": "^0.1.7",
+    "@typewavejs/react": "^0.2.9",
     "@vercel/analytics": "^1.1.1",
     "@vercel/blob": "^0.22.1",
     "@vercel/speed-insights": "^1.0.2",
@@ -29,9 +29,10 @@
     "eslint-config-next": "13.1.6",
     "feather-icons": "^4.29.0",
     "file-type": "^19.0.0",
+    "html-react-parser": "^5.1.18",
     "mime": "^4.0.1",
     "mongodb": "^6.7.0",
-    "next": "^14.2.4",
+    "next": "^15.0.1",
     "openai": "^4.20.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -41,7 +42,6 @@
     "react-syntax-highlighter": "^15.5.0",
     "sharp": "^0.33.3",
     "three": "^0.165.0",
-    "typeit-react": "^2.7.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

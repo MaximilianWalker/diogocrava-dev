@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback, forwardRef } from "react";
-import PropTypes from "prop-types";
 import { MapPin } from 'react-feather';
 import Window from "@/components/system/common/window";
 import GoogleMap from "@/components/map";
@@ -25,9 +24,5 @@ const Location = forwardRef(({ className, ...props }, ref) => {
         </Window>
     );
 });
-
-Location.propTypes = {
-
-};
 
 export default Location;

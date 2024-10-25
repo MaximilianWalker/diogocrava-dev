@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useMemo } from "react";
-import PropTypes from 'prop-types';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { lioshi } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import "./code.css";
@@ -24,13 +23,6 @@ function Code({ className, code, language, showLineNumbers }) {
             {code}
         </SyntaxHighlighter>
     );
-};
-
-Code.propTypes = {
-    className: PropTypes.string,
-    code: PropTypes.string.isRequired,
-    language: PropTypes.string.isRequired,
-    showLineNumbers: PropTypes.bool
 };
 
 export default Code;

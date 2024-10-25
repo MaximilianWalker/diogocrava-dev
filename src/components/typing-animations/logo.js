@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from "react";
 import { TypeWave } from '@typewavejs/react';
 import './logo.css';
 

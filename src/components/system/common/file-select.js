@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext } from "react";
-import PropTypes from "prop-types";
 import './select.css';
 
 // create context
@@ -17,10 +16,6 @@ const FileSelect = ({ children }, ref) => {
             <div className="select__box" />
         </div>
     );
-};
-
-Select.propTypes = {
-    
 };
 
 export default { FileSelect,  };
