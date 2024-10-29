@@ -1,0 +1,73 @@
+.project-card {
+  --primary: white;
+  --secondary: rgb(45, 45, 45);
+  --shadow-primary: rgb(54, 54, 54);
+  --color: black;
+  --shadow-color: white;
+  --tag-color: white;
+  --font-size: 20px;
+  --label-size: 9px;
+  --icon-size: 24px;
+  --corner-clip-size: 15px;
+  /* --text-clip-right-padding: 3px; */
+  --shimmy-distance: 5;
+
+  display: flex;
+  position: relative;
+  width: max-content;
+  height: max-content;
+}
+
+.project-card>* {
+  clip-path: polygon(0 0,
+      calc(100% - var(--corner-clip-size)) 0,
+      100% var(--corner-clip-size),
+      100% 100%,
+      var(--corner-clip-size) 100%,
+      0 calc(100% - var(--corner-clip-size)));
+}
+
+.project-card>img {
+  display: flex;
+  align-items: center;
+  color: var(--color) !important;
+  cursor: pointer;
+  background: var(--primary);
+  font-size: var(--font-size);
+  outline: transparent;
+  letter-spacing: 2px;
+  position: relative;
+  font-weight: 700;
+  border: 0;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+}
+
+.project-card .shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  opacity: 0.15;
+  transform: translate(40px, 40px);
+  z-index: -1;
+}
+
+.text {
+  flex-shrink: 1;
+  width: auto;
+  text-wrap: nowrap;
+  color: transparent;
+  transition: color 0.8s;
+  color: var(--color);
+  transition-property: color;
+  transition-duration: 0.8s;
+  transition-delay: 0s;
+}
+
+.text[data-icon=true] {
+  margin-left: 20px;
+}

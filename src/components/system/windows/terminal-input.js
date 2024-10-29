@@ -1,138 +1,141 @@
 // https://sdk.vercel.ai/docs
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import parse from 'html-react-parser';
-import { useChat } from 'ai/react';
 import './terminal-input.css';
 
 export default function TerminalInput({
     prefix,
     isPrefixHtml = false,
-    cursorCharacter
+    cursorCharacter,
+    value,
+    onChange,
+    onSubmit
 }) {
     const textareaRef = useRef();
     const textRef = useRef();
 
-    const {
-        input,
-        handleInputChange,
-        handleSubmit
-    } = useChat();
-
-    const [cursorPosition, setCursorPosition] = useState();
     const [selection, setSelection] = useState();
 
-    const selectText = useCallback((start, end, direction = 'forward') => {
-        const selection = window.getSelection();
-        selection.removeAllRanges();
+    const preText = useMemo(() => {
+        if (!selection)
+            return value;
+        else if (selection.start === selection.end || selection.direction === 'forward')
+            return value.slice(0, selection.start);
 
-        const preElement = textRef.current;
-        const [prefixSpan, beforeCursorText, cursorSpan, afterCursorText] = preElement.childNodes;
+        return (
+            <>
+                {value.slice(0, selection?.start)}
+                <span className="selected">
+                    {value.slice(selection.start, selection.end)}
+                </span>
+            </>
+        );
+    }, [value, selection]);
 
-        // Adjust start and end positions to account for the prefix length
-        const prefixLength = prefix.length;
-        const adjustedStart = start + prefixLength;
-        const adjustedEnd = end + prefixLength;
+    const postText = useMemo(() => {
+        if (!selection)
+            return '';
+        else if (selection.start === selection.end || selection.direction === 'backward')
+            return value.slice(selection.end);
 
-        // Determine anchor and focus nodes and offsets based on direction
-        let anchorNode, anchorOffset, focusNode, focusOffset;
-
-        // Since we have a predictable structure, we can map positions to nodes
-        if (direction === 'forward') {
-            anchorNode = beforeCursorText;
-            anchorOffset = adjustedStart - prefixLength;
-            focusNode = beforeCursorText;
-            focusOffset = adjustedEnd - prefixLength;
-        } else if (direction === 'backward') {
-            anchorNode = beforeCursorText;
-            anchorOffset = adjustedEnd - prefixLength;
-            focusNode = beforeCursorText;
-            focusOffset = adjustedStart - prefixLength;
-        }
-
-        // Handle cases where selection spans into the afterCursorText
-        if (adjustedEnd > (beforeCursorText.textContent.length + prefixLength)) {
-            focusNode = afterCursorText;
-            focusOffset = adjustedEnd - beforeCursorText.textContent.length - prefixLength;
-        }
-
-        if (anchorNode && focusNode) {
-            selection.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
-        }
-    }, [prefix]);
-
-    function selectContents(el) {
-        let range = document.createRange();
-        range.selectNodeContents(el);
-        let sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-    }
+        return (
+            <>
+                <span className="selected">
+                    {value.slice(selection.start, selection.end)}
+                </span>
+                {value.slice(selection.end)}
+            </>
+        );
+    }, [value, selection]);
 
     const onInput = useCallback((e) => {
-        handleInputChange(e);
-        setCursorPosition(e.target.selectionStart);
-    }, [setCursorPosition]);
+        onChange(e);
+        setSelection({
+            start: e.target.selectionStart,
+            end: e.target.selectionEnd,
+            direction: e.target.selectionDirection
+        });
+    }, [onChange, setSelection]);
 
     const onKeyDown = useCallback((e) => {
-        setCursorPosition(e.target.selectionStart);
-    }, [setCursorPosition]);
-
-    const onKeyUp = useCallback((e) => {
-        const { selectionStart, selectionEnd, selectionDirection } = e.target;
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            handleSubmit(e);
-            handleInputChange('');
-            setCursorPosition(0);
+            setSelection({
+                start: 0,
+                end: 0,
+                direction: null
+            });
+            onSubmit(e);
+        } else {
+            setSelection({
+                start: e.target.selectionStart,
+                end: e.target.selectionEnd,
+                direction: e.target.selectionDirection
+            });
         }
-        setCursorPosition(e.target.selectionStart);
-        setSelection({
-            start: selectionStart,
-            end: selectionEnd,
-            direction: selectionDirection
-        });
-        // selectContents(textRef.current.firstChild);
-        // selectText(selectionStart, selectionEnd, selectionDirection);
-    }, [input, cursorPosition, setCursorPosition, handleSubmit, handleInputChange]);
+    }, [setSelection, onSubmit]);
 
-    // Handle textareas focus
+    const onKeyUp = useCallback((e) => {
+        setSelection({
+            start: e.target.selectionStart,
+            end: e.target.selectionEnd,
+            direction: e.target.selectionDirection
+        });
+    }, [setSelection]);
+
     useEffect(() => {
+        if (!textareaRef.current) return;
+
         const handleFocus = (e) => {
-            if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+            if (!e.ctrlKey && !e.metaKey && !e.altKey)
                 textareaRef.current.focus();
-                console.log('focus')
-            }
-        }
+        };
+
         window.addEventListener('keydown', handleFocus);
         window.addEventListener('keyup', handleFocus);
-        // handle mouse click on
-        // window.addEventListener('click', handleFocus);
-        return () => window.removeEventListener('keydown', handleFocus);
-    }, []);
+        return () => {
+            window.removeEventListener('keydown', handleFocus);
+            window.removeEventListener('keyup', handleFocus);
+        };
+    }, [textareaRef.current]);
 
-    // useEffect(() => {
-    //     if (selection)
-    //         selectText(selection.start, selection.end, selection.direction);
-    // }, [selection]);
+    useEffect(() => {
+        if (!textareaRef.current) return;
+
+        const handleSelection = (e) => {
+            const { selectionStart, selectionEnd, selectionDirection } = textareaRef.current;
+            const cursorPosition = selectionDirection === 'forward' ? selectionStart : selectionEnd;
+            textareaRef.current.setSelectionRange(cursorPosition, cursorPosition);
+            setSelection({
+                start: cursorPosition,
+                end: cursorPosition,
+                direction: selectionDirection
+            });
+        };
+
+        window.addEventListener('mousedown', handleSelection);
+        return () => {
+            window.removeEventListener('mousedown', handleSelection);
+        };
+    }, [textareaRef.current, setSelection]);
 
     return (
         <div className="terminal-input">
             <textarea
                 ref={textareaRef}
                 autoFocus
-                value={input}
+                value={value}
                 onInput={onInput}
                 onKeyDown={onKeyDown}
                 onKeyUp={onKeyUp}
-            // onBlur={() => textareaRef.current.focus()}
             />
             <pre ref={textRef}>
                 <span>{isPrefixHtml ? parse(prefix) : prefix}</span>
-                {input.slice(0, cursorPosition ?? input.length)}
+                {preText}
                 <span className="cursor">{cursorCharacter}</span>
-                {input.slice(cursorPosition ?? input.length)}
+                {postText}
             </pre>
         </div>
     );

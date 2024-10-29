@@ -18,6 +18,11 @@
     animation: 1s blink step-end infinite;
 }
 
+.terminal-input .selected {
+    background-color: white;
+    color: black;
+}
+
 @keyframes blink {
     0% {
         opacity: 1;

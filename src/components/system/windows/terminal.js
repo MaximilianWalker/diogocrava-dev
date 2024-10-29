@@ -9,6 +9,7 @@ import Window from "@/components/system/common/window";
 import { splitText } from "@/utils/stringExtensions";
 import { useWindowManager } from "@/contexts/WindowManagerContext";
 import TerminalIcon from '@/icons/custom/terminal';
+import TerminalMessage from "./terminal-message";
 import TerminalInput from "./terminal-input";
 import './terminal.css';
 
@@ -29,9 +30,15 @@ function convertToCamelCase(name) {
 }
 
 export default function Terminal({ }) {
-    const { bringToFront, } = useWindowManager();
+    const { bringToFront } = useWindowManager();
 
-    const { messages, isLoading: isLoadingResponse } = useChat();
+    const {
+        input,
+        handleInputChange,
+        handleSubmit,
+        messages,
+        isLoading: isLoadingResponse
+    } = useChat();
 
     const [open, setOpen] = useState(false);
     const [inputs, setInputs] = useState();
@@ -54,7 +61,7 @@ export default function Terminal({ }) {
             });
         }
 
-        events.push({ type: 'type', value: inputs.osLogo, instant: true });
+        events.push({ type: 'type', value: `${inputs.osLogo}\n `, instant: true });
 
         return events;
     }, [inputs]);
@@ -73,30 +80,16 @@ export default function Terminal({ }) {
         setInputs(newInputs);
     };
 
-    const writeReply = () => {
-        const lastMessage = messages && messages.length > 0 ? messages[messages.length - 1] : null;
-        if (lastMessage && lastMessage.role === 'assistant') {
-            const response = lastMessage.content;
-            splitText(response).forEach((line) => {
-                // instance.type(line, { instant: true }).break();
-            });
-            // instance.type(inputs.primaryUser, { instant: true });
-            // instance.flush();
-        }
-    };
-
     useLayoutEffect(() => {
-        getInputs();
+        if (!inputs)
+            getInputs();
     }, []);
 
     useEffect(() => {
         bringToFront('terminal')
     }, [open]);
 
-    useEffect(() => {
-        if (!isLoadingResponse)
-            writeReply();
-    }, [isLoadingResponse, messages]);
+    console.log('messages', messages);
 
     return (
         <Window
@@ -126,8 +119,13 @@ export default function Terminal({ }) {
                     !booting && messages.map((message, index) => (
                         <TerminalMessage
                             key={`message-${index}`}
+                            loading={message.role === 'assistant' && index === messages.length - 1 && isLoadingResponse}
+                            isPrefixHtml
                             cursorCharacter={CURSOR_CHARACTER}
-                            message={message}
+                            animated={message.role === 'assistant' && index === messages.length - 1}
+                            prefix={message.role === 'assistant' ? inputs.aiUser : inputs.primaryUser}
+                            isMessageHtml
+                            message={message.content}
                         />
                     ))
                 }
@@ -137,6 +135,9 @@ export default function Terminal({ }) {
                         prefix={inputs.primaryUser}
                         isPrefixHtml
                         cursorCharacter={CURSOR_CHARACTER}
+                        value={input}
+                        onChange={handleInputChange}
+                        onSubmit={handleSubmit}
                     />
                 }
             </div>

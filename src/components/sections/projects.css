@@ -1,6 +1,5 @@
-.container {
-    width: 100%;
-    height: 100%;
-    padding-left: 50px;
-    padding-right: 50px;
+.projects-section {
+    display: inline-flex;
+    padding: 50px;
+    gap: 50px;
 }
